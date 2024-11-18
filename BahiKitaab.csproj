@@ -1,0 +1,152 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <SignAssembly>False</SignAssembly>
+    <Description>With 13+ years of experience in this domain, we are one of the leading Software &amp; Applications development companies. Through the years, we have acquired the experience and track record in providing exceptional service and customer satisfaction.
+
+At Sofric (formerly known as LeadManch), we are specialized in LMS-CRM-ERP solution, customized Website, eCommerce website, customized online &amp; offline Software &amp; Mobile Application development. “With the recognition of being the most trustworthy software development company in the region, the responsibility on our shoulders is even bigger.”
+
+WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
+    <Copyright>Sofric (LeadManch)</Copyright>
+    <PackageIcon>bill.png</PackageIcon>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\bg1.jpg" />
+    <None Remove="Resources\bg2.jpg" />
+    <None Remove="Resources\closeBtn_default.png" />
+    <None Remove="Resources\closeBtn_MouseOver.png" />
+    <None Remove="Resources\Icon.ico" />
+    <None Remove="Resources\img_background.png" />
+    <None Remove="Resources\img_contact.png" />
+    <None Remove="Resources\img_home.png" />
+    <None Remove="Resources\img_map.png" />
+    <None Remove="Resources\img_message.png" />
+    <None Remove="Resources\img_setting.png" />
+    <None Remove="Resources\img_signout.png" />
+    <None Remove="Resources\Login.png" />
+    <None Remove="Resources\tgBtn_default.png" />
+    <None Remove="Resources\tgBtn_MouseOver.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.7" />
+    <PackageReference Include="ControlzEx" Version="4.4.0" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="MaterialDesignColors" Version="3.0.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="MySql.Data" Version="8.0.33" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PDFsharp-MigraDoc-WPF" Version="6.1.1" />
+    <PackageReference Include="ScottPlot.WPF" Version="5.0.24" />
+    <PackageReference Include="Sentry" Version="4.12.2" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+	<PackageReference Include="MicrosoftOfficeCore" Version="15.0.0" NoWarn="NU1701" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\bg1.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\bg2.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\closeBtn_default.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\closeBtn_MouseOver.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\img_background.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\img_contact.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\img_home.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\img_map.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\img_message.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\img_setting.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\img_signout.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Login.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\tgBtn_default.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\tgBtn_MouseOver.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Helper\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Helper\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Extras\bahikitab.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Extras\cosmetify.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Extras\mysql-connector-net-8.0.33.1.msi">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="TxtFile\Sample_Test.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TxtFile\text.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extras\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\Downloads\bill.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

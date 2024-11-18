@@ -1,0 +1,47 @@
+﻿<UserControl
+    x:Class="BahiKitaab.View.HomepageControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BahiKitaab.View"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:navigation="clr-namespace:BahiKitaab.Navigation"
+    xmlns:model="clr-namespace:BahiKitaab.Model"
+    mc:Ignorable="d">
+    <!--<UserControl.Background>
+        <ImageBrush ImageSource="../Resources/bg2.jpg" Opacity="0.5"/>
+    </UserControl.Background>-->
+    <UserControl.Resources>
+        <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type model:MenuItem}">
+            <Grid Height="45">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:HamburgerMenu}}, Path=CompactPaneLength, Mode=OneWay}" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ContentControl Grid.Column="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{Binding Icon}"
+                                Focusable="False" />
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           Text="{Binding Label}" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <controls:HamburgerMenu x:Name="HamburgerMenuControl"
+                            DisplayMode="CompactInline"
+                            IsPaneOpen="True"                            
+                            OpenPaneLength="200"
+                            ItemInvoked="HamburgerMenuControl_OnItemInvoked"
+                            ItemTemplate="{StaticResource MenuItemTemplate}"
+                            ItemsSource="{Binding Menu}"
+                            Background="#FAF9F6"
+                            SelectedIndex="0"
+                            OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                            OptionsItemsSource="{Binding OptionsMenu}" />
+</UserControl>

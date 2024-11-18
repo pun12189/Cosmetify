@@ -1,0 +1,315 @@
+﻿<Page x:Class="BahiKitaab.RenderView.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BahiKitaab.RenderView"
+      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:model="clr-namespace:BahiKitaab.Model"
+      xmlns:dd="urn:gong-wpf-dragdrop"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SettingsPage" x:Name="settingsPage">
+
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+    </Page.Resources>
+    <TabControl Name="Tabs1" TabStripPlacement="Top" BorderBrush="Blue" Margin="10" FontSize="14">
+        <TabItem Visibility="Collapsed" Header="Profile" Padding="10,5,10,5">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Height="150" Width="150" Stretch="Uniform" SnapsToDevicePixels="True" Source="{Binding ElementName=settingsPage, Path=ProfilePicture}"/>
+                        <Button Content="Upload Profile Picture" Click="Upload_Profile_Picture" Margin="0,10,10,0" Padding="6,5,6,5"/>
+                    </StackPanel>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Name" Grid.Row="0"/>
+                        <TextBlock Text="Email" Grid.Row="2"/>
+                        <TextBlock Text="Phone Number" Grid.Row="4"/>
+                        <TextBlock Text="Company Name" Grid.Row="6"/>
+                        <TextBox Grid.Row="1"/>
+                        <TextBox Grid.Row="3"/>
+                        <TextBox Grid.Row="5"/>
+                        <TextBox Grid.Row="7"/>
+                        <Button Grid.Row="8" Content="Submit" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0" Padding="6,5,6,5" Click="Save_Profile"/>
+                    </Grid>
+                    <Grid Grid.Column="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Change Password"/>
+                        <TextBlock Grid.Row="2" Text="Password"/>
+                        <TextBlock Grid.Row="4" Text="Confirm Password"/>
+                        <TextBox Grid.Row="3"/>
+                        <TextBox Grid.Row="5"/>
+                        <Button Grid.Row="7" Content="Submit" Padding="6,5,6,5" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Change_Password"/>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.ColumnSpan="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Proforma Details" Grid.ColumnSpan="5"/>
+                        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="Proforma Invoice"/>
+                            <TextBox TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+                        </StackPanel>
+                        <Grid Grid.Row="2" Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Customer Care Number"/>
+                            <TextBlock Grid.Row="2" Text="Bank Details"/>
+                            <TextBox Grid.Row="1"/>
+                            <TextBox Grid.Row="3" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+                        </Grid>
+                        <Grid Grid.Row="2" Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Invoice Logo"/>
+                            <TextBlock Grid.Row="2" Text="Welcome Message"/>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <Button  Content="Choose File" Click="Upload_Logo"/>
+                                <TextBlock Text="No File Chosen" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                            <TextBox Grid.Row="3" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+                        </Grid>
+                        <Button Grid.Row="4" Grid.ColumnSpan="5" Padding="6,5,6,5" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Submit" Click="Save_Performa_Details"/>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Visibility="Collapsed" Header="Order Stages" Padding="10,5,10,5">
+            <ScrollViewer>
+                <!--<Grid Grid.Row="4" Grid.ColumnSpan="5" Visibility="Collapsed">
+                <Grid.Resources>
+                    <Style TargetType="ListView" x:Key="ListStyle" BasedOn="{StaticResource {x:Type ListView}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock FontSize="25" FontWeight="Bold">No Departments Added</TextBlock>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Departments" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button Content="Create Department" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="CreateDepartment"/>
+                <ListView HorizontalContentAlignment="Center" Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" Height="180" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" Grid.Column="2" Style="{StaticResource ListStyle}" x:Name="departList"/>
+            </Grid>-->
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="ListView" x:Key="ListStyle" BasedOn="{StaticResource {x:Type ListView}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBlock FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">No Order Stage Added</TextBlock>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".2*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width=".8*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Order Stages" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Button Content="Create Order Stages" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="CreateOdStages"/>
+                    <ListView HorizontalContentAlignment="Center" Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" Height="180" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding ElementName=settingsPage, Path=OrderStageCollection}" Style="{StaticResource ListStyle}" x:Name="odtList">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Width="1024"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="{x:Type model:OrderStageModel}">
+                                <Border Height="40" Background="{Binding StageColor}" Margin="3" CornerRadius="2" BorderThickness="2" BorderBrush="{Binding StageColor}">
+                                    <TextBlock VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" Text="{Binding StageName}" Margin="5"/>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Master Formula's" IsSelected="True" Padding="10,5,10,5">
+            <Grid Margin="10">
+                <Grid.Resources>
+                    <Style TargetType="ListView" x:Key="ListStyle" BasedOn="{StaticResource {x:Type ListView}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">No Formula's Added</TextBlock>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Margin" Value="10"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+                    <Button Visibility="Collapsed" Content="Push to DB" HorizontalAlignment="Right" Click="PushToDBClick" Margin="0,0,10,0"/>
+                    <Button Content="Create Master Formula" HorizontalAlignment="Right" Click="CreateMasterFormula"/>
+                </StackPanel>                
+                <ListView Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" ItemsSource="{Binding ElementName=settingsPage, Path=MasterFormulaCollection}" Style="{StaticResource ListStyle}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:MasterFormulaModel}">
+                            <Grid Margin="5" PreviewMouseLeftButtonDown="Grid_PreviewMouseDown">
+                                <Grid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Delete" Click="MenuItem_Click"/>
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Text="Name" FontSize="15"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Name}" FontSize="15"/>
+                                <TextBlock Grid.Row="2" Text="Code" FontSize="15"/>
+                                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Code}" FontSize="15"/>
+                                <ListView x:Name="lbActiveList" Grid.ColumnSpan="3" Grid.Row="4" Grid.RowSpan="2" Margin="5" VerticalAlignment="Top" ItemsSource="{Binding Requirements}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridView.ColumnHeaderContainerStyle>
+                                                <Style>
+                                                    <Setter Property="FrameworkElement.Visibility" Value="Collapsed"/>
+                                                </Style>
+                                            </GridView.ColumnHeaderContainerStyle>
+                                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Name, Mode=OneWay}"></GridViewColumn>
+                                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Required, Mode=OneWay}"></GridViewColumn>
+                                        </GridView>
+                                    </ListView.View> 
+                                </ListView>
+                                <!--<ListView x:Name="lbActiveList2" Grid.ColumnSpan="3" Grid.Row="6"  Margin="5" VerticalAlignment="Top" Foreground="#ebeff4" ItemsSource="{Binding NewRequirements}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridView.ColumnHeaderContainerStyle>
+                                                <Style>
+                                                    <Setter Property="FrameworkElement.Visibility" Value="Collapsed"/>
+                                                </Style>
+                                            </GridView.ColumnHeaderContainerStyle>
+                                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Key, Mode=OneWay}"></GridViewColumn>
+                                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Value, Mode=OneWay}"></GridViewColumn>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>-->
+                                <TextBlock Grid.Row="8" Text="Remaining" FontSize="15"/>
+                                <TextBlock Grid.Row="8" Grid.Column="2" Text="{Binding RemainingWater}" FontSize="15"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </TabItem>
+        <TabItem Visibility="Collapsed" Header="Mail Settings" IsSelected="True" Padding="10,5,10,5">
+
+        </TabItem>
+    </TabControl>
+</Page>

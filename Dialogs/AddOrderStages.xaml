@@ -1,0 +1,23 @@
+﻿<Window x:Class="BahiKitaab.Dialogs.AddOrderStages"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BahiKitaab.Dialogs"
+        xmlns:control="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Add Order Stages" Height="250" Width="350" x:Name="addOdStages">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Add Order Stage Name" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBox Grid.Row="2" ToolTip="You can enter comma seperated values to add multiple stages." Text="{Binding ElementName=addOdStages, Path=OrderStages, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250" Height="35" VerticalContentAlignment="Center"/>        
+        <Button Content="Add" Grid.Row="4" Padding="16,5,16,5" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click"/>
+    </Grid>
+</Window>

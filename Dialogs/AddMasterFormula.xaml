@@ -1,0 +1,75 @@
+﻿<Window x:Class="BahiKitaab.Dialogs.AddMasterFormula"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:control="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:BahiKitaab.Dialogs"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="ThreeDBorderWindow"
+        Title="AddMasterFormula" Height="470" Width="480" x:Name="addMF">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition />
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width=".5*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Create Master Formula" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" FontStyle="Italic" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"/>
+        <TextBlock Text="Name" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Row="2" Grid.Column="1"/>
+        <TextBox x:Name="tbName"  control:TextBoxHelper.Watermark="Enter Formula Name" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" Width="200"/>
+        <TextBlock Text="Code" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Row="4" Grid.Column="1"/>
+        <TextBox x:Name="tbCode" control:TextBoxHelper.Watermark="Enter Code Name" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="3" Width="200"/>
+        <TextBlock Text="Select Actives" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Row="6" Grid.Column="1"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3" HorizontalAlignment="Left">
+            <ComboBox control:ComboBoxHelper.CharacterCasing="Normal" x:Name="ddActives" DisplayMemberPath="ActivesName" Width="150" Height="20"/>
+            <TextBox x:Name="tbRem" control:TextBoxHelper.Watermark="% Value" Margin="2,0" Height="20"/>
+            <Button Click="ActivesListAdd" VerticalAlignment="Center" Margin="3,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <icon:PackIconFontAwesome Kind="CheckSquareSolid"/>
+            </Button>            
+        </StackPanel>
+        <DataGrid SelectedCellsChanged="dataGrid1_SelectedCellsChanged" AutoGenerateColumns="False" ColumnWidth="*" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Grid.RowSpan="4" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=addMF, Path=ActivesList}" Height="100">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Required" Binding="{Binding Required}" />
+            </DataGrid.Columns>
+        </DataGrid>        
+        <!--<TextBlock Text="Enter New Actives" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Grid.Row="10" Grid.Column="1"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.Column="3">
+            <TextBox control:TextBoxHelper.Watermark="Enter New Active" VerticalAlignment="Center" x:Name="tbNewActive" Width="150"/>
+            <Button Click="NewActivesListAdd" Margin="3,0,0,0" VerticalAlignment="Center">
+                <icon:PackIconFontAwesome Kind="CheckSquareSolid"/>
+            </Button>            
+        </StackPanel>
+        <DataGrid AutoGenerateColumns="False" ColumnWidth="*" x:Name="dtNewActiveList" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="12" CanUserDeleteRows="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=addMF, Path=NewActivesList}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Key}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Required" Binding="{Binding Value}" />
+            </DataGrid.Columns>
+        </DataGrid>-->
+        <TextBlock Text="Remaining Water" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Row="14" Grid.Column="1"/>
+        <TextBox x:Name="tbWater" IsReadOnly="True" control:TextBoxHelper.Watermark="Remaining Value" Text="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="14" Grid.Column="3" Width="200"/>
+        <Button Content="Add Formula" x:Name="btnAddFormula" Click="btnAddFormula_Click" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Grid.Row="16" Grid.Column="1" Grid.ColumnSpan="3"/>
+        
+    </Grid>
+</Window>

@@ -1,0 +1,219 @@
+﻿<Page x:Class="BahiKitaab.RenderView.AdminView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:local="clr-namespace:BahiKitaab.RenderView"
+      xmlns:model="clr-namespace:BahiKitaab.Model"
+      xmlns:dd="urn:gong-wpf-dragdrop"
+      mc:Ignorable="d" Title="AdminView" x:Name="adminView">
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+    </Page.Resources>
+    <TabControl Name="Tabs1" TabStripPlacement="Top" BorderBrush="Blue" Margin="10" FontSize="14">
+        <TabItem Header="Profile" IsSelected="True" Padding="10,5,10,5">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Height="150" Width="150" Stretch="Uniform" SnapsToDevicePixels="True" Source="{Binding ElementName=adminView, Path=ProfilePicture}"/>
+                        <Button Content="Upload Profile Picture" Click="Upload_Profile_Picture" Margin="0,10,10,0" Padding="6,5,6,5"/>
+                    </StackPanel>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Name" Grid.Row="0"/>
+                        <TextBlock Text="Email" Grid.Row="2"/>
+                        <TextBlock Text="Phone Number" Grid.Row="4"/>
+                        <TextBlock Text="Company Name" Grid.Row="6"/>
+                        <TextBox Grid.Row="1"/>
+                        <TextBox Grid.Row="3"/>
+                        <TextBox Grid.Row="5"/>
+                        <TextBox Grid.Row="7"/>
+                        <Button Grid.Row="8" Content="Submit" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0" Padding="6,5,6,5" Click="Save_Profile"/>
+                    </Grid>
+                    <Grid Grid.Column="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Change Password"/>
+                        <TextBlock Grid.Row="2" Text="Password"/>
+                        <TextBlock Grid.Row="4" Text="Confirm Password"/>
+                        <TextBox Grid.Row="3"/>
+                        <TextBox Grid.Row="5"/>
+                        <Button Grid.Row="7" Content="Submit" Padding="6,5,6,5" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Change_Password"/>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.ColumnSpan="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Proforma Details" Grid.ColumnSpan="5"/>
+                        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="Proforma Invoice"/>
+                            <TextBox TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+                        </StackPanel>
+                        <Grid Grid.Row="2" Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Customer Care Number"/>
+                            <TextBlock Grid.Row="2" Text="Bank Details"/>
+                            <TextBox Grid.Row="1"/>
+                            <TextBox Grid.Row="3" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+                        </Grid>
+                        <Grid Grid.Row="2" Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Invoice Logo"/>
+                            <TextBlock Grid.Row="2" Text="Welcome Message"/>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <Button  Content="Choose File" Click="Upload_Logo"/>
+                                <TextBlock Text="No File Chosen" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                            <TextBox Grid.Row="3" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+                        </Grid>
+                        <Button Grid.Row="4" Grid.ColumnSpan="5" Padding="6,5,6,5" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Submit" Click="Save_Performa_Details"/>
+                    </Grid>                    
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Order Stages" IsSelected="True" Padding="10,5,10,5">
+            <ScrollViewer>
+                <!--<Grid Grid.Row="4" Grid.ColumnSpan="5" Visibility="Collapsed">
+                    <Grid.Resources>
+                        <Style TargetType="ListView" x:Key="ListStyle" BasedOn="{StaticResource {x:Type ListView}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBlock FontSize="25" FontWeight="Bold">No Departments Added</TextBlock>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Departments" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Button Content="Create Department" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="CreateDepartment"/>
+                    <ListView HorizontalContentAlignment="Center" Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" Height="180" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" Grid.Column="2" Style="{StaticResource ListStyle}" x:Name="departList"/>
+                </Grid>-->
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="ListView" x:Key="ListStyle" BasedOn="{StaticResource {x:Type ListView}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBlock FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">No Order Stage Added</TextBlock>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".2*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width=".8*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Order Stages" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Button Content="Create Order Stages" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="CreateOdStages"/>
+                    <ListView HorizontalContentAlignment="Center" Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" Height="180" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding ElementName=adminView, Path=OrderStageCollection}" Style="{StaticResource ListStyle}" x:Name="odtList">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Width="1024"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="{x:Type model:OrderStageModel}">
+                                <Border Height="40" Background="{Binding StageColor}" Margin="3" CornerRadius="2" BorderThickness="2" BorderBrush="{Binding StageColor}">
+                                    <TextBlock VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" Text="{Binding StageName}" Margin="5"/>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Master Formula's" IsSelected="True" Padding="10,5,10,5">
+            
+        </TabItem>
+        <TabItem Header="Mail Settings" IsSelected="True" Padding="10,5,10,5">
+
+        </TabItem>
+    </TabControl>
+       
+</Page>

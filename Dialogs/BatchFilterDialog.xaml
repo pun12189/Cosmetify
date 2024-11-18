@@ -1,0 +1,64 @@
+﻿<Window x:Class="BahiKitaab.Dialogs.BatchFilterDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BahiKitaab.Dialogs"
+        xmlns:control="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="BatchFilterDialog" Height="400" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Customer" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="Order ID" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="Package Type" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="Brand Name" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="Mfg Date" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right"/>
+        <TextBlock Text="Expiry Date" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right"/>
+        <TextBlock Text="Creation Date" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Right"/>
+        <TextBlock Text="Status" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Grid.Row="6" Grid.Column="4" HorizontalAlignment="Right"/>
+        <ComboBox x:Name="cbCust" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="200" DisplayMemberPath="FirstName" SelectedValuePath="ID"/>
+        <TextBox x:Name="tbOdrId" control:TextBoxHelper.Watermark="Search Order ID" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Width="200"/>
+        <TextBox x:Name="tbPkgType" control:TextBoxHelper.Watermark="Search Pkg Type" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Width="200"/>
+        <TextBox x:Name="tbBName" control:TextBoxHelper.Watermark="Search Brand name" Grid.Row="6" Grid.Column="2" VerticalAlignment="Center" Width="200"/>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="6">
+            <DatePicker x:Name="dpMfgFrom"/>
+            <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0"/>
+            <DatePicker x:Name="dpMfgTo"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="6">
+            <DatePicker x:Name="dpExpFrom"/>
+            <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0"/>
+            <DatePicker x:Name="dpExpTo"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="6">
+            <DatePicker x:Name="dpCdFrom"/>
+            <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0"/>
+            <DatePicker x:Name="dpCdTo"/>
+        </StackPanel>
+        <ComboBox x:Name="cbStatus" VerticalAlignment="Center" Grid.Row="6" Grid.Column="6" Width="200"/>
+        <StackPanel Orientation="Horizontal" Margin="0,10" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="8" Grid.ColumnSpan="7">
+            <Button x:Name="btnSearch" Content="Search" Margin="0,0,5,0" FontSize="14" FontWeight="Heavy" Click="btnSearch_Click"/>
+            <Button x:Name="btnCancel" Content="Cancel" FontSize="14" FontWeight="Heavy" Click="btnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
