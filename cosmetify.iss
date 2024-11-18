@@ -6,18 +6,17 @@
 ;#ifndef IncludeFramework  
 ;#define public IncludeFramework "False"
 ;#endif
-;#ifndef Version
-;#define public Version "2.0.0.4605"
-;#endif
-;#ifndef SourceFileDir
-;#define public SourceFileDir "C:\Users\Deepak\Desktop\4607\CryptoObfuscator_Output\"
-;#endif
+#ifndef Version
+#define public Version "1.0.0.25"
+#endif
+#ifndef SourceFileDir
+#define public SourceFileDir "C:\Users\Kishant\source\repos\Cosmetify\"
+#endif
 [setup]
 ;name of your application
 ChangesAssociations=yes 
 ChangesEnvironment=yes
 PrivilegesRequired=admin
-MinVersion = 0.0,5.1sp3
 DisableReadyPage=yes
 AppName=Cosmetify      
 ;DefaultDialogFontName=Segoe UI     
@@ -67,19 +66,19 @@ UninstallDisplayIcon={app}\Cosmetify.exe
 VersionInfoVersion={# Version}
 AppVersion={# Version}
 ;If IncludeFramework, append _FW to end of compiled setup;
-ArchitecturesAllowed = x86  x64 ia64  
+ArchitecturesAllowed = x86  x64
 ArchitecturesInstallIn64BitMode=x64
 ;without the framework included
 OutputBaseFilename=Cosmetify
 ;Directory where setup.exe will be compiled to
-OutputDir={#OutputDir}
+OutputDir="C:\Users\Kishant\OneDrive\Desktop\setup"
 WizardStyle=modern
 WindowShowCaption=no 
 WindowResizable=yes
 SetupIconFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.ico
 SetupLogging=yes
 ShowUndisplayableLanguages=no
-#include <idp.iss>
+;#include <idp.iss>
  ;SignTool=sn /d $qTemplateToaster Installer$q $f
  ;UninstallIconFile=  {#SourceFileDir}uninstall.ico
  [Languages]
@@ -119,50 +118,13 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 
 
    [Dirs]
- Name: "{app}\Resources\GlareImages\NonIdea"
+ Name: "{app}\Resources"
  Name: "{commonappdata}\Cosmetify"; Permissions: everyone-modify
  Name: "{app}\x86"
  Name: "{app}\x64"
 [files]
-   Source: {#SourceFileDir}Resources\*;  DestDir: "{app}\Resources"; Flags:ignoreversion recursesubdirs
-
-   Source: {#SourceFileDir}Microsoft.Expression.Effects.dll;  DestDir: "{app}"; Flags:ignoreversion 
-   Source: {#SourceFileDir}log4net.dll;  DestDir: "{app}"; Flags:ignoreversion 
-   Source: {#SourceFileDir}Newtonsoft.Json.dll;  DestDir: "{app}"; Flags:ignoreversion 
-   Source: {#SourceFileDir}Microsoft.Threading.Tasks.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}Microsoft.Threading.Tasks.Extensions.Desktop.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}Microsoft.Threading.Tasks.Extensions.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.IO.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Net.Http.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Net.Http.Extensions.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Net.Http.Primitives.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Net.Http.WebRequest.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Runtime.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Threading.Tasks.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}Zlib.Portable.dll;  DestDir: "{app}"; Flags:ignoreversion 
-   Source: {#SourceFileDir}Microsoft.Expression.Interactions.dll;  DestDir: "{app}"; Flags:ignoreversion 
-   Source: {#SourceFileDir}Microsoft.Windows.Shell.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Windows.Interactivity.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}SharpRaven.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}ProductionStackTrace.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}dotless.Core.dll;  DestDir: "{app}"; Flags:ignoreversion
-
-   Source: {#SourceFileDir}ICSharpCode.AvalonEdit.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}ICSharpCode.SharpZipLib.dll;  DestDir: "{app}"; Flags:ignoreversion
-   
-   Source: {#SourceFileDir}AdvancedStringBuilder.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Buffers.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}LibSassHost.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}Interop.IWshRuntimeLibrary.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}System.Runtime.InteropServices.RuntimeInformation.dll;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {#SourceFileDir}x86\libsass.dll;  DestDir: "{app}\x86"; Flags:ignoreversion
-   Source: {#SourceFileDir}x64\libsass.dll;  DestDir: "{app}\x64"; Flags:ignoreversion
-   
-   Source: {#SourceFileDir}CSharpAnalytics.dll;  DestDir: "{app}"; Flags:ignoreversion; Check: Not NeedsFramework;
-   Source: {#SourceFileDir}FluentFTP.dll;  DestDir: "{app}"; Flags:ignoreversion; Check: Not NeedsFramework;
-   
-   Source: {#SourceFileDir}TemplateToaster.exe.config;  DestDir: "{app}"; Flags:ignoreversion
-   Source: {userappdata}\TemplateToaster\Fonts\*; DestDir: "{userappdata}\TemplateToaster\Fonts 6.0"; Flags:external recursesubdirs uninsneveruninstall skipifsourcedoesntexist; Check : CreateDestinationDir(ExpandConstant('{userappdata}\TemplateToaster\Fonts 6.0'));
+   Source: {#SourceFileDir}\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   ;Source: {userappdata}\TemplateToaster\Fonts\*; DestDir: "{userappdata}\TemplateToaster\Fonts 6.0"; Flags:external recursesubdirs uninsneveruninstall skipifsourcedoesntexist; Check : CreateDestinationDir(ExpandConstant('{userappdata}\TemplateToaster\Fonts 6.0'));
 
    ;Source: {#SourceFileDir}Fonts\*;   DestDir: "{app}\Fonts"; Flags:ignoreversion recursesubdirs
 
@@ -441,9 +403,6 @@ Name: {group}\Uninstall; Filename: {uninstallexe};  WorkingDir: {app}
 Name: {commondesktop}\Cosmetify;  Filename: {app}\Cosmetify.exe;  WorkingDir: {app}; 
 
 [Run]
-#if YesNo(IncludeFramework)
-  Filename: {tmp}\NDP452-KB2901907-x86-x64-AllOS-ENU.exe; Parameters: "/passive"; WorkingDir: {tmp}; Flags: skipifdoesntexist runhidden waituntilterminated; StatusMsg: "{cm:InstallingDependencies}"; Check:CheckClient
-#endif
 Filename: "{app}\Cosmetify.exe"; Description: "{cm:launchtemplatetoaster}"; Flags: nowait skipifsilent postinstall ; 
 Filename: explorer.exe; Parameters: "http://sofric.com/"; Description: "{cm:viewhelpfile}"; Flags: Shellexec skipifsilent  postinstall unchecked; 
 
@@ -889,8 +848,6 @@ begin
       result := -1
     end
 end;
-#if YesNo(IncludeFramework)
-#else
 function InitializeSetup(): Boolean;
 var
   ErrCode: integer;
@@ -912,8 +869,6 @@ begin
      else
         result := true;
 end;
-#endif
-
 // THIS FUNCTION IS FOR CHECK THAT VC++ REDIST 2015 OR LATER IS INSTALLED OF NOT
 function VCinstalled: Boolean;
  // Function for Inno Setup Compiler

@@ -130,6 +130,21 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <None Update="Extras\mysql-connector-net-8.0.33.1.msi">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+    <None Update="SetupFiles\BahiKitab-Icon.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SetupFiles\BahiKitab-Icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SetupFiles\eula.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SetupFiles\windowsdesktop-runtime-6.0.36-win-x64.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SetupFiles\windowsdesktop-runtime-6.0.36-win-x86.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TxtFile\Sample_Test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
