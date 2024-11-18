@@ -103,8 +103,8 @@ namespace Cosmetify.ViewModel
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FirstOrderBrands },
                 Label = "Order",
-                NavigationType = typeof(OrdersPage),
-                NavigationDestination = new Uri("RenderView/OrdersPage.xaml", UriKind.RelativeOrAbsolute),
+                NavigationType = typeof(OrderInvoice),
+                NavigationDestination = new Uri("RenderView/OrderInvoice.xaml", UriKind.RelativeOrAbsolute),
                 IsEnabled = true
             });
             this.Menu.Add(new MenuItem()
