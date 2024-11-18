@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Mail;
-using BahiKitaab.Validator.Interfaces;
+using Cosmetify.Validator.Interfaces;
 
-namespace BahiKitaab.Validator
+namespace Cosmetify.Validator
 {
     class PersonalAccountValidator : IPersonalAccountValidator<PersonalAccountValidator>
     {

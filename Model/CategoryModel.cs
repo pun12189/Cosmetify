@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BahiKitaab.Model
+namespace Cosmetify.Model
 {
     [JsonSerializable(typeof(CategoryModel))]
     public class CategoryModel

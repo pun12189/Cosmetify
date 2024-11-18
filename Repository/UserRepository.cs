@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BahiKitaab.Repository
+namespace Cosmetify.Repository
 {
     public class UserRepository : RepositoryBase
     {

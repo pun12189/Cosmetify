@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Model.Enums;
-using BahiKitaab.Model;
+﻿using Cosmetify.Model.Enums;
+using Cosmetify.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using BahiKitaab.ViewModel;
+using Cosmetify.ViewModel;
 using System.Text.Json;
 
-namespace BahiKitaab.Repository
+namespace Cosmetify.Repository
 {
     public class BatchOrderRepository : RepositoryBase
     {

@@ -1,4 +1,4 @@
-﻿using BahiKitaab.Model.Enums;
+﻿using Cosmetify.Model.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BahiKitaab.Model
+namespace Cosmetify.Model
 {
     public class ActivesModel : INotifyPropertyChanged
     {

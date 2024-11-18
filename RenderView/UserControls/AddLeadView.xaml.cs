@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.Repository;
+﻿using Cosmetify.Model;
+using Cosmetify.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,9 +20,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using BahiKitaab.ViewModel;
+using Cosmetify.ViewModel;
 
-namespace BahiKitaab.RenderView.UserControls
+namespace Cosmetify.RenderView.UserControls
 {
     /// <summary>
     /// Interaction logic for AddLeadView.xaml

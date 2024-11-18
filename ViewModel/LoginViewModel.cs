@@ -1,11 +1,11 @@
-﻿using BahiKitaab.Model;
+﻿using Cosmetify.Model;
 using System.Windows;
 using System.Windows.Input;
 using System.ComponentModel;
-using BahiKitaab.Helper;
-using BahiKitaab.Command;
+using Cosmetify.Helper;
+using Cosmetify.Command;
 
-namespace BahiKitaab.ViewModel
+namespace Cosmetify.ViewModel
 {
     class LoginViewModel : INotifyPropertyChanged
     {

@@ -1,9 +1,9 @@
-﻿using BahiKitaab.Model;
+﻿using Cosmetify.Model;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
 
-namespace BahiKitaab.PdfCore
+namespace Cosmetify.PdfCore
 {
     public class PdfForm
     {

@@ -1,4 +1,4 @@
-﻿using BahiKitaab.Model;
+﻿using Cosmetify.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.View
+namespace Cosmetify.View
 {
     /// <summary>
     /// Interaction logic for LoginControl.xaml

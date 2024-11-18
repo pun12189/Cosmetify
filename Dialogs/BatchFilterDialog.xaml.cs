@@ -1,7 +1,7 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.Model.Enums;
-using BahiKitaab.Repository;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.Model.Enums;
+using Cosmetify.Repository;
+using Cosmetify.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.Dialogs
+namespace Cosmetify.Dialogs
 {
     /// <summary>
     /// Interaction logic for BatchFilterDialog.xaml

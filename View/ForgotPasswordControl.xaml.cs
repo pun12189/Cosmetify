@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace BahiKitaab.View
+namespace Cosmetify.View
 {
     /// <summary>
     /// Interaction logic for ForgotPasswordControl.xaml

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 
-namespace BahiKitaab.Helper
+namespace Cosmetify.Helper
 {
     public class NotSetDateConverter : IValueConverter
     {

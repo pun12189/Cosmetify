@@ -1,6 +1,6 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.Model.Enums;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.Model.Enums;
+using Cosmetify.ViewModel;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace BahiKitaab.RenderView.UserControls
+namespace Cosmetify.RenderView.UserControls
 {
     /// <summary>
     /// Interaction logic for AddProduct.xaml

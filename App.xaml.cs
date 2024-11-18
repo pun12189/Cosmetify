@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace BahiKitaab
+namespace Cosmetify
 {
     /// <summary>
     /// Interaction logic for App.xaml

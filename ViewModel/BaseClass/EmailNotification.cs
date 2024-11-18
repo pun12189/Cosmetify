@@ -1,9 +1,9 @@
-﻿using BahiKitaab.Helper;
-using BahiKitaab.Model;
-using BahiKitaab.Validator;
+﻿using Cosmetify.Helper;
+using Cosmetify.Model;
+using Cosmetify.Validator;
 using System.Windows;
 
-namespace BahiKitaab.ViewModel.BaseClass
+namespace Cosmetify.ViewModel.BaseClass
 {
     public class EmailNotification
     {

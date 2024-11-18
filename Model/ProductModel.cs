@@ -1,7 +1,7 @@
-﻿using BahiKitaab.Model.Enums;
+﻿using Cosmetify.Model.Enums;
 using System.Windows.Media.Imaging;
 
-namespace BahiKitaab.Model
+namespace Cosmetify.Model
 {
     public class ProductModel
     {

@@ -1,7 +1,7 @@
-﻿<Application x:Class="BahiKitaab.App"
+﻿<Application x:Class="Cosmetify.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:BahiKitaab"
+             xmlns:local="clr-namespace:Cosmetify"
              StartupUri="View/LoginView.xaml">
     <Application.Resources>
         <ResourceDictionary>

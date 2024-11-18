@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
-namespace BahiKitaab.Navigation
+namespace Cosmetify.Navigation
 {
     public class NavigationServiceEx
     {

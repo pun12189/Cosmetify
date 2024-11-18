@@ -1,6 +1,6 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.Model.Enums;
-using BahiKitaab.Repository;
+﻿using Cosmetify.Model;
+using Cosmetify.Model.Enums;
+using Cosmetify.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BahiKitaab.ViewModel
+namespace Cosmetify.ViewModel
 {
     public class CommonViewModel : INotifyPropertyChanged
     {

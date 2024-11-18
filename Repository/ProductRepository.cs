@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.Model.Enums;
+﻿using Cosmetify.Model;
+using Cosmetify.Model.Enums;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace BahiKitaab.Repository
+namespace Cosmetify.Repository
 {
     public class ProductRepository : RepositoryBase
     {

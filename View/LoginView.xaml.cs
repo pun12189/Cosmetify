@@ -1,9 +1,9 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.ViewModel;
 using MahApps.Metro.Controls;
 using System.Windows;
 
-namespace BahiKitaab.View
+namespace Cosmetify.View
 {
     /// <summary>
     /// Interaction logic for LoginView.xaml

@@ -121,13 +121,13 @@
     <value>Recover your account</value>
   </data>
   <data name="ConfirmationCodeControlPath" xml:space="preserve">
-    <value>BahiKitaab.View.ConfirmationCodeControl</value>
+    <value>Cosmetify.View.ConfirmationCodeControl</value>
   </data>
   <data name="ConfirmationCodeWindowTitle" xml:space="preserve">
     <value>Confirmation Code</value>
   </data>
   <data name="ForgotPasswordControlPath" xml:space="preserve">
-    <value>BahiKitaab.View.ForgotPasswordControl</value>
+    <value>Cosmetify.View.ForgotPasswordControl</value>
   </data>
   <data name="ForgotPasswordWindowTitle" xml:space="preserve">
     <value>ForgotPassword</value>
@@ -136,19 +136,19 @@
     <value>We received a request to confirm your account. Your account confirmation code is: </value>
   </data>
   <data name="HomepageControlPath" xml:space="preserve">
-    <value>BahiKitaab.View.HomepageControl</value>
+    <value>Cosmetify.View.HomepageControl</value>
   </data>
   <data name="HomepageWindowTitle" xml:space="preserve">
-    <value>Homepage BahiKitaab</value>
+    <value>Homepage Cosmetify</value>
   </data>
   <data name="LoginControlPath" xml:space="preserve">
-    <value>BahiKitaab.View.LoginControl</value>
+    <value>Cosmetify.View.LoginControl</value>
   </data>
   <data name="LoginWindowTitle" xml:space="preserve">
     <value>Login</value>
   </data>
   <data name="RegisterAccountControlPath" xml:space="preserve">
-    <value>BahiKitaab.View.RegisterControl</value>
+    <value>Cosmetify.View.RegisterControl</value>
   </data>
   <data name="RegisterAccountEmailSubject" xml:space="preserve">
     <value>Register your account</value>
@@ -157,7 +157,7 @@
     <value>Register Account</value>
   </data>
   <data name="ResetPasswordControlPath" xml:space="preserve">
-    <value>BahiKitaab.View.ResetPasswordControl</value>
+    <value>Cosmetify.View.ResetPasswordControl</value>
   </data>
   <data name="ResetPasswordWindowTitle" xml:space="preserve">
     <value>Reset Password</value>

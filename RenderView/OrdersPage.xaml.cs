@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.RenderView
+namespace Cosmetify.RenderView
 {   
     /// <summary>
     /// Interaction logic for OrdersPage.xaml

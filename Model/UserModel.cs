@@ -1,4 +1,4 @@
-﻿namespace BahiKitaab.Model
+﻿namespace Cosmetify.Model
 {
     class UserModel
     {

@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.RenderView
+namespace Cosmetify.RenderView
 {
     /// <summary>
     /// Interaction logic for DashboardPage.xaml

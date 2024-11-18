@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace BahiKitaab.Helper
+namespace Cosmetify.Helper
 {
     public static class Helper
     {

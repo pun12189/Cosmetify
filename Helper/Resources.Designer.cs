@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BahiKitaab.Helper {
+namespace Cosmetify.Helper {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BahiKitaab.Helper {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BahiKitaab.Helper.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cosmetify.Helper.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,7 +70,7 @@ namespace BahiKitaab.Helper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BahiKitaab.View.ConfirmationCodeControl.
+        ///   Looks up a localized string similar to Cosmetify.View.ConfirmationCodeControl.
         /// </summary>
         internal static string ConfirmationCodeControlPath {
             get {
@@ -88,7 +88,7 @@ namespace BahiKitaab.Helper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BahiKitaab.View.ForgotPasswordControl.
+        ///   Looks up a localized string similar to Cosmetify.View.ForgotPasswordControl.
         /// </summary>
         internal static string ForgotPasswordControlPath {
             get {
@@ -115,7 +115,7 @@ namespace BahiKitaab.Helper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BahiKitaab.View.HomepageControl.
+        ///   Looks up a localized string similar to Cosmetify.View.HomepageControl.
         /// </summary>
         internal static string HomepageControlPath {
             get {
@@ -124,7 +124,7 @@ namespace BahiKitaab.Helper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Homepage BahiKitaab.
+        ///   Looks up a localized string similar to Homepage Cosmetify.
         /// </summary>
         internal static string HomepageWindowTitle {
             get {
@@ -133,7 +133,7 @@ namespace BahiKitaab.Helper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BahiKitaab.View.LoginControl.
+        ///   Looks up a localized string similar to Cosmetify.View.LoginControl.
         /// </summary>
         internal static string LoginControlPath {
             get {
@@ -151,7 +151,7 @@ namespace BahiKitaab.Helper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BahiKitaab.View.RegisterControl.
+        ///   Looks up a localized string similar to Cosmetify.View.RegisterControl.
         /// </summary>
         internal static string RegisterAccountControlPath {
             get {
@@ -178,7 +178,7 @@ namespace BahiKitaab.Helper {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BahiKitaab.View.ResetPasswordControl.
+        ///   Looks up a localized string similar to Cosmetify.View.ResetPasswordControl.
         /// </summary>
         internal static string ResetPasswordControlPath {
             get {

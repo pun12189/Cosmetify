@@ -1,2 +1,2 @@
-# BahiKitaab
+# Cosmetify
 Software for Invoicing

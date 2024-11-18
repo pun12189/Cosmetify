@@ -1,12 +1,12 @@
-﻿using BahiKitaab.Command;
-using BahiKitaab.Helper;
-using BahiKitaab.Model;
-using BahiKitaab.Validator;
+﻿using Cosmetify.Command;
+using Cosmetify.Helper;
+using Cosmetify.Model;
+using Cosmetify.Validator;
 using System;
 using System.Windows;
 using System.Windows.Input;
 
-namespace BahiKitaab.ViewModel
+namespace Cosmetify.ViewModel
 {
     class ResetPasswordViewModel
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace BahiKitaab.Command
+namespace Cosmetify.Command
 {
   public class RelayCommand : ICommand
   {

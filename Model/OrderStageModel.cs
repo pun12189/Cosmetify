@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace BahiKitaab.Model
+namespace Cosmetify.Model
 {
     public class OrderStageModel
     {

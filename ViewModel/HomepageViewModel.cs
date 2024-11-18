@@ -1,15 +1,15 @@
-﻿using BahiKitaab.Command;
-using BahiKitaab.Helper;
-using BahiKitaab.Model;
-using BahiKitaab.RenderView;
+﻿using Cosmetify.Command;
+using Cosmetify.Helper;
+using Cosmetify.Model;
+using Cosmetify.RenderView;
 using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using MenuItem = BahiKitaab.Model.MenuItem;
+using MenuItem = Cosmetify.Model.MenuItem;
 
-namespace BahiKitaab.ViewModel
+namespace Cosmetify.ViewModel
 {
     class HomepageViewModel : INotifyPropertyChanged
     {

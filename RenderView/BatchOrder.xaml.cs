@@ -1,7 +1,7 @@
-﻿using BahiKitaab.Dialogs;
-using BahiKitaab.Model;
-using BahiKitaab.Model.Enums;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Dialogs;
+using Cosmetify.Model;
+using Cosmetify.Model.Enums;
+using Cosmetify.ViewModel;
 using Microsoft.Win32;
 using MigraDoc.Rendering;
 using System.Collections.ObjectModel;
@@ -16,7 +16,7 @@ using Button = System.Windows.Controls.Button;
 using ComboBox = System.Windows.Controls.ComboBox;
 using TabControl = System.Windows.Controls.TabControl;
 
-namespace BahiKitaab.RenderView
+namespace Cosmetify.RenderView
 {
     /// <summary>
     /// Interaction logic for BatchOrder.xaml

@@ -1,11 +1,11 @@
-﻿<Window x:Class="BahiKitaab.Dialogs.AddMasterFormula"
+﻿<Window x:Class="Cosmetify.Dialogs.AddMasterFormula"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:control="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:local="clr-namespace:BahiKitaab.Dialogs"
+        xmlns:local="clr-namespace:Cosmetify.Dialogs"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="ThreeDBorderWindow"
         Title="AddMasterFormula" Height="470" Width="480" x:Name="addMF">
     <Grid Margin="20">

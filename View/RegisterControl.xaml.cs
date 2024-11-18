@@ -1,9 +1,9 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace BahiKitaab.View
+namespace Cosmetify.View
 {
     /// <summary>
     /// Interaction logic for RegisterControl.xaml

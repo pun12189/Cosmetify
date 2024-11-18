@@ -1,4 +1,4 @@
-﻿using BahiKitaab.Model.Enums;
+﻿using Cosmetify.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace BahiKitaab.Helper
+namespace Cosmetify.Helper
 {
     public class BatchStatusToVisibilityConverter : IValueConverter
     {

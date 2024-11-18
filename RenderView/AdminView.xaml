@@ -1,11 +1,11 @@
-﻿<Page x:Class="BahiKitaab.RenderView.AdminView"
+﻿<Page x:Class="Cosmetify.RenderView.AdminView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-      xmlns:local="clr-namespace:BahiKitaab.RenderView"
-      xmlns:model="clr-namespace:BahiKitaab.Model"
+      xmlns:local="clr-namespace:Cosmetify.RenderView"
+      xmlns:model="clr-namespace:Cosmetify.Model"
       xmlns:dd="urn:gong-wpf-dragdrop"
       mc:Ignorable="d" Title="AdminView" x:Name="adminView">
     <Page.Resources>

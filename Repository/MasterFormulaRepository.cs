@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Model.Enums;
-using BahiKitaab.Model;
+﻿using Cosmetify.Model.Enums;
+using Cosmetify.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Windows;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 
-namespace BahiKitaab.Repository
+namespace Cosmetify.Repository
 {
     public class MasterFormulaRepository : RepositoryBase
     {

@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Model.Enums;
-using BahiKitaab.Model;
+﻿using Cosmetify.Model.Enums;
+using Cosmetify.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BahiKitaab.Repository
+namespace Cosmetify.Repository
 {
     public class TransactionRepository : RepositoryBase
     {

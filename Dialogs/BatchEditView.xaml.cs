@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.Dialogs
+namespace Cosmetify.Dialogs
 {
     /// <summary>
     /// Interaction logic for BatchEditView.xaml

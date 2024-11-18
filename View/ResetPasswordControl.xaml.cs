@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using BahiKitaab.Model;
+using Cosmetify.Model;
 
-namespace BahiKitaab.View
+namespace Cosmetify.View
 {
     /// <summary>
     /// Interaction logic for ResetPasswordControl.xaml

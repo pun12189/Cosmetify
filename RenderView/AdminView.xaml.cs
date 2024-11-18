@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Dialogs;
-using BahiKitaab.Model;
+﻿using Cosmetify.Dialogs;
+using Cosmetify.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.RenderView
+namespace Cosmetify.RenderView
 {
     /// <summary>
     /// Interaction logic for AdminView.xaml

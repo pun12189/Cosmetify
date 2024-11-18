@@ -1,4 +1,4 @@
-﻿using BahiKitaab.Model.Enums;
+﻿using Cosmetify.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BahiKitaab.Model
+namespace Cosmetify.Model
 {
     public class BatchOrderModel : INotifyPropertyChanged
     {

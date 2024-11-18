@@ -1,5 +1,5 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.ViewModel;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.RenderView.UserControls
+namespace Cosmetify.RenderView.UserControls
 {
     /// <summary>
     /// Interaction logic for CreateOrder.xaml

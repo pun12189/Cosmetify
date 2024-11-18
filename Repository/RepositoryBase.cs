@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BahiKitaab.Repository
+namespace Cosmetify.Repository
 {
     public abstract class RepositoryBase
     {

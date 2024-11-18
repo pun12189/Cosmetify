@@ -4,9 +4,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using MenuItem = BahiKitaab.Model.MenuItem;
+using MenuItem = Cosmetify.Model.MenuItem;
 
-namespace BahiKitaab.View
+namespace Cosmetify.View
 {
     /// <summary>
     /// Interaction logic for HomepageControl.xaml

@@ -1,11 +1,11 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.Repository;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.Repository;
+using Cosmetify.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace BahiKitaab.RenderView
+namespace Cosmetify.RenderView
 {
     /// <summary>
     /// Interaction logic for CategoriesPage.xaml

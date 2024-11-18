@@ -3,7 +3,7 @@ using System.Windows.Media.Animation;
 using System.Windows;
 using MahApps.Metro.Controls;
 
-namespace BahiKitaab.Navigation
+namespace Cosmetify.Navigation
 {
     public class FrameAnimator
     {

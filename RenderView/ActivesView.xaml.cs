@@ -1,6 +1,6 @@
-﻿using BahiKitaab.Model;
-using BahiKitaab.Model.Enums;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Model;
+using Cosmetify.Model.Enums;
+using Cosmetify.ViewModel;
 using ControlzEx.Standard;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
@@ -26,7 +26,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.RenderView
+namespace Cosmetify.RenderView
 {
     /// <summary>
     /// Interaction logic for ActivesView.xaml

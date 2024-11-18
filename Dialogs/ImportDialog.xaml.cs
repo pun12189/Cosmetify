@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static MaterialDesignThemes.Wpf.Theme;
 
-namespace BahiKitaab.Dialogs
+namespace Cosmetify.Dialogs
 {
     /// <summary>
     /// Interaction logic for ImportDialog.xaml

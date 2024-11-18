@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BahiKitaab.Model
+namespace Cosmetify.Model
 {
     public class CustomerModel
     {

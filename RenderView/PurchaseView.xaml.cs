@@ -1,7 +1,7 @@
-﻿using BahiKitaab.Dialogs;
-using BahiKitaab.Helper;
-using BahiKitaab.Model;
-using BahiKitaab.ViewModel;
+﻿using Cosmetify.Dialogs;
+using Cosmetify.Helper;
+using Cosmetify.Model;
+using Cosmetify.ViewModel;
 using Org.BouncyCastle.Crypto.Tls;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BahiKitaab.RenderView
+namespace Cosmetify.RenderView
 {
     /// <summary>
     /// Interaction logic for PurchaseView.xaml

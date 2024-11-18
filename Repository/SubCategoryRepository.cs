@@ -1,9 +1,9 @@
-﻿using BahiKitaab.Model;
+﻿using Cosmetify.Model;
 using MySql.Data.MySqlClient;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace BahiKitaab.Repository
+namespace Cosmetify.Repository
 {
     public class SubCategoryRepository : RepositoryBase
     {

@@ -1,4 +1,4 @@
-﻿namespace BahiKitaab.Validator.Interfaces
+﻿namespace Cosmetify.Validator.Interfaces
 {
     interface IPersonalAccountValidator <T>
     {
