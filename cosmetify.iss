@@ -6,12 +6,12 @@
 ;#ifndef IncludeFramework  
 ;#define public IncludeFramework "False"
 ;#endif
-#ifndef Version
-#define public Version "1.0.0.25"
-#endif
-#ifndef SourceFileDir
-#define public SourceFileDir "C:\Users\Kishant\source\repos\Cosmetify\"
-#endif
+;#ifndef Version
+;#define public Version "1.0.0.25"
+;#endif
+;#ifndef SourceFileDir
+;#define public SourceFileDir "C:\Users\Kishant\Source\Repos\Cosmetify\bin\Release\net6.0-windows\"
+;#endif
 [setup]
 ;name of your application
 ChangesAssociations=yes 
@@ -35,7 +35,7 @@ AppSupportURL=https://sofric.com/support
 AppUpdatesURL=https://sofric.com/download
 ;default directory {pf} is a constant for
 ;program files. See INNO help for all constants
-DefaultDirName={pf}\Cosmetify
+DefaultDirName={autopf}\Cosmetify
 ;default group name in the programs
 ; section of the start menu
 DefaultGroupName=Cosmetify
@@ -66,12 +66,12 @@ UninstallDisplayIcon={app}\Cosmetify.exe
 VersionInfoVersion={# Version}
 AppVersion={# Version}
 ;If IncludeFramework, append _FW to end of compiled setup;
-ArchitecturesAllowed = x86  x64
+ArchitecturesAllowed = x86compatible  x64compatible
 ArchitecturesInstallIn64BitMode=x64
 ;without the framework included
 OutputBaseFilename=Cosmetify
 ;Directory where setup.exe will be compiled to
-OutputDir="C:\Users\Kishant\OneDrive\Desktop\setup"
+;OutputDir="C:\Users\Kishant\OneDrive\Desktop\setup"
 WizardStyle=modern
 WindowShowCaption=no 
 WindowResizable=yes
@@ -123,7 +123,12 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
  Name: "{app}\x86"
  Name: "{app}\x64"
 [files]
-   Source: {#SourceFileDir}\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\de\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\Extras\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\SetupFiles\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\TxtFile\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\Cosmetify.exe;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\*.dll;  DestDir: "{app}"; Flags:ignoreversion
    ;Source: {userappdata}\TemplateToaster\Fonts\*; DestDir: "{userappdata}\TemplateToaster\Fonts 6.0"; Flags:external recursesubdirs uninsneveruninstall skipifsourcedoesntexist; Check : CreateDestinationDir(ExpandConstant('{userappdata}\TemplateToaster\Fonts 6.0'));
 
    ;Source: {#SourceFileDir}Fonts\*;   DestDir: "{app}\Fonts"; Flags:ignoreversion recursesubdirs
@@ -922,7 +927,7 @@ begin
 
 if ((CurStep = ssInstall) and IsWin64) then 
    begin
-    DelTree(ExpandConstant('{pf32}\Cosmetify'), True, True, True);
+    DelTree(ExpandConstant('{autopf}\Cosmetify'), True, True, True);
 end;
 
 if CurStep = ssInstall then 
@@ -988,6 +993,6 @@ Begin
     //idpAddFileSize('https://templatetoaster.com/downloads/files/vc_redist.x86.exe', ExpandConstant('{tmp}\vc_redist.x86.exe'), 14458272);
   //End;
 
-    idpDownloadAfter(wpReady);
+    //idpDownloadAfter(wpReady);
 End;
 
