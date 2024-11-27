@@ -122,13 +122,16 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
  Name: "{commonappdata}\Cosmetify"; Permissions: everyone-modify
  Name: "{app}\Extras"
  Name: "{app}\TxtFile"
+ Name: "{app}\runtimes"
 [Files]
    Source: {#SourceFileDir}\de\*;  DestDir: "{app}\de"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\Extras\*;  DestDir: "{app}\Extras"; Flags:ignoreversion recursesubdirs
-   ;Source: {#SourceFileDir}\SetupFiles\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\runtimes\*;  DestDir: "{app}\runtimes"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\TxtFile\*;  DestDir: "{app}\TxtFile"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\Cosmetify.exe;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\*.dll;  DestDir: "{app}"; Flags:ignoreversion
+   Source: {#SourceFileDir}\*.pdb;  DestDir: "{app}"; Flags:ignoreversion
+   Source: {#SourceFileDir}\*.json;  DestDir: "{app}"; Flags:ignoreversion
    ;Source: {userappdata}\TemplateToaster\Fonts\*; DestDir: "{userappdata}\TemplateToaster\Fonts 6.0"; Flags:external recursesubdirs uninsneveruninstall skipifsourcedoesntexist; Check : CreateDestinationDir(ExpandConstant('{userappdata}\TemplateToaster\Fonts 6.0'));
 
    ;Source: {#SourceFileDir}Fonts\*;   DestDir: "{app}\Fonts"; Flags:ignoreversion recursesubdirs
