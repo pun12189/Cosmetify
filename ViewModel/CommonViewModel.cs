@@ -43,6 +43,8 @@ namespace Cosmetify.ViewModel
         private ActivesRepository activesRepository = new();
         private MasterFormulaRepository masterFormulaRepository = new();
         private BatchOrderRepository batchOrderRepository = new();
+        private ColoursRepository coloursRepository = new();
+        private PerfumeRepository perfumeRepository = new();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -120,6 +122,26 @@ namespace Cosmetify.ViewModel
             {
                 this.leadsRepository = value;
                 this.NotifyPropertyChanged(nameof(LeadsRepository));
+            }
+        }
+
+        public ColoursRepository ColoursRepository
+        {
+            get => this.coloursRepository; 
+            set
+            {
+                this.coloursRepository = value;
+                this.NotifyPropertyChanged(nameof(ColoursRepository));
+            }
+        }
+
+        public PerfumeRepository PerfumeRepository
+        {
+            get => this.perfumeRepository; 
+            set
+            {
+                this.perfumeRepository = value;
+                this.NotifyPropertyChanged(nameof(PerfumeRepository));
             }
         }
 

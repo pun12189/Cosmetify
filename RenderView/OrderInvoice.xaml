@@ -4,11 +4,380 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Cosmetify.RenderView"
-      mc:Ignorable="d" 
+      xmlns:control="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d" 
+        xmlns:conv="clr-namespace:Cosmetify.Helper"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:enums="clr-namespace:Cosmetify.Model.Enums" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="OrderInvoice">
+      Title="OrderInvoice" x:Name="odInv">
+    <TabControl Name="Tabs1" TabStripPlacement="Top" BorderBrush="Blue" Margin="10">
+        <TabItem Header="Create Order" Padding="10,5,10,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <!--1-->
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <!--3-->                        
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="Select Customer" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbCust" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" DisplayMemberPath="FirstName" SelectionChanged="cbCust_SelectionChanged"/>
+                        <Button x:Name="btnAddCust" Background="Transparent" Click="btnAddCust_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                            <icon:FontAwesome Kind="PlusCircleSolid"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" Margin="10,0,0,0">
+                        <TextBlock Text="Select Brand" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbBrand" Margin="0,0,5,0" VerticalAlignment="Center" Width="150"/>
+                        <Button x:Name="btnAddBrand" Background="Transparent" Click="btnAddBrand_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                            <icon:FontAwesome Kind="PlusCircleSolid"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Horizontal">
+                        <TextBlock Text="Select Product" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbProduct" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" DisplayMemberPath="Code" SelectionChanged="cbProduct_SelectionChanged"/>
+                        <Button x:Name="btnAddProd" Background="Transparent" Click="btnAddProd_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                            <icon:FontAwesome Kind="PlusCircleSolid"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="6" Orientation="Horizontal">
+                        <TextBlock Text="Pkg Order Qty" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBox x:Name="tbPkgQty" Margin="0,0,5,0" VerticalAlignment="Center" Width="100" control:TextBoxHelper.Watermark="Pkg qty"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="Color" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbColor" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" DisplayMemberPath="Name"/>
+                        <Button x:Name="btnAddColor" Background="Transparent" Click="btnAddColor_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                            <icon:FontAwesome Kind="PlusCircleSolid"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock Text="Perfume" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbPerfume" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" DisplayMemberPath="Name"/>
+                        <TextBox x:Name="tbPfumeVal" Margin="0,0,5,0" VerticalAlignment="Center" Width="50" control:TextBoxHelper.Watermark="0%"/>
+                        <Button x:Name="btnAddPerfume" Background="Transparent" Click="btnAddPerfume_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                            <icon:FontAwesome Kind="PlusCircleSolid"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Grid.Column="4" Orientation="Horizontal">
+                        <TextBlock Text="Claims" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBox x:Name="tbClaims" Width="200" VerticalAlignment="Center" control:TextBoxHelper.Watermark="Type Claims..."/>
+                        <!--<ComboBox x:Name="cbClaims" Margin="0,0,5,0" VerticalAlignment="Center" Width="200" DisplayMemberPath="FirstName"/>
+                        <Button x:Name="btnAddClaims" Background="Transparent" Click="btnAddCust_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                            <icon:FontAwesome Kind="PlusCircleSolid"/>
+                        </Button>-->
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Grid.Column="6" Orientation="Horizontal">
+                        <TextBlock Text="Pkg Type" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <!--<ComboBox x:Name="cbPkgType" Margin="0,0,5,0" VerticalAlignment="Center" Width="200" DisplayMemberPath="FirstName"/>-->
+                        <TextBox x:Name="tbPkgType" Width="150" VerticalAlignment="Center" control:TextBoxHelper.Watermark="Enter Pkg Type..."/>
+                        <Border BorderThickness="1" Margin="5,0,5,0" Width="50" Height="50" BorderBrush="Black">
+                            <Image x:Name="imgPkg" Width="50" Height="50" Stretch="UniformToFill"/>
+                        </Border>                        
+                        <Button x:Name="btnUpload" Background="Transparent" Click="btnUpload_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                            <icon:FontAwesome Kind="UploadSolid"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <DataGrid Grid.Row="3" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=odInv, Path=BatchOrderCollection}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Actives.ActivesName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Code" Binding="{Binding Actives.ShortCode, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="% Required" Binding="{Binding PercentageRequired, UpdateSourceTrigger=LostFocus}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Row="4" Orientation="Horizontal" x:Name="stkAct">
+                    <TextBlock Text="Add Actives" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cbProd" VerticalAlignment="Center" Width="200" DisplayMemberPath="ActivesName" Margin="0,0,5,0" SelectionChanged="cbProd_SelectionChanged"/>
+                </StackPanel>
+                <DataGrid Grid.Row="6" ColumnWidth="Auto" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=odInv, Path=BatchModelCollection}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dgBatch" VerticalAlignment="Stretch">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Product ID" Binding="{Binding ProductID, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Brand Name" Binding="{Binding BrandName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Actives" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding BatchOrderCollection}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="10"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="{Binding Actives.ActivesName}" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="2" Text="{Binding PercentageRequired, StringFormat={}{0}%}" VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Color" Binding="{Binding Colour, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Perfume" Binding="{Binding Perfume, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Claims" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding Claims}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>                                                
+                                                    <TextBlock Text="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Pkg Type" Binding="{Binding PkgType, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Pkg Type Image" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>                                    
+                                        <Image Source="{Binding PackagingTypeImage}" Height="50" Width="50" Stretch="UniformToFill" VerticalAlignment="Center"/>                                    
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Pkg Order Qty" Binding="{Binding PkgOrderQuantity, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Button Background="Transparent" Click="DeleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="TrashSolid"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Row="8" Orientation="Horizontal">
+                    <Button x:Name="btnAddProduct" Content="Add Product" Grid.Row="8" Width="200" Margin="5" Click="btnAddProduct_Click"/>
+                    <Button x:Name="btnCreateOrder" Content="Create Order" Grid.Row="8" Width="200" Margin="5" Click="btnCreateOrder_Click"/>
+                </StackPanel>                
+            </Grid>
+        </TabItem>
+        <TabItem Header="View Orders" Padding="10,5">
+            <!--<Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
+                    <TextBlock Text="Select Action" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="cbBulk" Width="100" SelectionChanged="cbBulk_SelectionChanged">
+                        <ComboBoxItem Content="Proceed"/>
+                        <ComboBoxItem Content="Hold"/>
+                        <ComboBoxItem Content="Completed"/>
+                        <ComboBoxItem Content="Delete"/>
+                    </ComboBox>
+                    <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Width="250" Margin="5,0,5,0" control:TextBoxHelper.AutoWatermark="True" control:TextBoxHelper.ClearTextButton="True" VerticalContentAlignment="Center" control:TextBoxHelper.Watermark="Search"/>
+                    <Button x:Name="btnFilters" Content="Filters" Width="150" Margin="0,0,5,0" Click="btnFilters_Click"/>
+                    <Button x:Name="btnRefresh" Content="Refresh" Width="150" Click="btnRefresh_Click"/>
+                </StackPanel>
+                <TextBlock Grid.Row="1" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
+                <DataGrid Grid.Row="2" ColumnWidth="Auto" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=batchView, Path=BatchModelCollection}" AutoGenerateColumns="False" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid2" VerticalAlignment="Stretch">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.Header>
+                                <CheckBox x:Name="cbAll" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="cbAll_Checked" Unchecked="cbAll_Unchecked"/>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center" IsHitTestVisible="False" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=IsSelected, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
+                        <DataGridTemplateColumn Header="Batch ID">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="BatchView_Click" Content="{Binding BatchOrderNo, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="Blue"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        --><!--<DataGridTextColumn Header="Batch ID" Binding="{Binding BatchOrderNo, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>--><!--
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
+                        <DataGridTextColumn Header="Customer" Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Brand Name" Binding="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
 
-    <Grid>
-        
-    </Grid>
+                        <DataGridTemplateColumn Header="Status">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding Status, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        --><!--<DataGridTextColumn Header="Status" Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->
+                        <!--<DataGridTextColumn Header="BatchDate" Binding="{Binding BatchDate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>--><!--
+                        <DataGridTextColumn Header="BatchSize" Binding="{Binding BatchOrderCollection[0].BatchSize, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Actives" IsReadOnly="True" Visibility="Collapsed">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding BatchOrderCollection}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="10"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Active Name" HorizontalAlignment="Right"/>
+                                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Stock Required" HorizontalAlignment="Right"/>
+                                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Remaining" HorizontalAlignment="Right"/>
+                                                    <TextBlock Grid.Row="0" Grid.Column="1" Text=">" HorizontalAlignment="Center"/>
+                                                    <TextBlock Grid.Row="1" Grid.Column="1" Text=">" HorizontalAlignment="Center"/>
+                                                    <TextBlock Grid.Row="2" Grid.Column="1" Text=">" HorizontalAlignment="Center"/>
+                                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Actives.ActivesName}" HorizontalAlignment="Left"/>
+                                                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding StocksRequired}" HorizontalAlignment="Left"/>
+                                                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding RemainingStock}" HorizontalAlignment="Left"/>
+                                                    <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Text="******************"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Pkg Type" Binding="{Binding PkgType, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Pkg Order Qty" Binding="{Binding PkgOrderQuantity, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Mfg Date" Visibility="Collapsed">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding MfgDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding MfgDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Expiry Date" Visibility="Collapsed">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Expiry, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding Expiry, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Created On">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding BatchDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <control:DateTimePicker IsTodayHighlighted="True" SelectedDateTime="{Binding BatchDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Planned On">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding PlannedDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding PlannedDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        --><!--<DataGridTextColumn Header="Mfg Date" Binding="{Binding MfgDate, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->
+                        <!--<DataGridTextColumn Header="Expiry Date" Binding="{Binding Expiry, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Planning Date" Binding="{Binding PlannedDate, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>--><!--
+                        <DataGridTextColumn Header="Order Stage" Binding="{Binding OrderStage.StageName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Visibility="Collapsed"/>
+                        <DataGridTemplateColumn Header="Completed On">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding CompletionDate, Converter={StaticResource IsBeforeTodayConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <control:DateTimePicker IsTodayHighlighted="True" SelectedDateTime="{Binding CompletionDate, Converter={StaticResource NotSetDateConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        --><!--<DataGridTextColumn Header="Completion Date" Binding="{Binding CompletionDate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>--><!--
+
+                        <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
+                        <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Created'}" Background="Transparent" Margin="0,0,2,0" Click="ProceedBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="ArrowRightSolid"/>
+                                        </Button>
+                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="HoldBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="HandPaperSolid"/>
+                                        </Button>
+                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="CompleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="CheckSolid"/>
+                                        </Button>
+                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Completed'}" Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="RedoSolid"/>
+                                        </Button>
+                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="FilePdfSolid"/>
+                                        </Button>
+                                        <Button Background="Transparent" Click="DeleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="TrashSolid"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>-->
+        </TabItem>
+    </TabControl>
 </Page>

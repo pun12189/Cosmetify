@@ -18,14 +18,17 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height=".3*"/>
             <RowDefinition Height=".3*"/>
+            <RowDefinition Height=".3*"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height=".5*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Add Customer" Margin="10" FontSize="20" FontWeight="Bold" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="3"/>
         <TextBlock Text="Name" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" FontWeight="DemiBold"/>
         <TextBlock Text="Contact" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" FontWeight="DemiBold"/>
+        <TextBlock Visibility="{Binding ElementName=tbBNames, Path=Visibility, UpdateSourceTrigger=PropertyChanged}" Text="Brand Names" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15" FontWeight="DemiBold"/>
         <TextBox x:Name="tbName" control:TextBoxHelper.Watermark="Enter Customer Name" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="250"/>
         <TextBox x:Name="tbContact" control:TextBoxHelper.Watermark="Enter Customer Contact" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="250"/>
-        <Button Content="Save Customer" Click="SaveCustomer" Height="30" Width="150" FontWeight="Heavy" Grid.ColumnSpan="3" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbBNames" control:TextBoxHelper.Watermark="Enter Brand Name (comma sep values)" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="250"/>
+        <Button Content="Save Customer" Click="SaveCustomer" Height="30" Width="150" FontWeight="Heavy" Grid.ColumnSpan="3" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>

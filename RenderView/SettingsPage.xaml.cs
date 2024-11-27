@@ -41,6 +41,8 @@ namespace Cosmetify.RenderView
         {
             InitializeComponent();
             this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+            this.dgColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
+            this.dgPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
         }
 
         public BitmapImage ProfilePicture
@@ -200,6 +202,34 @@ namespace Cosmetify.RenderView
         }
 
         private void PushToDBClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddColors(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddColorPerfume(true);
+            if ((bool)dialog.ShowDialog())
+            {
+                this.dgColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
+            }            
+        }
+
+        private void UploadColors(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddPerfumes(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddColorPerfume(false);
+            if ((bool)dialog.ShowDialog())
+            {
+                this.dgPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
+            }
+        }
+
+        private void UploadPerfumes(object sender, RoutedEventArgs e)
         {
 
         }

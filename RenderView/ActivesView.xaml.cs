@@ -216,12 +216,15 @@ namespace Cosmetify.RenderView
                     {
                         foreach (var model in batchOrder.BatchOrderCollection)
                         {
-                            var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
-                            if (actives != null)
+                            if (model.Actives != null)
                             {
-                                actives.TotalRequired += model.StocksRequired;
-                                actives.TotalBatchOrders += 1;
-                                actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
+                                if (actives != null)
+                                {
+                                    actives.TotalRequired += model.StocksRequired;
+                                    actives.TotalBatchOrders += 1;
+                                    actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                }
                             }
                         }
                     }
@@ -230,12 +233,15 @@ namespace Cosmetify.RenderView
                     {
                         foreach (var model in batchOrder.BatchOrderCollection)
                         {
-                            var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
-                            if (actives != null)
+                            if (model.Actives != null)
                             {
-                                actives.TotalCreatedRequired += model.StocksRequired;
-                                actives.TotalCreated += 1;
-                                actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
+                                if (actives != null)
+                                {
+                                    actives.TotalCreatedRequired += model.StocksRequired;
+                                    actives.TotalCreated += 1;
+                                    actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                }
                             }
                         }
                     }
@@ -244,12 +250,15 @@ namespace Cosmetify.RenderView
                     {
                         foreach (var model in batchOrder.BatchOrderCollection)
                         {
-                            var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
-                            if (actives != null)
+                            if (model.Actives != null)
                             {
-                                actives.TotalHoldRequired += model.StocksRequired;
-                                actives.TotalHold += 1;
-                                actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
+                                if (actives != null)
+                                {
+                                    actives.TotalHoldRequired += model.StocksRequired;
+                                    actives.TotalHold += 1;
+                                    actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                }
                             }
                         }
                     }

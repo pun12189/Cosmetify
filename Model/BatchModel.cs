@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Cosmetify.Model
 {
@@ -13,6 +14,8 @@ namespace Cosmetify.Model
         public int Id { get; set; }
 
         public string BatchOrderNo { get; set; }
+
+        public string OrderId { get; set; }
 
         public CustomerModel Customer { get; set; }
 
@@ -45,5 +48,17 @@ namespace Cosmetify.Model
         public BatchStatus Status { get; set; }
 
         public OrderStageModel OrderStage { get; set; }
+
+        public string Colour { get; set; }
+
+        public string Perfume { get; set; }
+
+        public ObservableCollection<string> Claims { get; set; }
+
+        public BitmapImage PackagingTypeImage { get; set; }
+
+        public string BrandName { get; set; }
+
+        public string ProductID { get; set; }
     }
 }

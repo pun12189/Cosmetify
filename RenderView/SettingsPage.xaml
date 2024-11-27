@@ -134,9 +134,17 @@
                 </Grid>
             </ScrollViewer>
         </TabItem>
-        <TabItem Visibility="Collapsed" Header="Order Stages" Padding="10,5,10,5">
+        <TabItem Visibility="Visible" Header="Settings" Padding="10,5,10,5">
             <ScrollViewer>
-                <!--<Grid Grid.Row="4" Grid.ColumnSpan="5" Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <!--<Grid Grid.Row="4" Grid.ColumnSpan="5" Visibility="Collapsed">
                 <Grid.Resources>
                     <Style TargetType="ListView" x:Key="ListStyle" BasedOn="{StaticResource {x:Type ListView}}">
                         <Style.Triggers>
@@ -166,48 +174,85 @@
                 <Button Content="Create Department" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="CreateDepartment"/>
                 <ListView HorizontalContentAlignment="Center" Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" Height="180" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" Grid.Column="2" Style="{StaticResource ListStyle}" x:Name="departList"/>
             </Grid>-->
-                <Grid>
-                    <Grid.Resources>
-                        <Style TargetType="ListView" x:Key="ListStyle" BasedOn="{StaticResource {x:Type ListView}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate>
-                                                <TextBlock FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">No Order Stage Added</TextBlock>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width=".2*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width=".8*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Order Stages" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Button Content="Create Order Stages" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="CreateOdStages"/>
-                    <ListView HorizontalContentAlignment="Center" Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" Height="180" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding ElementName=settingsPage, Path=OrderStageCollection}" Style="{StaticResource ListStyle}" x:Name="odtList">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Width="1024"/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.ItemTemplate>
-                            <DataTemplate DataType="{x:Type model:OrderStageModel}">
-                                <Border Height="40" Background="{Binding StageColor}" Margin="3" CornerRadius="2" BorderThickness="2" BorderBrush="{Binding StageColor}">
-                                    <TextBlock VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" Text="{Binding StageName}" Margin="5"/>
-                                </Border>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <Grid Visibility="Collapsed">
+                        <Grid.Resources>
+                            <Style TargetType="ListView" x:Key="ListStyle" BasedOn="{StaticResource {x:Type ListView}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <TextBlock FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">No Order Stage Added</TextBlock>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".2*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width=".8*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Order Stages" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Button Content="Create Order Stages" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="CreateOdStages"/>
+                        <ListView HorizontalContentAlignment="Center" Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" Height="180" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding ElementName=settingsPage, Path=OrderStageCollection}" Style="{StaticResource ListStyle}" x:Name="odtList">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Width="1024"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate DataType="{x:Type model:OrderStageModel}">
+                                    <Border Height="40" Background="{Binding StageColor}" Margin="3" CornerRadius="2" BorderThickness="2" BorderBrush="{Binding StageColor}">
+                                        <TextBlock VerticalAlignment="Center" FontSize="18" HorizontalAlignment="Center" Text="{Binding StageName}" Margin="5"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".2*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width=".8*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Colors" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Vertical" Grid.Row="2">
+                            <Button Content="Add Colors" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="AddColors"/>
+                            <Button Visibility="Collapsed" Content="Upload Colors" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="UploadColors"/>
+                        </StackPanel>
+                        <DataGrid Grid.Row="2" Grid.Column="2" x:Name="dgColor" ColumnWidth="*"/>
+                    </Grid>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".2*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width=".8*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Perfumes" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Vertical" Grid.Row="2">
+                            <Button Content="Add Perfume" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="AddPerfumes"/>
+                            <Button Visibility="Collapsed" Content="Upload Perfume" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="UploadPerfumes"/>
+                        </StackPanel>
+                        <DataGrid Grid.Row="2" Grid.Column="2" x:Name="dgPerfume" ColumnWidth="*"/>
+                    </Grid>
                 </Grid>
             </ScrollViewer>
         </TabItem>

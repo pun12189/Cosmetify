@@ -21,9 +21,25 @@ namespace Cosmetify.Dialogs
     /// </summary>
     public partial class AddCustomer : Window
     {
+        public bool IsBrand { get; set; } = false;
+
+        public CustomerModel CustomerModel { get; set; }
+
         public AddCustomer()
         {
             InitializeComponent();
+            this.tbBNames.Visibility = Visibility.Collapsed;
+            this.IsBrand = false;
+        }
+
+        public AddCustomer(CustomerModel cust)
+        {
+            InitializeComponent();
+            this.tbName.Text = cust.FirstName;
+            this.tbContact.Text = cust.PhoneNumber;
+            this.CustomerModel = cust;
+            this.tbBNames.Visibility = Visibility.Visible;
+            this.IsBrand = true;
         }
 
         private void SaveCustomer(object sender, RoutedEventArgs e)
@@ -38,12 +54,30 @@ namespace Cosmetify.Dialogs
             {
                 MessageBox.Show("Please enter contact", "Alert", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
-            }
+            } 
 
-            var cust = new CustomerModel();
-            cust.FirstName = this.tbName.Text;
-            cust.PhoneNumber = this.tbContact.Text;
-            HomepageViewModel.CommonViewModel.LeadsRepository.InsertLead(cust);
+            if (this.IsBrand)
+            {                
+                if (!string.IsNullOrEmpty(this.tbBNames.Text))
+                {
+                    var str = this.tbBNames.Text.Split(',');
+                    this.CustomerModel.BrandName ??= new System.Collections.ObjectModel.ObservableCollection<string>();
+                    foreach (var b in str)
+                    {
+                        this.CustomerModel.BrandName.Add(b);
+                    }
+                }
+
+                HomepageViewModel.CommonViewModel.LeadsRepository.UpdateLead(this.CustomerModel);
+            }
+            else
+            {
+                var cust = new CustomerModel();
+                cust.FirstName = this.tbName.Text;
+                cust.PhoneNumber = this.tbContact.Text;
+                HomepageViewModel.CommonViewModel.LeadsRepository.InsertLead(cust);
+            }
+            
             this.DialogResult = true;
             this.Close();
         }

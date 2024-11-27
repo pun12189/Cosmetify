@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Cosmetify.ViewModel;
 using System.Text.Json;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace Cosmetify.Repository
 {
@@ -53,6 +55,13 @@ namespace Cosmetify.Repository
                                 CompletionDate = reader.IsDBNull(15) ? DateTime.Now : reader.GetDateTime(15),
                                 Status = reader.IsDBNull(16) ? BatchStatus.Created : (BatchStatus)Enum.Parse(typeof(BatchStatus), reader.GetString(16)),
                                 OrderStage = reader.IsDBNull(17) ? null : JsonSerializer.Deserialize<OrderStageModel>(reader.GetString(17), options),
+                                OrderId = reader.IsDBNull(18) ? string.Empty : reader.GetString(18),
+                                Colour = reader.IsDBNull(19) ? string.Empty : reader.GetString(19),
+                                Perfume = reader.IsDBNull(20) ? string.Empty : reader.GetString(20),
+                                Claims = reader.IsDBNull(21) ? null : JsonSerializer.Deserialize<ObservableCollection<string>>(reader.GetString(21), options),
+                                PackagingTypeImage = reader.IsDBNull(22) ? null : ByteToImage((byte[])reader["pkg_img"]),
+                                BrandName = reader.IsDBNull(23) ? string.Empty : reader.GetString(23),
+                                ProductID = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
                             };
                         }
 
@@ -105,6 +114,13 @@ namespace Cosmetify.Repository
                                 CompletionDate = reader.IsDBNull(15) ? DateTime.Now : reader.GetDateTime(15),
                                 Status = reader.IsDBNull(16) ? BatchStatus.Created : (BatchStatus)Enum.Parse(typeof(BatchStatus), reader.GetString(16)),
                                 OrderStage = reader.IsDBNull(17) ? null : JsonSerializer.Deserialize<OrderStageModel>(reader.GetString(17), options),
+                                OrderId = reader.IsDBNull(18) ? string.Empty : reader.GetString(18),
+                                Colour = reader.IsDBNull(19) ? string.Empty : reader.GetString(19),
+                                Perfume = reader.IsDBNull(20) ? string.Empty : reader.GetString(20),
+                                Claims = reader.IsDBNull(21) ? null : JsonSerializer.Deserialize<ObservableCollection<string>>(reader.GetString(21), options),
+                                PackagingTypeImage = reader.IsDBNull(22) ? null : ByteToImage((byte[])reader["pkg_img"]),
+                                BrandName = reader.IsDBNull(23) ? string.Empty : reader.GetString(23),
+                                ProductID = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
                             };
 
                             batches.Add(batch);
@@ -204,6 +220,13 @@ namespace Cosmetify.Repository
                                 CompletionDate = reader.IsDBNull(15) ? DateTime.Now : reader.GetDateTime(15),
                                 Status = reader.IsDBNull(16) ? BatchStatus.Created : (BatchStatus)Enum.Parse(typeof(BatchStatus), reader.GetString(16)),
                                 OrderStage = reader.IsDBNull(17) ? null : JsonSerializer.Deserialize<OrderStageModel>(reader.GetString(17), options),
+                                OrderId = reader.IsDBNull(18) ? string.Empty : reader.GetString(18),
+                                Colour = reader.IsDBNull(19) ? string.Empty : reader.GetString(19),
+                                Perfume = reader.IsDBNull(20) ? string.Empty : reader.GetString(20),
+                                Claims = reader.IsDBNull(21) ? null : JsonSerializer.Deserialize<ObservableCollection<string>>(reader.GetString(21), options),
+                                PackagingTypeImage = reader.IsDBNull(22) ? null : ByteToImage((byte[])reader["pkg_img"]),
+                                BrandName = reader.IsDBNull(23) ? string.Empty : reader.GetString(23),
+                                ProductID = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
                             };
 
                             batches.Add(btch);
@@ -357,6 +380,13 @@ namespace Cosmetify.Repository
                                 CompletionDate = reader.IsDBNull(15) ? DateTime.Now : reader.GetDateTime(15),
                                 Status = reader.IsDBNull(16) ? BatchStatus.Created : (BatchStatus)Enum.Parse(typeof(BatchStatus), reader.GetString(16)),
                                 OrderStage = reader.IsDBNull(17) ? null : JsonSerializer.Deserialize<OrderStageModel>(reader.GetString(17), options),
+                                OrderId = reader.IsDBNull(18) ? string.Empty : reader.GetString(18),
+                                Colour = reader.IsDBNull(19) ? string.Empty : reader.GetString(19),
+                                Perfume = reader.IsDBNull(20) ? string.Empty : reader.GetString(20),
+                                Claims = reader.IsDBNull(21) ? null : JsonSerializer.Deserialize<ObservableCollection<string>>(reader.GetString(21), options),
+                                PackagingTypeImage = reader.IsDBNull(22) ? null : ByteToImage((byte[])reader["pkg_img"]),
+                                BrandName = reader.IsDBNull(23) ? string.Empty : reader.GetString(23),
+                                ProductID = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
                             };
 
                             batches.Add(btch);
@@ -411,6 +441,13 @@ namespace Cosmetify.Repository
                                 CompletionDate = reader.IsDBNull(15) ? DateTime.Now : reader.GetDateTime(15),
                                 Status = reader.IsDBNull(16) ? BatchStatus.Created : (BatchStatus)Enum.Parse(typeof(BatchStatus), reader.GetString(16)),
                                 OrderStage = reader.IsDBNull(17) ? null : JsonSerializer.Deserialize<OrderStageModel>(reader.GetString(17), options),
+                                OrderId = reader.IsDBNull(18) ? string.Empty : reader.GetString(18),
+                                Colour = reader.IsDBNull(19) ? string.Empty : reader.GetString(19),
+                                Perfume = reader.IsDBNull(20) ? string.Empty : reader.GetString(20),
+                                Claims = reader.IsDBNull(21) ? null : JsonSerializer.Deserialize<ObservableCollection<string>>(reader.GetString(21), options),
+                                PackagingTypeImage = reader.IsDBNull(22) ? null : ByteToImage((byte[])reader["pkg_img"]),
+                                BrandName = reader.IsDBNull(23) ? string.Empty : reader.GetString(23),
+                                ProductID = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
                             };
 
                             leads.Add(lead);
@@ -437,7 +474,7 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    command.CommandText = "insert into batchorder(order_no, cust_id, prod_name, batch_date, expiry, batch_data, pkgtype, pkg_order_quantity, description, remarks, add_info, planning_date, planned_date, mfg_date, completion_date, status, order_stage) values(@order_no, @cust_id, @prod_name, @batch_date, @expiry, @batch_data, @pkgtype, @pkg_order_quantity, @description, @remarks, @add_info, @planning_date, @planned_date, @mfg_date, @completion_date, @status, @order_stage)";
+                    command.CommandText = "insert into batchorder(order_no, cust_id, prod_name, batch_date, expiry, batch_data, pkgtype, pkg_order_quantity, description, remarks, add_info, planning_date, planned_date, mfg_date, completion_date, status, order_stage, order_id, color, perfume, claims, pkg_img, brand_name, product_id) values(@order_no, @cust_id, @prod_name, @batch_date, @expiry, @batch_data, @pkgtype, @pkg_order_quantity, @description, @remarks, @add_info, @planning_date, @planned_date, @mfg_date, @completion_date, @status, @order_stage, @order_id, @color, @perfume, @claims, @pkg_img, @brand_name, @product_id)";
                     command.Parameters.Add("@order_no", MySqlDbType.VarChar).Value = lead.BatchOrderNo;
                     command.Parameters.Add("@cust_id", MySqlDbType.Int32).Value = lead.Customer.Id;
                     command.Parameters.Add("@prod_name", MySqlDbType.VarChar).Value = lead.ProductName;
@@ -455,6 +492,13 @@ namespace Cosmetify.Repository
                     command.Parameters.Add("@completion_date", MySqlDbType.DateTime).Value = lead.CompletionDate;
                     command.Parameters.Add("@status", MySqlDbType.VarChar).Value = lead.Status;
                     command.Parameters.Add("@order_stage", MySqlDbType.JSON).Value = JsonSerializer.Serialize(lead.OrderStage, options);
+                    command.Parameters.Add("@order_id", MySqlDbType.VarChar).Value = lead.OrderId;
+                    command.Parameters.Add("@color", MySqlDbType.VarChar).Value = lead.Colour;
+                    command.Parameters.Add("@perfume", MySqlDbType.VarChar).Value = lead.Perfume;
+                    command.Parameters.Add("@claims", MySqlDbType.JSON).Value = JsonSerializer.Serialize(lead.Claims, options);
+                    command.Parameters.Add("@pkg_img", MySqlDbType.MediumBlob).Value = ImageToByte(lead.PackagingTypeImage);
+                    command.Parameters.Add("@brand_name", MySqlDbType.Text).Value = lead.BrandName;
+                    command.Parameters.Add("@product_id", MySqlDbType.VarChar).Value = lead.ProductID;
                     command.ExecuteScalar();
                     MessageBox.Show("Batch Order Added");
                 }
@@ -474,7 +518,7 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    command.CommandText = "update batchorder set order_no=@order_no, cust_id=@cust_id, prod_name=@prod_name, batch_date=@batch_date, expiry=@expiry, batch_data=@batch_data, pkgtype=@pkgtype, pkg_order_quantity=@pkg_order_quantity, description=@description, remarks=@remarks, add_info=@add_info, planning_date=@planning_date, planned_date=@planned_date, mfg_date=@mfg_date, completion_date=@completion_date, status=@status, order_stage=@order_stage where id=@id";
+                    command.CommandText = "update batchorder set order_no=@order_no, cust_id=@cust_id, prod_name=@prod_name, batch_date=@batch_date, expiry=@expiry, batch_data=@batch_data, pkgtype=@pkgtype, pkg_order_quantity=@pkg_order_quantity, description=@description, remarks=@remarks, add_info=@add_info, planning_date=@planning_date, planned_date=@planned_date, mfg_date=@mfg_date, completion_date=@completion_date, status=@status, order_stage=@order_stage, order_id=@order_id, color=@color, perfume=@perfume, claims=@claims, pkg_img=@pkg_img, brand_name=@brand_name, product_id=@product_id where id=@id";
                     command.Parameters.Add("@id", MySqlDbType.Int32).Value = lead.Id;
                     command.Parameters.Add("@order_no", MySqlDbType.VarChar).Value = lead.BatchOrderNo;
                     command.Parameters.Add("@cust_id", MySqlDbType.Int32).Value = lead.Customer.Id;
@@ -493,6 +537,13 @@ namespace Cosmetify.Repository
                     command.Parameters.Add("@completion_date", MySqlDbType.DateTime).Value = lead.CompletionDate;
                     command.Parameters.Add("@status", MySqlDbType.VarChar).Value = lead.Status;
                     command.Parameters.Add("@order_stage", MySqlDbType.JSON).Value = JsonSerializer.Serialize(lead.OrderStage, options);
+                    command.Parameters.Add("@order_id", MySqlDbType.VarChar).Value = lead.OrderId;
+                    command.Parameters.Add("@color", MySqlDbType.VarChar).Value = lead.Colour;
+                    command.Parameters.Add("@perfume", MySqlDbType.VarChar).Value = lead.Perfume;
+                    command.Parameters.Add("@claims", MySqlDbType.JSON).Value = JsonSerializer.Serialize(lead.Claims, options);
+                    command.Parameters.Add("@pkg_img", MySqlDbType.MediumBlob).Value = ImageToByte(lead.PackagingTypeImage);
+                    command.Parameters.Add("@brand_name", MySqlDbType.Text).Value = lead.BrandName;
+                    command.Parameters.Add("@product_id", MySqlDbType.VarChar).Value = lead.ProductID;
                     command.ExecuteScalar();
                     //MessageBox.Show("Batch Order Updated");
                 }
@@ -522,6 +573,37 @@ namespace Cosmetify.Repository
             {
                 Helper.Helper.BugReport(e);
             }            
+        }
+
+        public BitmapImage ByteToImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
+        }
+
+        public byte[] ImageToByte(BitmapImage imageIn)
+        {
+            Byte[]? buffer = null;
+            if (imageIn != null)
+            {
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(imageIn));
+
+                using (var ms = new MemoryStream())
+                {
+                    encoder.Save(ms);
+                    buffer = ms.ToArray();
+                }
+            }
+
+            return buffer;
         }
     }
 }
