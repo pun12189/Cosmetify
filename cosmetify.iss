@@ -61,12 +61,12 @@ LicenseFile={#SourceFileDir}SetupFiles\eula.rtf
 WizardImageFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.bmp
 WizardSmallImageFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.bmp
 ;I use whatever my apps icon is                               
-UninstallDisplayIcon={app}\Cosmetify.exe
+;UninstallDisplayIcon={app}\Cosmetify.exe
 ;Version number of your installer (not your app)
 VersionInfoVersion={# Version}
 AppVersion={# Version}
 ;If IncludeFramework, append _FW to end of compiled setup;
-ArchitecturesAllowed = x86compatible  x64compatible
+ArchitecturesAllowed = x86os x64os
 ArchitecturesInstallIn64BitMode=x64
 ;without the framework included
 OutputBaseFilename=Cosmetify
@@ -118,15 +118,15 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 
 
    [Dirs]
- Name: "{app}\Resources"
+ Name: "{app}\de"
  Name: "{commonappdata}\Cosmetify"; Permissions: everyone-modify
- Name: "{app}\x86"
- Name: "{app}\x64"
-[files]
-   Source: {#SourceFileDir}\de\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
-   Source: {#SourceFileDir}\Extras\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
-   Source: {#SourceFileDir}\SetupFiles\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
-   Source: {#SourceFileDir}\TxtFile\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+ Name: "{app}\Extras"
+ Name: "{app}\TxtFile"
+[Files]
+   Source: {#SourceFileDir}\de\*;  DestDir: "{app}\de"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\Extras\*;  DestDir: "{app}\Extras"; Flags:ignoreversion recursesubdirs
+   ;Source: {#SourceFileDir}\SetupFiles\*;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
+   Source: {#SourceFileDir}\TxtFile\*;  DestDir: "{app}\TxtFile"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\Cosmetify.exe;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\*.dll;  DestDir: "{app}"; Flags:ignoreversion
    ;Source: {userappdata}\TemplateToaster\Fonts\*; DestDir: "{userappdata}\TemplateToaster\Fonts 6.0"; Flags:external recursesubdirs uninsneveruninstall skipifsourcedoesntexist; Check : CreateDestinationDir(ExpandConstant('{userappdata}\TemplateToaster\Fonts 6.0'));
@@ -221,8 +221,8 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 ;Source: {#SourceFileDir}Files\WpfApplication97.vshost.exe.manifest; DestDir: {app}; Flags: ignoreversion {#IsExternal}
 ;source: {#SourceFileDir}readme.txt;    DestDir: {app}; Flags: ignoreversion {#IsExternal}
 
-Source: {#SourceFileDir}SetupFiles\windowsdesktop-runtime-6.0.35-win-x64.exe; DestDir: {tmp}; Flags: deleteafterinstall;  Check:  IsWin64
-Source: {#SourceFileDir}SetupFiles\windowsdesktop-runtime-6.0.36-win-x86.exe; DestDir: {tmp}; Flags: deleteafterinstall; Check: Not IsWin64
+Source: {#SourceFileDir}SetupFiles\windowsdesktop-runtime-6.0.36-win-x64.exe; DestDir: {tmp}; Flags: deleteafterinstall;
+Source: {#SourceFileDir}SetupFiles\windowsdesktop-runtime-6.0.36-win-x86.exe; DestDir: {tmp}; Flags: deleteafterinstall;
 
 ;Source: {#SourceFileDir}SetupFiles\NDP40-KB2468871-v2-x64.exe; DestDir: {tmp};  Check:  IsWin64
 ;Source: {#SourceFileDir}SetupFiles\NDP40-KB2468871-v2-x86.exe; DestDir: {tmp}; Check: Not IsWin64
@@ -405,7 +405,7 @@ settingpermission = Setting Program Access Permissions
 Name: {group}\Cosmetify; Filename: {app}\Cosmetify.exe;   WorkingDir: {app} ; 
 Name: "{group}\Help"; Filename: "http://sofric.com/"; 
 Name: {group}\Uninstall; Filename: {uninstallexe};  WorkingDir: {app}
-Name: {commondesktop}\Cosmetify;  Filename: {app}\Cosmetify.exe;  WorkingDir: {app}; 
+Name: {commondesktop}\Cosmetify;  Filename: {app}\Cosmetify.exe; IconFilename: "{#SourceFileDir}SetupFiles\BahiKitab-Icon.ico"; WorkingDir: {app}; 
 
 [Run]
 Filename: "{app}\Cosmetify.exe"; Description: "{cm:launchtemplatetoaster}"; Flags: nowait skipifsilent postinstall ; 
