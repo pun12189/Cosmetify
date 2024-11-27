@@ -35,6 +35,7 @@ namespace Cosmetify.RenderView
             this.cbPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
             this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             this.cbCust.IsEnabled = true;
+            this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
         }
 
         public ObservableCollection<BatchOrderModel> BatchOrderCollection
@@ -57,6 +58,16 @@ namespace Cosmetify.RenderView
         // Using a DependencyProperty as the backing store for BatchModelCollection.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BatchModelCollectionProperty =
             DependencyProperty.Register("BatchModelCollection", typeof(ObservableCollection<BatchModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<BatchModel>()));
+
+        public ObservableCollection<BatchModel> DBBatchModelCollection
+        {
+            get { return (ObservableCollection<BatchModel>)GetValue(DBBatchModelCollectionProperty); }
+            set { SetValue(DBBatchModelCollectionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BatchModelCollection.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DBBatchModelCollectionProperty =
+            DependencyProperty.Register("DBBatchModelCollection", typeof(ObservableCollection<BatchModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<BatchModel>()));
 
         private void btnAddCust_Click(object sender, RoutedEventArgs e)
         {
@@ -206,7 +217,14 @@ namespace Cosmetify.RenderView
 
         private void btnCreateOrder_Click(object sender, RoutedEventArgs e)
         {
+            var orderID = "OD-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+            foreach (var batchModel in this.BatchModelCollection)
+            {
+                batchModel.OrderId = orderID;
+                batchModel.Status = BatchStatus.Created;
 
+                HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(batchModel);
+            }
         }
 
         private void cbCust_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -236,6 +254,20 @@ namespace Cosmetify.RenderView
             }
         }
 
+        private void DeleteBatch1(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                var model = button.DataContext as BatchModel;
+                if (model != null)
+                {
+                    HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
+                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                }
+            }
+        }
+
         private void btnAddColor_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new AddColorPerfume(true);
@@ -251,6 +283,93 @@ namespace Cosmetify.RenderView
             if ((bool)dialog.ShowDialog())
             {
                 this.cbPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
+            }
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+        }
+
+        private void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dg = sender as System.Windows.Controls.DataGrid;
+            if (dg != null)
+            {
+                BatchModel product = dg.SelectedItem as BatchModel;
+                if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
+                {
+                    HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(product.Id);
+                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                }
+            }
+        }
+
+        private void dataGrid2_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                BatchModel product = e.Row.DataContext as BatchModel;
+                if (product != null)
+                {
+                    if (product.Id > 0)
+                    {
+                        if (product.Status == BatchStatus.Processed)
+                        {
+                            foreach (var item in product.BatchOrderCollection)
+                            {
+                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                            }
+                        }
+
+                        HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(product);
+                    }
+                    else
+                    {
+                        HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(product);
+                    }
+                }
+            }
+        }
+
+        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var searchData = this.tbSearch.Text;
+                if (!string.IsNullOrEmpty(searchData))
+                {
+                    var data = HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
+                    this.DBBatchModelCollection = data;
+                }
+                else
+                {
+                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                }
+            }
+        }
+
+        private void cbAll_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.dataGrid2.Items)
+            {
+                var row = this.dataGrid2.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
+                if (row != null)
+                {
+                    row.IsSelected = true;
+                }
+            }
+        }
+
+        private void cbAll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.dataGrid2.Items)
+            {
+                var row = this.dataGrid2.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
+                if (row != null)
+                {
+                    row.IsSelected = false;
+                }
             }
         }
     }
