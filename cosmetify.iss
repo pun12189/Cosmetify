@@ -221,7 +221,7 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 ;Source: {#SourceFileDir}Files\WpfApplication97.vshost.exe.manifest; DestDir: {app}; Flags: ignoreversion {#IsExternal}
 ;source: {#SourceFileDir}readme.txt;    DestDir: {app}; Flags: ignoreversion {#IsExternal}
 
-Source: {#SourceFileDir}SetupFiles\windowsdesktop-runtime-6.0.36-win-x64.exe; DestDir: {tmp}; Flags: deleteafterinstall;  Check:  IsWin64
+Source: {#SourceFileDir}SetupFiles\windowsdesktop-runtime-6.0.35-win-x64.exe; DestDir: {tmp}; Flags: deleteafterinstall;  Check:  IsWin64
 Source: {#SourceFileDir}SetupFiles\windowsdesktop-runtime-6.0.36-win-x86.exe; DestDir: {tmp}; Flags: deleteafterinstall; Check: Not IsWin64
 
 ;Source: {#SourceFileDir}SetupFiles\NDP40-KB2468871-v2-x64.exe; DestDir: {tmp};  Check:  IsWin64
@@ -433,7 +433,7 @@ Filename: Reg.exe; Parameters: "add ""HKLM\Software\Microsoft\Internet Explorer\
 Filename: Reg.exe; Parameters: "add ""HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION"" /v Cosmetify.exe /t REG_DWORD /d ""11000"" /f"; Check : IsCompatibleIExplorerVersion('11');
 Filename: Reg.exe; Parameters: "add ""HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION"" /v Cosmetify.exe /t REG_DWORD /d ""11000"" /f";Flags:64bit; Check : IsCompatibleIExplorerVersionWin64('11');
 
-Filename: Reg.exe; Parameters: "add ""HKCU\Software\TemplateToaster"" /v Language /t REG_SZ /d ""en"" /f"; Flags: runasoriginaluser runhidden;  Languages: en
+;Filename: Reg.exe; Parameters: "add ""HKCU\Software\TemplateToaster"" /v Language /t REG_SZ /d ""en"" /f"; Flags: runasoriginaluser runhidden;  Languages: en
 ;Filename: Reg.exe; Parameters: "add ""HKCU\Software\TemplateToaster"" /v Language /t REG_SZ /d ""da"" /f"; Flags: runasoriginaluser runhidden;  Languages: da
 ;Filename: Reg.exe; Parameters: "add ""HKCU\Software\TemplateToaster"" /v Language /t REG_SZ /d ""nl"" /f"; Flags: runasoriginaluser runhidden;  Languages: nl
 ;Filename: Reg.exe; Parameters: "add ""HKCU\Software\TemplateToaster"" /v Language /t REG_SZ /d ""fr"" /f"; Flags: runasoriginaluser runhidden;  Languages: fr

@@ -139,8 +139,8 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <None Update="SetupFiles\eula.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SetupFiles\windowsdesktop-runtime-6.0.36-win-x64.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="SetupFiles\windowsdesktop-runtime-6.0.35-win-x64.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="SetupFiles\windowsdesktop-runtime-6.0.36-win-x86.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
