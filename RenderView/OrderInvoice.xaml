@@ -37,13 +37,13 @@
                         <!--3-->                        
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="7"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="7"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="7"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <TextBlock Text="Select Customer" Margin="0,0,5,0" VerticalAlignment="Center"/>
@@ -59,12 +59,15 @@
                             <icon:FontAwesome Kind="PlusCircleSolid"/>
                         </Button>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Horizontal">
-                        <TextBlock Text="Select Product" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="cbProduct" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" DisplayMemberPath="Code" SelectionChanged="cbProduct_SelectionChanged"/>
-                        <Button x:Name="btnAddProd" Background="Transparent" Click="btnAddProd_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
-                            <icon:FontAwesome Kind="PlusCircleSolid"/>
-                        </Button>
+                    <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Select Product" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="cbProduct" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" DisplayMemberPath="Code" SelectionChanged="cbProduct_SelectionChanged"/>
+                            <Button x:Name="btnAddProd" Background="Transparent" Click="btnAddProd_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                                <icon:FontAwesome Kind="PlusCircleSolid"/>
+                            </Button>
+                        </StackPanel>
+                        <TextBox x:Name="tbMProd" control:TextBoxHelper.Watermark="Enter Extra Info"/>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="6" Orientation="Horizontal">
                         <TextBlock Text="Pkg Order Qty" Margin="0,0,5,0" VerticalAlignment="Center"/>
@@ -295,9 +298,9 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <!--<Button Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="FilePdfSolid"/>
-                                        </Button>-->
+                                        </Button>
                                         <Button Background="Transparent" Click="DeleteBatch1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="TrashSolid"/>
                                         </Button>

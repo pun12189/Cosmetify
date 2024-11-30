@@ -2,6 +2,8 @@
 using Cosmetify.Model;
 using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
+using Microsoft.Win32;
+using MigraDoc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -208,6 +210,11 @@ namespace Cosmetify.RenderView
                 batchModel.Claims = new ObservableCollection<string>(claims);
             }
 
+            if (!string.IsNullOrEmpty(this.tbMProd.Text))
+            {
+                batchModel.Remarks = this.tbMProd.Text;
+            }
+
             batchModel.PkgType = this.tbPkgType.Text;
             batchModel.PackagingTypeImage = this.imgPkg.Source as BitmapImage;
             batchModel.PkgOrderQuantity = this.tbPkgQty.Text;
@@ -222,6 +229,7 @@ namespace Cosmetify.RenderView
             {
                 batchModel.OrderId = orderID;
                 batchModel.Status = BatchStatus.Created;
+                batchModel.BatchDate = DateTime.Now;
 
                 HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(batchModel);
             }
@@ -369,6 +377,43 @@ namespace Cosmetify.RenderView
                 if (row != null)
                 {
                     row.IsSelected = false;
+                }
+            }
+        }
+
+        private void ExportBatch(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                var model = button.DataContext as BatchModel;
+                if (model != null)
+                {
+                    var batchCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                    var batch = new PdfCore.PdfForm();
+                    var document = batch.CreateOrder(model, batchCollection);
+                    document.UseCmykColor = true;
+                    var pdfRenderer = new PdfDocumentRenderer(true);
+
+                    // Set the MigraDoc document.
+                    pdfRenderer.Document = document;
+
+                    // Create the PDF document.
+                    pdfRenderer.RenderDocument();
+
+                    // Save the PDF document...
+                    var filename = model.Customer.FirstName + "_" + model.Customer.LastName + "_" + model.BrandName + ".pdf";
+
+                    var dialog = new SaveFileDialog();
+                    dialog.FileName = filename;
+                    dialog.AddExtension = true;
+                    dialog.DefaultExt = ".pdf";
+                    if ((bool)dialog.ShowDialog())
+                    {
+                        pdfRenderer.Save(dialog.FileName);
+                        // ...and start a viewer.
+                        //Process.Start(dialog.FileName);
+                    }
                 }
             }
         }

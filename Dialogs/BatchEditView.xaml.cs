@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,8 @@ namespace Cosmetify.Dialogs
     /// </summary>
     public partial class BatchEditView : Window
     {
+        private static readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text        
+
         public BatchEditView(BatchModel model)
         {
             InitializeComponent();
@@ -68,6 +71,34 @@ namespace Cosmetify.Dialogs
         {
             this.DialogResult = true;
             this.Close();
+        }
+
+        private void BatchSizeUpdate(object sender, TextChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+            if (tb != null && !string.IsNullOrEmpty(tb.Text))
+            {
+                var bsize = long.Parse(tb.Text);
+                if (bsize > 0) {
+                    if (this.BatchModel != null && this.BatchModel.BatchOrderCollection != null && this.BatchModel.BatchOrderCollection.Count > 0)
+                    {
+                        foreach (var item in this.BatchModel.BatchOrderCollection)
+                        {
+                            item.BatchSize = bsize;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextAllowed(e.Text);
         }
     }
 }

@@ -405,6 +405,67 @@ namespace Cosmetify.Repository
             return batches;
         }
 
+        public ObservableCollection<BatchModel> GetAllProductsWithOrderId(string orderId)
+        {
+            ObservableCollection<BatchModel> leads = new ObservableCollection<BatchModel>();
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "select * from batchorder where order_id=@order_id"; 
+                    command.Parameters.Add("@order_id", MySqlDbType.VarChar).Value = orderId;
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var lead = new BatchModel
+                            {
+                                Id = reader.GetInt32(0),
+                                BatchOrderNo = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                                Customer = reader.IsDBNull(2) ? null : HomepageViewModel.CommonViewModel.LeadsRepository.GetCustomer(reader.GetInt32(2)),
+                                ProductName = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
+                                BatchDate = reader.IsDBNull(4) ? DateTime.Now : reader.GetDateTime(4),
+                                Expiry = reader.IsDBNull(5) ? DateTime.Now : reader.GetDateTime(5),
+                                BatchOrderCollection = reader.IsDBNull(6) ? null : JsonSerializer.Deserialize<ObservableCollection<BatchOrderModel>>(reader.GetString(6), options),
+                                PkgType = reader.IsDBNull(7) ? string.Empty : reader.GetString(7),
+                                PkgOrderQuantity = reader.IsDBNull(8) ? string.Empty : reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? string.Empty : reader.GetString(9),
+                                Remarks = reader.IsDBNull(10) ? string.Empty : reader.GetString(10),
+                                AdditionalInfo = reader.IsDBNull(11) ? string.Empty : reader.GetString(11),
+                                PlanningDate = reader.IsDBNull(12) ? DateTime.Now : reader.GetDateTime(12),
+                                PlannedDate = reader.IsDBNull(13) ? DateTime.Now : reader.GetDateTime(13),
+                                MfgDate = reader.IsDBNull(14) ? DateTime.Now : reader.GetDateTime(14),
+                                CompletionDate = reader.IsDBNull(15) ? DateTime.Now : reader.GetDateTime(15),
+                                Status = reader.IsDBNull(16) ? BatchStatus.Created : (BatchStatus)Enum.Parse(typeof(BatchStatus), reader.GetString(16)),
+                                OrderStage = reader.IsDBNull(17) ? null : JsonSerializer.Deserialize<OrderStageModel>(reader.GetString(17), options),
+                                OrderId = reader.IsDBNull(18) ? string.Empty : reader.GetString(18),
+                                Colour = reader.IsDBNull(19) ? string.Empty : reader.GetString(19),
+                                Perfume = reader.IsDBNull(20) ? string.Empty : reader.GetString(20),
+                                Claims = reader.IsDBNull(21) ? null : JsonSerializer.Deserialize<ObservableCollection<string>>(reader.GetString(21), options),
+                                PackagingTypeImage = reader.IsDBNull(22) ? null : ByteToImage((byte[])reader["pkg_img"]),
+                                BrandName = reader.IsDBNull(23) ? string.Empty : reader.GetString(23),
+                                ProductID = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
+                            };
+
+                            leads.Add(lead);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return leads;
+        }
+
         public ObservableCollection<BatchModel> GetAllProducts()
         {
             ObservableCollection<BatchModel> leads = new ObservableCollection<BatchModel>();

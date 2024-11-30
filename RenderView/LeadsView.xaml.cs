@@ -1,6 +1,7 @@
 ﻿using Cosmetify.Dialogs;
 using Cosmetify.Helper;
 using Cosmetify.Model;
+using Cosmetify.Model.Enums;
 using Cosmetify.RenderView.UserControls;
 using Cosmetify.ViewModel;
 using System;
@@ -51,6 +52,44 @@ namespace Cosmetify.RenderView
                     this.dataGrid1.DataContext = records;
                 }
             }*/
+        }
+
+        private void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dg = sender as System.Windows.Controls.DataGrid;
+            if (dg != null)
+            {
+                CustomerModel product = dg.SelectedItem as CustomerModel;
+                if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
+                {
+                    HomepageViewModel.CommonViewModel.LeadsRepository.DeleteLead(product.Id);
+                    this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                }
+            }
+        }
+
+        private void dataGrid2_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                CustomerModel product = e.Row.DataContext as CustomerModel;
+                if (product != null)
+                {
+                    if (product.Id > 0)
+                    {
+                        HomepageViewModel.CommonViewModel.LeadsRepository.UpdateLead(product);
+                    }
+                    else
+                    {
+                        HomepageViewModel.CommonViewModel.LeadsRepository.InsertLead(product);
+                    }
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
         }
     }
 }
