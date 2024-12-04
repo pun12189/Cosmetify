@@ -80,7 +80,7 @@ namespace Cosmetify.ViewModel
             this.Menu.Add(new MenuItem()
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FileInvoiceSolid },
-                Label = "Actives",
+                Label = "Inventory",
                 NavigationType = typeof(ActivesView),
                 NavigationDestination = new Uri("RenderView/ActivesView.xaml", UriKind.RelativeOrAbsolute)
             });
@@ -102,10 +102,17 @@ namespace Cosmetify.ViewModel
             this.Menu.Add(new MenuItem()
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FirstOrderBrands },
-                Label = "Order",
+                Label = "Sales Order",
                 NavigationType = typeof(OrderInvoice),
                 NavigationDestination = new Uri("RenderView/OrderInvoice.xaml", UriKind.RelativeOrAbsolute),
                 IsEnabled = true
+            });
+            this.Menu.Add(new MenuItem()
+            {
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UsersSolid },
+                Label = "Customer",
+                NavigationType = typeof(LeadsView),
+                NavigationDestination = new Uri("RenderView/LeadsView.xaml", UriKind.RelativeOrAbsolute)
             });
             this.Menu.Add(new MenuItem()
             {
@@ -122,14 +129,7 @@ namespace Cosmetify.ViewModel
                 NavigationType = typeof(VendorsPage),
                 NavigationDestination = new Uri("RenderView/VendorsPage.xaml", UriKind.RelativeOrAbsolute),
                 IsEnabled = false
-            });
-            this.Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UsersSolid },
-                Label = "Customer",
-                NavigationType = typeof(LeadsView),
-                NavigationDestination = new Uri("RenderView/LeadsView.xaml", UriKind.RelativeOrAbsolute)
-            });
+            });            
             this.Menu.Add(new MenuItem()
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.ChartBarSolid },

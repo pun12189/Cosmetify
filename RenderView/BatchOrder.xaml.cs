@@ -286,11 +286,6 @@ namespace Cosmetify.RenderView
         {
             if (this.cbMF.SelectedItem != null && this.cbMF.SelectedItem is MasterFormulaModel)
             {
-                if (string.IsNullOrEmpty(this.tbSize.Text))
-                {
-                    MessageBox.Show("Please enter batch size", "Alert", MessageBoxButton.OK, MessageBoxImage.Error); return;
-                }
-
                 if (this.cbUnits.SelectedIndex < 0)
                 {
                     MessageBox.Show("Please select correct unit.", "Alert", MessageBoxButton.OK, MessageBoxImage.Error); return;
@@ -482,8 +477,36 @@ namespace Cosmetify.RenderView
                                     {
                                         if (model != null)
                                         {
+                                            model.Status = BatchStatus.Planned;
+                                            model.PlanningDate = DateTime.Now;
+                                            HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
+                                            if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                                            {
+                                                foreach (var item in model.BatchOrderCollection)
+                                                {
+                                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    MessageBox.Show("Selected Items successfully planned.", "Bulk Action", MessageBoxButton.OK, MessageBoxImage.Information);
+                                }                                    
+                            }
+
+                            break;
+
+                        case 2:
+                            if (this.dataGrid2.SelectedItems.Count > 1)
+                            {
+                                var result = MessageBox.Show("Do you want perform bulk action on selected items?", "Bulk Action", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                                if (result == MessageBoxResult.Yes)
+                                {
+                                    foreach (BatchModel model in this.dataGrid2.SelectedItems)
+                                    {
+                                        if (model != null)
+                                        {
                                             model.Status = BatchStatus.Hold;
-                                            // model.PlanningDate = DateTime.Now;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
                                             if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
@@ -500,8 +523,7 @@ namespace Cosmetify.RenderView
                             }
 
                             break;
-
-                        case 2:
+                        case 3:
                             if (this.dataGrid2.SelectedItems.Count > 1)
                             {
                                 var result = MessageBox.Show("Do you want perform bulk action on selected items?", "Bulk Action", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -525,12 +547,12 @@ namespace Cosmetify.RenderView
                                     }
 
                                     MessageBox.Show("Selected Items successfully completed.", "Bulk Action", MessageBoxButton.OK, MessageBoxImage.Information);
-                                }                                    
+                                }
                             }
 
                             break;
 
-                        case 3:
+                        case 4:
                             if (this.dataGrid2.SelectedItems.Count > 1)
                             {
                                 var result = MessageBox.Show("Do you want perform bulk action on selected items?", "Bulk Action", MessageBoxButton.YesNo, MessageBoxImage.Question);

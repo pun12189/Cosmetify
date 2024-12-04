@@ -18,187 +18,185 @@
         <SolidColorBrush x:Key="RowClr" Color="FloralWhite" />
         <helper:ValueToForegroundColorConverter x:Key="ValueToForegroundColor"/>
     </Page.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <TabControl Name="Tabs1" TabStripPlacement="Top" BorderBrush="Blue" Margin="10" SelectionChanged="Tabs1_SelectionChanged">
-            <TabItem Header="Add" Padding="10,5,10,5">
-                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Name" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,5"/>
-                    <TextBlock Text="Code" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Margin="0,5"/>
-                    <TextBlock Text="Category" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Margin="0,5"/>
-                    <TextBlock Text="Stocks" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Margin="0,5"/>
-                    <TextBlock Text="Units" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,5"/>
-                    <TextBlock Text="SKU" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Margin="0,5"/>
-                    <TextBox x:Name="tbName" controls:TextBoxHelper.Watermark="Enter Active's Name" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="0,5"/>
-                    <TextBox x:Name="tbCode" controls:TextBoxHelper.Watermark="Enter Active's Code" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" Margin="0,5"/>
-                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="2">
-                        <ComboBox x:Name="cbCateg" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbCateg_SelectionChanged"/>
-                        <TextBlock Text="->" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="cbSCateg" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSCateg_SelectionChanged"/>
-                        <TextBlock Text="->" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="cbSSCateg" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSSCateg_SelectionChanged"/>
-                    </StackPanel>
-                    <TextBox x:Name="tbStock" controls:TextBoxHelper.Watermark="Enter Stocks/Quantity" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" Margin="0,5"/>
-                    <ComboBox x:Name="cbUnits" SelectedIndex="0" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="6" Margin="0,5"/>
-                    <TextBox x:Name="tbSku" controls:TextBoxHelper.Watermark="Enter SKU" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="8" Margin="0,5"/>
+    <TabControl Name="Tabs1" TabStripPlacement="Top" BorderBrush="Blue" Margin="10" SelectionChanged="Tabs1_SelectionChanged">
+        <TabItem Header="Add" Padding="10,5,10,5">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Name" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,5"/>
+                <TextBlock Text="Code" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Margin="0,5"/>
+                <TextBlock Text="Category" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Margin="0,5"/>
+                <TextBlock Text="Stocks" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Margin="0,5"/>
+                <TextBlock Text="Units" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,5"/>
+                <TextBlock Text="SKU" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Margin="0,5"/>
+                <TextBox x:Name="tbName" controls:TextBoxHelper.Watermark="Enter Active's Name" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="0,5"/>
+                <TextBox x:Name="tbCode" controls:TextBoxHelper.Watermark="Enter Active's Code" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" Margin="0,5"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="2">
+                    <ComboBox x:Name="cbCateg" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbCateg_SelectionChanged"/>
+                    <TextBlock Text="->" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cbSCateg" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSCateg_SelectionChanged"/>
+                    <TextBlock Text="->" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cbSSCateg" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSSCateg_SelectionChanged"/>
+                </StackPanel>
+                <TextBox x:Name="tbStock" controls:TextBoxHelper.Watermark="Enter Stocks/Quantity" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" Margin="0,5"/>
+                <ComboBox x:Name="cbUnits" SelectedIndex="0" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="6" Margin="0,5"/>
+                <TextBox x:Name="tbSku" controls:TextBoxHelper.Watermark="Enter SKU" MinWidth="250" MaxWidth="500" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="8" Margin="0,5"/>
 
-                    <Button x:Name="btnAddActive" Grid.Row="10" Grid.ColumnSpan="3" Content="Add Active" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnAddActive_Click"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="View" IsSelected="True" Padding="10,5,10,5">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,10">
-                        <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Margin="0,0,5,0" VerticalContentAlignment="Center" Width="250" controls:TextBoxHelper.Watermark="Search" controls:TextBoxHelper.ClearTextButton="True"/>
-                        <Button x:Name="btnRefresh"  Content="Refresh" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnRefresh_Click" Margin="0,0,5,0"/>
-                        <Button x:Name="btnFormat" Click="btnFormat_Click" Content="Download Format" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,5,0"/>
-                        <Button Content="Upload CSV" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Button_Click" Margin="0,0,5,0"/>
-                        <Button Content="Export Excel" x:Name="btnExcel" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnExcel_Click" Margin="0,0,5,0"/>
-                        <Button Content="Bulk Delete" x:Name="btnBulk" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnBulk_Click"/>
+                <Button x:Name="btnAddActive" Grid.Row="10" Grid.ColumnSpan="3" Content="Add Active" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnAddActive_Click"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="View" IsSelected="True" Padding="10,5,10,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,10">
+                    <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Margin="0,0,5,0" VerticalContentAlignment="Center" Width="250" controls:TextBoxHelper.Watermark="Search" controls:TextBoxHelper.ClearTextButton="True"/>
+                    <Button x:Name="btnRefresh"  Content="Refresh" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnRefresh_Click" Margin="0,0,5,0"/>
+                    <Button x:Name="btnFormat" Click="btnFormat_Click" Content="Download Format" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,5,0"/>
+                    <Button Content="Upload CSV" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Button_Click" Margin="0,0,5,0"/>
+                    <Button Content="Export Excel" x:Name="btnExcel" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnExcel_Click" Margin="0,0,5,0"/>
+                    <Button Content="Bulk Delete" x:Name="btnBulk" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnBulk_Click"/>
+                </StackPanel>
+                <Expander Grid.Row="1" Header="Filters" ExpandDirection="Down" IsExpanded="False" Background="White" controls:HeaderedControlHelper.HeaderFontWeight="Bold" controls:HeaderedControlHelper.HeaderBackground="White">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Select Status" Margin="0,0,5,0" VerticalAlignment="Center" Visibility="Collapsed"/>
+                        <ComboBox x:Name="cbStatus" Width="150" Margin="0,0,10,0" Visibility="Collapsed"/>
+                        <TextBlock Text="Date Range" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="From" VerticalAlignment="Center"/>
+                        <DatePicker x:Name="dtFrom" Width="150" IsTodayHighlighted="True" Margin="5,0"/>
+                        <TextBlock Text="To" VerticalAlignment="Center"/>
+                        <DatePicker x:Name="dtTo" Width="150" IsTodayHighlighted="True" Margin="5,0"/>
+                        <Button x:Name="btnApplyFilter" Content="Apply" Width="150" Click="btnApplyFilter_Click"/>
                     </StackPanel>
-                    <Expander Grid.Row="1" Header="Filters" ExpandDirection="Down" IsExpanded="False" Background="White" controls:HeaderedControlHelper.HeaderFontWeight="Bold" controls:HeaderedControlHelper.HeaderBackground="White">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Select Status" Margin="0,0,5,0" VerticalAlignment="Center" Visibility="Collapsed"/>
-                            <ComboBox x:Name="cbStatus" Width="150" Margin="0,0,10,0" Visibility="Collapsed"/>
-                            <TextBlock Text="Date Range" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="From" VerticalAlignment="Center"/>
-                            <DatePicker x:Name="dtFrom" Width="150" IsTodayHighlighted="True" Margin="5,0"/>
-                            <TextBlock Text="To" VerticalAlignment="Center"/>
-                            <DatePicker x:Name="dtTo" Width="150" IsTodayHighlighted="True" Margin="5,0"/>
-                            <Button x:Name="btnApplyFilter" Content="Apply" Width="150" Click="btnApplyFilter_Click"/>
-                        </StackPanel>
-                    </Expander>
-                    <TextBlock Grid.Row="2" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
-                    <DataGrid FontFamily="Arial" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=activesView, Path=ActivesModelsCollection}" AutoGenerateColumns="False" Grid.Row="3" RowEditEnding="dataGrid1_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch">
-                        <!--<DataGrid.ColumnHeaderStyle>
+                </Expander>
+                <TextBlock Grid.Row="2" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
+                <DataGrid FontFamily="Arial" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=activesView, Path=ActivesModelsCollection}" AutoGenerateColumns="False" Grid.Row="3" RowEditEnding="dataGrid1_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch">
+                    <!--<DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="Background" Value="Blue"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>-->
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <Setter Property="Background" Value="{Binding RemainingStock, Converter={StaticResource ValueToForegroundColor}, ConverterParameter={StaticResource RowClr}, UpdateSourceTrigger=PropertyChanged}"/>
-                            </Style>
-                        </DataGrid.RowStyle>
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.Header>
-                                    <CheckBox x:Name="cbAll" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="cbAll_Checked" Unchecked="cbAll_Unchecked"/>
-                                </DataGridTemplateColumn.Header>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox HorizontalAlignment="Center" IsHitTestVisible="False" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=IsSelected, Mode=OneWay}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding ActivesName, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Code" Binding="{Binding ShortCode, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTemplateColumn Header="Category">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Grid.Row="0" Text="{Binding Category.CategoryName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Row="1" Text="{Binding SubCategory.CategoryName, StringFormat='* {0}', UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Row="2" Text="{Binding SubSubCategory.CategoryName, StringFormat='** {0}', UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <ComboBox x:Name="cbCateg" SelectedItem="{Binding Category}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbCateg_SelectionChanged"/>
-                                            <TextBlock Text="->" VerticalAlignment="Center"/>
-                                            <ComboBox x:Name="cbSCateg" SelectedItem="{Binding SubCategory}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSCateg_SelectionChanged"/>
-                                            <TextBlock Text="->" VerticalAlignment="Center"/>
-                                            <ComboBox x:Name="cbSSCateg" SelectedItem="{Binding SubSubCategory}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSSCateg_SelectionChanged"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Brand Names" Binding="{Binding BrandNames, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="SKU" Binding="{Binding SKU, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Stock" Binding="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Stock Diff" Binding="{Binding DiffStock, UpdateSourceTrigger=PropertyChanged}">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="Background" Value="{Binding DiffStock, Converter={StaticResource ValueToForegroundColor}, ConverterParameter={StaticResource diffClr}}"/>
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Processed Batches" Binding="{Binding TotalBatchOrders, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
-                            <DataGridTextColumn Header="Processed Rqt" Binding="{Binding TotalRequired, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="Background" Value="{StaticResource ProsClr}"/>
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Created Batches" Binding="{Binding TotalCreated, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Created Rqt" Binding="{Binding TotalCreatedRequired, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Hold Batches" Binding="{Binding TotalHold, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Hold Rqt" Binding="{Binding TotalHoldRequired, UpdateSourceTrigger=PropertyChanged}">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="Background" Value="{StaticResource holdClr}"/>
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Remaining" Binding="{Binding RemainingStock, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="Background" Value="{Binding RemainingStock, Converter={StaticResource ValueToForegroundColor}}"/>
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                            </DataGridTextColumn>
-                            <DataGridTemplateColumn Header="Actions">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Button Background="Transparent" Margin="0,0,2,0" Visibility="Collapsed" Click="ExportActiveReport" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                                                <icon:FontAwesome Kind="FilePdfSolid"/>
-                                            </Button>
-                                            <Button Background="Transparent" Click="DeleteActives" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                                                <icon:FontAwesome Kind="TrashSolid"/>
-                                            </Button>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </TabItem>
-        </TabControl>
-    </ScrollViewer>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="{Binding RemainingStock, Converter={StaticResource ValueToForegroundColor}, ConverterParameter={StaticResource RowClr}, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.Header>
+                                <CheckBox x:Name="cbAll" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="cbAll_Checked" Unchecked="cbAll_Unchecked"/>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center" IsHitTestVisible="False" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=IsSelected, Mode=OneWay}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding ActivesName, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Code" Binding="{Binding ShortCode, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTemplateColumn Header="Category">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Text="{Binding Category.CategoryName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding SubCategory.CategoryName, StringFormat='* {0}', UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Row="2" Text="{Binding SubSubCategory.CategoryName, StringFormat='** {0}', UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox x:Name="cbCateg" SelectedItem="{Binding Category}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbCateg_SelectionChanged"/>
+                                        <TextBlock Text="->" VerticalAlignment="Center"/>
+                                        <ComboBox x:Name="cbSCateg" SelectedItem="{Binding SubCategory}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSCateg_SelectionChanged"/>
+                                        <TextBlock Text="->" VerticalAlignment="Center"/>
+                                        <ComboBox x:Name="cbSSCateg" SelectedItem="{Binding SubSubCategory}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSSCateg_SelectionChanged"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Brand Names" Binding="{Binding BrandNames, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="SKU" Binding="{Binding SKU, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Stock" Binding="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Stock Diff" Binding="{Binding DiffStock, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="{Binding DiffStock, Converter={StaticResource ValueToForegroundColor}, ConverterParameter={StaticResource diffClr}}"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Processed Batches" Binding="{Binding TotalBatchOrders, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Processed Rqt" Binding="{Binding TotalRequired, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="{StaticResource ProsClr}"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Created Batches" Binding="{Binding TotalCreated, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Created Rqt" Binding="{Binding TotalCreatedRequired, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Hold Batches" Binding="{Binding TotalHold, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Hold Rqt" Binding="{Binding TotalHoldRequired, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="{StaticResource holdClr}"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Remaining" Binding="{Binding RemainingStock, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="{Binding RemainingStock, Converter={StaticResource ValueToForegroundColor}}"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Button Background="Transparent" Margin="0,0,2,0" Visibility="Collapsed" Click="ExportActiveReport" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="FilePdfSolid"/>
+                                        </Button>
+                                        <Button Background="Transparent" Click="DeleteActives" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="TrashSolid"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Page>

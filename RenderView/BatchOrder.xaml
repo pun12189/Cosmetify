@@ -147,6 +147,7 @@
                     <TextBlock Text="Select Action" VerticalAlignment="Center" Margin="0,0,5,0"/>
                     <ComboBox x:Name="cbBulk" Width="100" SelectionChanged="cbBulk_SelectionChanged">
                         <ComboBoxItem Content="Proceed"/>
+                        <ComboBoxItem Content="Planned"/>
                         <ComboBoxItem Content="Hold"/>
                         <ComboBoxItem Content="Completed"/>
                         <ComboBoxItem Content="Delete"/>

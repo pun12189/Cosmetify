@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ using System.Windows.Media.Imaging;
 
 namespace Cosmetify.Model
 {
-    public class BatchModel
+    public class BatchModel : INotifyPropertyChanged
     {
+        private double remainingWater = 100.0;
+
         public int Id { get; set; }
 
         public string BatchOrderNo { get; set; }
@@ -60,5 +63,21 @@ namespace Cosmetify.Model
         public string BrandName { get; set; }
 
         public string ProductID { get; set; }
+
+        public double RemainingWater
+        {
+            get => this.remainingWater; set
+            {
+                this.remainingWater = value;
+                this.NotifyPropertyChanged(nameof(RemainingWater));
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

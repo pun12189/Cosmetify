@@ -157,11 +157,4 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <Folder Include="Extras\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\..\..\Downloads\bill.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
 </Project>

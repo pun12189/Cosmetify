@@ -30,6 +30,11 @@ namespace Cosmetify.PdfCore
         PageSetup pageSetup;
 
         /// <summary>
+        /// The Represents the orientation od MigraDoc document.
+        /// </summary>
+        Section section;
+
+        /// <summary>
         /// Creates the invoice document.
         /// </summary>
         public Document CreateDocument(BatchModel batchModel)
@@ -120,7 +125,7 @@ namespace Cosmetify.PdfCore
         void CreateOrderPage(BatchModel batchModel)
         {
             // Each MigraDoc document needs at least one section.
-            var section = _document.AddSection();
+            section = _document.AddSection();
 
             // Define the page setup. We use an image in the header, therefore the
             // default top margin is too small for our invoice.
@@ -161,6 +166,9 @@ namespace Cosmetify.PdfCore
             paragraph = _addressFrame.AddParagraph("Order ID: " + batchModel.OrderId);
             //paragraph.Format.Font.Size = 12;
             paragraph.Format.Font.Bold = true;
+            paragraph = _addressFrame.AddParagraph("Batch ID: " + batchModel.BatchOrderNo);
+            //paragraph.Format.Font.Size = 12;
+            paragraph.Format.Font.Bold = false;
             paragraph.Format.SpaceAfter = 3;
 
             paragraph = section.AddParagraph("Creation Date: " + batchModel.BatchDate.ToShortDateString());
@@ -347,7 +355,7 @@ namespace Cosmetify.PdfCore
         void CreatePage(BatchModel batchModel)
         {
             // Each MigraDoc document needs at least one section.
-            var section = _document.AddSection();
+            section = _document.AddSection();
 
             // Define the page setup. We use an image in the header, therefore the
             // default top margin is too small for our invoice.
@@ -388,7 +396,9 @@ namespace Cosmetify.PdfCore
             paragraph = _addressFrame.AddParagraph("Batch ID: " + batchModel.BatchOrderNo);
             //paragraph.Format.Font.Size = 12;
             paragraph.Format.Font.Bold = true;
-            paragraph.Format.SpaceAfter = 3;            
+            paragraph = _addressFrame.AddParagraph("Order ID: " + batchModel.OrderId);
+            //paragraph.Format.Font.Size = 12;
+            paragraph.Format.SpaceAfter = 3;
 
             paragraph = section.AddParagraph("Creation Date: " + batchModel.BatchDate.ToShortDateString());
             paragraph.Format.Font.Size = 8;
@@ -424,14 +434,17 @@ namespace Cosmetify.PdfCore
             paragraph.Format.Alignment = ParagraphAlignment.Center;
             paragraph.Format.Font.Size = 12;
 
-            if (!string.IsNullOrEmpty(batchModel.BatchOrderCollection[0].MFName))
+            if (!string.IsNullOrEmpty(batchModel.ProductID))
             {
-                paragraph = section.AddParagraph("Formulation Name: " + batchModel.BatchOrderCollection[0].MFName);
+                paragraph = section.AddParagraph("Formulation Name: " + batchModel.ProductName + "(" + batchModel.ProductID + ")");
                 // We use an empty paragraph to move the first text line below the address field.
                 //paragraph.Format.Font.Size = 12;
                 paragraph.Format.Font.Bold = true;
                 paragraph.Format.LineSpacing = "1.25cm";
-            }            
+            }
+            paragraph = section.AddParagraph("Brand Name: " + batchModel.BrandName);
+            paragraph.Format.LineSpacing = "1.25cm";
+            paragraph.Format.SpaceBefore = "0.5mm";
 
             paragraph = section.AddParagraph("Batch Size: " + batchModel.BatchOrderCollection[0].BatchSize + " " + batchModel.BatchOrderCollection[0].Units);
             // We use an empty paragraph to move the first text line below the address field.
@@ -442,18 +455,21 @@ namespace Cosmetify.PdfCore
             paragraph = section.AddParagraph("Packaging Type: " + batchModel.PkgType);
             //paragraph.Format.Font.Size = 8;
             paragraph.Style = "Reference";
-            paragraph.AddTab();
-            paragraph.AddText("Mfg Date: " + batchModel.MfgDate.ToShortDateString());
+            if(batchModel.MfgDate.Date > DateTime.Now.Date)
+            {
+                paragraph.AddTab();
+                paragraph.AddText("Mfg Date: " + batchModel.MfgDate.ToShortDateString());
+            }            
 
             paragraph = section.AddParagraph("Order Quantity: " + batchModel.PkgOrderQuantity);
             //paragraph.Format.Font.Size = 8;
             paragraph.Style = "Reference";
-            paragraph.AddTab();
-            paragraph.AddText("Expiry Date: " + batchModel.Expiry.ToShortDateString());
-
-            paragraph = section.AddParagraph("Brand Name: " + batchModel.ProductName);
-            paragraph.Format.LineSpacing = "1.25cm";
-            paragraph.Format.SpaceBefore = "0.5mm";
+            if (batchModel.Expiry.Date > DateTime.Now.Date)
+            {
+                paragraph.AddTab();
+                paragraph.AddText("Expiry Date: " + batchModel.Expiry.ToShortDateString());
+            }            
+            
             //paragraph.Format.Font.Size = 10;
             //paragraph = section.AddParagraph();
             // We use an empty paragraph to move the first text line below the address field.
@@ -626,9 +642,63 @@ namespace Cosmetify.PdfCore
                 _table.SetEdge(0, _table.Rows.Count - 2, 6, 2, Edge.Box, BorderStyle.Single, 0.75);
             }*/
 
-            // Add an invisible row as a space line to the table.
             var row = _table.AddRow();
             row.Borders.Visible = false;
+
+            if (batchModel.BatchOrderCollection != null && batchModel.BatchOrderCollection.Count > 0)
+            {
+                var remaining = 100.0;
+                foreach (var item in batchModel.BatchOrderCollection)
+                {
+                    remaining -= item.PercentageRequired;
+                }
+
+                paragraph = section.AddParagraph();
+                paragraph.AddFormattedText("Water: " + remaining + "%");
+                paragraph.Format.Alignment = ParagraphAlignment.Left;
+                //paragraph.Format.Font.Size = 8;
+                // We use an empty paragraph to move the first text line below the address field.
+                paragraph.Format.SpaceAfter = "2mm";
+            }
+
+            // Add an invisible row as a space line to the table.
+            if (!string.IsNullOrEmpty(batchModel.Colour))
+            {
+                paragraph = section.AddParagraph();
+                paragraph.AddFormattedText("Colors: " + batchModel.Colour);
+                paragraph.Format.Alignment = ParagraphAlignment.Left;
+                //paragraph.Format.Font.Size = 8;
+                // We use an empty paragraph to move the first text line below the address field.
+                paragraph.Format.SpaceAfter = "1mm";
+            }
+
+            if (!string.IsNullOrEmpty(batchModel.Perfume))
+            {
+                paragraph = section.AddParagraph();
+                paragraph.AddFormattedText("Perfume: " + batchModel.Perfume);
+                paragraph.Format.Alignment = ParagraphAlignment.Left;
+                //paragraph.Format.Font.Size = 8;
+                // We use an empty paragraph to move the first text line below the address field.
+                paragraph.Format.SpaceAfter = "1mm";
+            }
+
+            if (batchModel.Claims != null && batchModel.Claims.Count > 0)
+            {
+                var claims = string.Empty;
+                foreach (var clm in batchModel.Claims)
+                {
+                    claims += clm.ToString() + " ";
+                }
+                paragraph = section.AddParagraph();
+                paragraph.AddFormattedText("Claims: " + claims);
+                paragraph.Format.Alignment = ParagraphAlignment.Left;
+                //paragraph.Format.Font.Size = 8;
+                // We use an empty paragraph to move the first text line below the address field.
+                paragraph.Format.SpaceAfter = "2mm";
+            }
+            
+            //var row = _table.AddRow();
+            //row.Borders.Visible = false;
 
             // Add the total price row.
             /*row = _table.AddRow();
