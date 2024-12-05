@@ -72,6 +72,10 @@ namespace Cosmetify.Helper
                     dtData.Columns.Add(columnName);
             }
 
+            dtData.Columns.Add("category");
+            dtData.Columns.Add("subcategory");
+            dtData.Columns.Add("subsubcategory");
+
             //Creating row for each line.(except the first line, which contain column names)
             for (int row = 1; row < rows.Length; row++)
             {

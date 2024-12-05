@@ -105,10 +105,25 @@ namespace Cosmetify.RenderView
         private void btnAddProd_Click(object sender, RoutedEventArgs e)
         {
             var addCust = new AddMasterFormula();
+            addCust.ActivesList.Clear();
             if ((bool)addCust.ShowDialog())
             {
-                this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
-                MessageBox.Show("List Refreshed, Please select added formula", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (!string.IsNullOrEmpty(addCust.FormulaName) || !string.IsNullOrEmpty(addCust.FormulaCode) || addCust.ActivesList.Count > 0)
+                {
+                    var model = new MasterFormulaModel();
+                    model.Name = addCust.FormulaName;
+                    model.Code = addCust.FormulaCode;
+                    model.Requirements = new ObservableCollection<MasterProductModel>();
+                    foreach (var item in addCust.ActivesList)
+                    {
+                        model.Requirements.Add(item);
+                    }
+
+                    model.RemainingWater = addCust.RemainingWater;
+                    HomepageViewModel.CommonViewModel.MasterFormulaRepository.InsertFormula(model); 
+                    this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                    MessageBox.Show("List Refreshed, Please select added formula", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                }                
             }
         }
 
@@ -212,7 +227,7 @@ namespace Cosmetify.RenderView
 
             if (!string.IsNullOrEmpty(this.tbMProd.Text))
             {
-                batchModel.Remarks = this.tbMProd.Text;
+                batchModel.AdditionalInfo = this.tbMProd.Text;
             }
 
             batchModel.PkgType = this.tbPkgType.Text;
@@ -220,6 +235,20 @@ namespace Cosmetify.RenderView
             batchModel.PkgOrderQuantity = this.tbPkgQty.Text;
 
             this.BatchModelCollection.Add(batchModel);
+
+            this.cbCust.IsEnabled = true;
+            this.cbBrand.SelectedIndex = 0;
+            this.cbProduct.SelectedIndex = 0;
+            this.tbMProd.Text = string.Empty;
+            this.tbPkgQty.Text = string.Empty;
+            this.cbColor.SelectedIndex = 0;
+            this.cbPerfume.SelectedIndex = 0;
+            this.tbPfumeVal.Text = string.Empty;
+            this.tbClaims.Text = string.Empty;
+            this.tbPkgType.Text = string.Empty;
+            this.imgPkg.ClearValue(Image.SourceProperty);
+            this.cbProd.SelectedIndex = 0;
+            BindingOperations.ClearBinding(this.dataGrid1, DataGrid.ItemsSourceProperty);
         }
 
         private void btnCreateOrder_Click(object sender, RoutedEventArgs e)

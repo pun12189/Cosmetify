@@ -62,7 +62,7 @@ namespace Cosmetify.Model
             {
                 this.remainingStock = value;
                 this.NotifyPropertyChanged(nameof(RemainingStock));
-                this.DiffStock = this.Stocks - this.SKU;
+                this.DiffStock = this.Stocks;
             }
         }
 

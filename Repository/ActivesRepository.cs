@@ -306,8 +306,6 @@ namespace Cosmetify.Repository
                             {
                                 MessageBox.Show("CSV File must have unique data", "Info");
                             }
-
-
                         }
                     }
                 }
@@ -315,7 +313,7 @@ namespace Cosmetify.Repository
             catch (Exception e)
             {
                 Helper.Helper.BugReport(e);
-            }            
+            }
         }
     }
 }

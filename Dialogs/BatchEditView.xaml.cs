@@ -39,6 +39,12 @@ namespace Cosmetify.Dialogs
                     break;
                 }
             }
+
+            this.dtBatch.SelectedDateTime = this.BatchModel.BatchDate;
+            this.dtPlan.SelectedDate = this.BatchModel.PlanningDate;
+            this.dtMfg.SelectedDate = this.BatchModel.MfgDate;
+            this.dtExp.SelectedDate = this.BatchModel.Expiry;
+            this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
         }
 
         public BatchModel BatchModel
@@ -69,6 +75,10 @@ namespace Cosmetify.Dialogs
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
+            this.BatchModel.BatchDate = (DateTime)this.dtBatch.SelectedDateTime;
+            this.BatchModel.PlanningDate = (DateTime)this.dtPlan.SelectedDate;
+            this.BatchModel.MfgDate = (DateTime)this.dtMfg.SelectedDate;
+            this.BatchModel.Expiry = (DateTime)this.dtExp.SelectedDate;
             this.DialogResult = true;
             this.Close();
         }
@@ -79,7 +89,7 @@ namespace Cosmetify.Dialogs
             if (tb != null && !string.IsNullOrEmpty(tb.Text))
             {
                 var bsize = long.Parse(tb.Text);
-                if (bsize > 0) {
+                if (bsize >= 0) {
                     if (this.BatchModel != null && this.BatchModel.BatchOrderCollection != null && this.BatchModel.BatchOrderCollection.Count > 0)
                     {
                         foreach (var item in this.BatchModel.BatchOrderCollection)
@@ -99,6 +109,16 @@ namespace Cosmetify.Dialogs
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsTextAllowed(e.Text);
+        }
+
+        private void cbProd_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.cbProd.SelectedItem != null && this.cbProd.SelectedItem is ActivesModel)
+            {
+                var batchOrder = new BatchOrderModel();
+                batchOrder.Actives = this.cbProd.SelectedItem as ActivesModel;
+                this.BatchModel.BatchOrderCollection.Add(batchOrder);
+            }
         }
     }
 }

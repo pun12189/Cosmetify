@@ -40,6 +40,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Text="{Binding ElementName=batchView, Path=BatchModel.BatchOrderNo}" Grid.ColumnSpan="7" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" FontWeight="Bold"/>
         
@@ -47,7 +48,7 @@
         <ComboBox x:Name="cbCust" Margin="0,5" DisplayMemberPath="FirstName" SelectedValuePath="ID" Grid.Row="1" Grid.Column="2" Width="180" Height="30" SelectionChanged="cbCust_SelectionChanged"/>
         
         <TextBlock Text="Brand Name" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="2" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.ProductName}"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.BrandName}"/>
         
         <TextBlock Text="Batch Size" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBox Grid.Row="3" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.BatchOrderCollection[0].BatchSize, Mode=OneWay}" TextChanged="BatchSizeUpdate" PreviewTextInput="TextBox_PreviewTextInput"/>
@@ -57,35 +58,35 @@
         
         <TextBlock Text="Pkg Order Qty" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBox Grid.Row="5" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.PkgOrderQuantity}"/>
+
+        <TextBlock Text="Status" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="5" Grid.Column="6" Margin="0,5" Width="180" Height="30" ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding ElementName=batchView, Path=BatchModel.Status}"/>
         
-        <TextBlock Text="Status" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <ComboBox Grid.Row="6" Grid.Column="2" Margin="0,5" Width="180" Height="30" ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding ElementName=batchView, Path=BatchModel.Status}"/>
-        
-        <TextBlock Text="Description" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="7" Grid.Column="2" Margin="0,5" Width="180" Height="60" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" Text="{Binding ElementName=batchView, Path=BatchModel.Description}"/>
+        <TextBlock Text="Description" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="6" Grid.Column="2" Margin="0,5" Width="180" Height="60" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" Text="{Binding ElementName=batchView, Path=BatchModel.Description}"/>
         
         <TextBlock Text="Batch Date" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <control:DateTimePicker Grid.Row="1" Grid.Column="6" Margin="0,5" Width="180" Height="30" SelectedDateTime="{Binding ElementName=batchView, Path=BatchModel.BatchDate}"/>
+        <control:DateTimePicker x:Name="dtBatch" Grid.Row="1" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True" IsClockVisible="False"/>
         
         <TextBlock Text="Planning Date" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <DatePicker Grid.Row="2" Grid.Column="6" Margin="0,5" Width="180" Height="30" SelectedDate="{Binding ElementName=batchView, Path=BatchModel.PlanningDate, Converter={StaticResource NotSetDateConverter}}"/>
+        <DatePicker x:Name="dtPlan" Grid.Row="2" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True"/>
         
         <TextBlock Text="Mfg Date" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <DatePicker Grid.Row="3" Grid.Column="6" Margin="0,5" Width="180" Height="30" SelectedDate="{Binding ElementName=batchView, Path=BatchModel.MfgDate, Converter={StaticResource NotSetDateConverter}}"/>
+        <DatePicker x:Name="dtMfg" Grid.Row="3" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True"/>
         
         <TextBlock Text="Expiry Date" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <DatePicker Grid.Row="4" Grid.Column="6" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.Expiry, Converter={StaticResource NotSetDateConverter}}"/>
+        <DatePicker x:Name="dtExp" Grid.Row="4" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True"/>
         
-        <TextBlock Text="Completion Date" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <control:DateTimePicker Grid.Row="5" Grid.Column="6" Margin="0,5" Width="180" Height="30" SelectedDateTime="{Binding ElementName=batchView, Path=BatchModel.CompletionDate, Converter={StaticResource NotSetDateConverter}}"/>
+        <!--<TextBlock Text="Completion Date" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <control:DateTimePicker Grid.Row="5" Grid.Column="6" Margin="0,5" Width="180" IsTodayHighlighted="True" Height="30" SelectedDateTime="{Binding ElementName=batchView, Path=BatchModel.CompletionDate}"/>
         
         <TextBlock Text="Order Stage" Grid.Row="6" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <ComboBox Grid.Row="6" Grid.Column="6" Margin="0,5" Width="180" Height="30" SelectedItem="{Binding ElementName=batchView, Path=BatchModel.OrderStage}"/>
+        <ComboBox Grid.Row="6" Grid.Column="6" Margin="0,5" Width="180" Height="30" SelectedItem="{Binding ElementName=batchView, Path=BatchModel.OrderStage}"/>-->
         
-        <TextBlock Text="Remarks" Grid.Row="7" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="7" Grid.Column="6" Margin="0,5" Width="180" Height="60" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" Text="{Binding ElementName=batchView, Path=BatchModel.Remarks}"/>
+        <TextBlock Text="Remarks" Grid.Row="6" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="6" Grid.Column="6" Margin="0,5" Width="180" Height="60" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" Text="{Binding ElementName=batchView, Path=BatchModel.Remarks}"/>
 
-        <DataGrid AutoGenerateColumns="False" Margin="0,5" Grid.Row="8" Grid.ColumnSpan="7" ItemsSource="{Binding ElementName=batchView, Path=BatchModel.BatchOrderCollection}">
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" Margin="0,5" Grid.Row="8" Grid.ColumnSpan="7" ItemsSource="{Binding ElementName=batchView, Path=BatchModel.BatchOrderCollection}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Actives.ActivesName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Code" Binding="{Binding Actives.ShortCode, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
@@ -96,7 +97,10 @@
                 <DataGridTextColumn Header="Unit" Binding="{Binding Units}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-
-        <Button x:Name="btnUpdate" Margin="0,10" Click="btnUpdate_Click" Content="Apply" Width="150" Grid.Row="9" Grid.ColumnSpan="7" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="9" Grid.ColumnSpan="7" Orientation="Horizontal" x:Name="stkAct">
+            <TextBlock Text="Add Actives" Margin="0,0,5,0" VerticalAlignment="Center"/>
+            <ComboBox x:Name="cbProd" VerticalAlignment="Center" Width="200" DisplayMemberPath="ActivesName" Margin="0,0,5,0" SelectionChanged="cbProd_SelectionChanged"/>
+        </StackPanel>
+        <Button x:Name="btnUpdate" Margin="0,10" Click="btnUpdate_Click" Content="Apply" Width="150" Grid.Row="10" Grid.ColumnSpan="7" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>

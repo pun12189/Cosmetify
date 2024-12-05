@@ -4,6 +4,7 @@ using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
 using System.Collections.ObjectModel;
 using System.IO;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace Cosmetify.PdfCore
 {
@@ -246,15 +247,15 @@ namespace Cosmetify.PdfCore
             // We use an empty paragraph to move the first text line below the address field.
             //paragraph.Format.LineSpacing = "1.25cm";
             //paragraph.Format.LineSpacingRule = LineSpacingRule.Exactly;
-            if (!string.IsNullOrEmpty(batchModel.Remarks))
-            {
-                paragraph = section.AddParagraph();
-                paragraph.AddFormattedText("Info: " + batchModel.Remarks);
-                paragraph.Format.Alignment = ParagraphAlignment.Left;
-                //paragraph.Format.Font.Size = 8;
-                // We use an empty paragraph to move the first text line below the address field.
-                paragraph.Format.SpaceAfter = "2mm";
-            }
+            //if (!string.IsNullOrEmpty(batchModel.Remarks))
+            //{
+            //    paragraph = section.AddParagraph();
+            //    paragraph.AddFormattedText("Info: " + batchModel.Remarks);
+            //    paragraph.Format.Alignment = ParagraphAlignment.Left;
+            //    //paragraph.Format.Font.Size = 8;
+            //    // We use an empty paragraph to move the first text line below the address field.
+            //    paragraph.Format.SpaceAfter = "2mm";
+            //}
 
             //paragraph.Format.LineSpacingRule = LineSpacingRule.Exactly;
 
@@ -785,13 +786,17 @@ namespace Cosmetify.PdfCore
                 row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
                 row1.Cells[1].AddParagraph(bModel.ProductID);
                 row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[2].AddParagraph(bModel.ProductName);
+                row1.Cells[2].AddParagraph(bModel.ProductName + " (" + bModel.AdditionalInfo + ")");
                 row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
                 var actContent = string.Empty;
+                var remaining = 100.0;
                 foreach (var act in bModel.BatchOrderCollection)
                 {
+                    remaining -= act.PercentageRequired;
                     actContent += act.Actives.ActivesName + " " + act.PercentageRequired + "%" + Environment.NewLine;
                 }
+
+                actContent += "Water: " + remaining + "%";
 
                 row1.Cells[3].AddParagraph(actContent);
                 row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
@@ -902,17 +907,17 @@ namespace Cosmetify.PdfCore
             _table.SetEdge(5, _table.Rows.Count - 4, 1, 4, Edge.Box, BorderStyle.Single, 0.75);*/
 
             // Add the notes paragraph.
-            if (!string.IsNullOrEmpty(batchModel.Remarks))
-            {
-                paragraph = _document.LastSection.AddParagraph();
-                paragraph.Format.Alignment = ParagraphAlignment.Left;
-                paragraph.Format.SpaceBefore = "1cm";
-                //paragraph.Format.Borders.Width = 0.75;
-                //paragraph.Format.Borders.Distance = 3;
-                //paragraph.Format.Borders.Color = TableBorder;
-                //paragraph.Format.Shading.Color = TableGray;
-                paragraph.AddFormattedText("Remarks: " + batchModel.Remarks);
-            }
+            //if (!string.IsNullOrEmpty(batchModel.Remarks))
+            //{
+            //    paragraph = _document.LastSection.AddParagraph();
+            //    paragraph.Format.Alignment = ParagraphAlignment.Left;
+            //    paragraph.Format.SpaceBefore = "1cm";
+            //    //paragraph.Format.Borders.Width = 0.75;
+            //    //paragraph.Format.Borders.Distance = 3;
+            //    //paragraph.Format.Borders.Color = TableBorder;
+            //    //paragraph.Format.Shading.Color = TableGray;
+            //    paragraph.AddFormattedText("Remarks: " + batchModel.Remarks);
+            //}
         }
 
         internal static string LoadImageFromBytes(byte[] cData)

@@ -28,7 +28,7 @@ namespace Cosmetify.Model
             {
                 batchSize = value;
                 this.NotifyPropertyChanged(nameof(BatchSize));
-                if (percentageRequired > 0 && this.actives != null)
+                if (percentageRequired >= 0 && this.actives != null)
                 {
                     this.StocksRequired = this.BatchSize * percentageRequired / 100;
                 }
@@ -75,7 +75,7 @@ namespace Cosmetify.Model
                 if (this.actives != null)
                 {
                     this.RemainingStock = this.Actives.Stocks - this.StocksRequired;
-                    this.Actives.Stocks = this.RemainingStock;
+                    // this.Actives.Stocks = this.RemainingStock;
                 }
             }
         }

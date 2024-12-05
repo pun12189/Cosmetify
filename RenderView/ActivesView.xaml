@@ -91,7 +91,7 @@
                     </StackPanel>
                 </Expander>
                 <TextBlock Grid.Row="2" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
-                <DataGrid FontFamily="Arial" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=activesView, Path=ActivesModelsCollection}" AutoGenerateColumns="False" Grid.Row="3" RowEditEnding="dataGrid1_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch">
+                <DataGrid FontFamily="Arial" Foreground="Black" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=activesView, Path=ActivesModelsCollection}" AutoGenerateColumns="False" Grid.Row="3" RowEditEnding="dataGrid1_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch">
                     <!--<DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="Background" Value="Blue"/>
@@ -103,6 +103,15 @@
                             <Setter Property="Background" Value="{Binding RemainingStock, Converter={StaticResource ValueToForegroundColor}, ConverterParameter={StaticResource RowClr}, UpdateSourceTrigger=PropertyChanged}"/>
                         </Style>
                     </DataGrid.RowStyle>
+                    <DataGrid.Resources>
+                        <Style TargetType="{x:Type DataGridCell}">                            
+                            <Style.Triggers>
+                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                    <Setter Property="Foreground" Value="Black" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.Header>
@@ -135,11 +144,11 @@
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <ComboBox x:Name="cbCateg" SelectedItem="{Binding Category}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbCateg_SelectionChanged"/>
+                                        <ComboBox x:Name="cbCateg1" SelectedItem="{Binding Category}" ItemsSource="{Binding ElementName=activesView, Path=Categories}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbCateg1_SelectionChanged"/>
                                         <TextBlock Text="->" VerticalAlignment="Center"/>
-                                        <ComboBox x:Name="cbSCateg" SelectedItem="{Binding SubCategory}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSCateg_SelectionChanged"/>
+                                        <ComboBox x:Name="cbSCateg1" SelectedItem="{Binding SubCategory}" ItemsSource="{Binding ElementName=activesView, Path=SubCategories}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSCateg1_SelectionChanged"/>
                                         <TextBlock Text="->" VerticalAlignment="Center"/>
-                                        <ComboBox x:Name="cbSSCateg" SelectedItem="{Binding SubSubCategory}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSSCateg_SelectionChanged"/>
+                                        <ComboBox x:Name="cbSSCateg1" SelectedItem="{Binding SubSubCategory}" ItemsSource="{Binding ElementName=activesView, Path=SubSubCategories}" VerticalAlignment="Center" DisplayMemberPath="CategoryName" SelectedValuePath="Id"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
@@ -148,13 +157,13 @@
                         <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="SKU" Binding="{Binding SKU, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Stock" Binding="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" />
-                        <DataGridTextColumn Header="Stock Diff" Binding="{Binding DiffStock, UpdateSourceTrigger=PropertyChanged}">
+                        <!--<DataGridTextColumn Header="Stock Diff" Binding="{Binding DiffStock, UpdateSourceTrigger=PropertyChanged}">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Background" Value="{Binding DiffStock, Converter={StaticResource ValueToForegroundColor}, ConverterParameter={StaticResource diffClr}}"/>
                                 </Style>
                             </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
+                        </DataGridTextColumn>-->
                         <DataGridTextColumn Header="Processed Batches" Binding="{Binding TotalBatchOrders, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
                         <DataGridTextColumn Header="Processed Rqt" Binding="{Binding TotalRequired, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
                             <DataGridTextColumn.CellStyle>
@@ -166,13 +175,13 @@
                         <DataGridTextColumn Header="Created Batches" Binding="{Binding TotalCreated, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="Created Rqt" Binding="{Binding TotalCreatedRequired, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="Hold Batches" Binding="{Binding TotalHold, UpdateSourceTrigger=PropertyChanged}" />
-                        <DataGridTextColumn Header="Hold Rqt" Binding="{Binding TotalHoldRequired, UpdateSourceTrigger=PropertyChanged}">
+                        <!--<DataGridTextColumn Header="Hold Rqt" Binding="{Binding TotalHoldRequired, UpdateSourceTrigger=PropertyChanged}">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Background" Value="{StaticResource holdClr}"/>
                                 </Style>
                             </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
+                        </DataGridTextColumn>-->
                         <DataGridTextColumn Header="Remaining" Binding="{Binding RemainingStock, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">

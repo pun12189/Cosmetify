@@ -45,6 +45,18 @@ namespace Cosmetify.RenderView
         public static readonly DependencyProperty ActivesModelsCollectionProperty =
             DependencyProperty.Register("ActivesModelsCollection", typeof(ObservableCollection<ActivesModel>), typeof(ActivesView), new PropertyMetadata(HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts()));
 
+        // Using a DependencyProperty as the backing store for SubSubCategories.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubSubCategoriesProperty =
+            DependencyProperty.Register("SubSubCategories", typeof(ObservableCollection<SubSubCategoryModel>), typeof(ActivesView), new PropertyMetadata(new ObservableCollection<SubSubCategoryModel>()));
+
+        // Using a DependencyProperty as the backing store for SubCategories.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubCategoriesProperty =
+            DependencyProperty.Register("SubCategories", typeof(ObservableCollection<SubCategoryModel>), typeof(ActivesView), new PropertyMetadata(new ObservableCollection<SubCategoryModel>()));
+
+        // Using a DependencyProperty as the backing store for Categories.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CategoriesProperty =
+            DependencyProperty.Register("Categories", typeof(ObservableCollection<CategoryModel>), typeof(ActivesView), new PropertyMetadata(new ObservableCollection<CategoryModel>()));
+
         public ActivesView()
         {
             InitializeComponent();
@@ -52,6 +64,7 @@ namespace Cosmetify.RenderView
             this.cbStatus.ItemsSource = System.Enum.GetValues(typeof(BatchStatus));
             this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             this.cbCateg.ItemsSource = HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
+            this.Categories = HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
         }
 
         public CategoryModel Category { get; set; }
@@ -60,6 +73,30 @@ namespace Cosmetify.RenderView
 
         public SubSubCategoryModel SubSubCategory { get; set; }
 
+        public ObservableCollection<ActivesModel> ActivesModelsCollection
+        {
+            get { return (ObservableCollection<ActivesModel>)GetValue(ActivesModelsCollectionProperty); }
+            set { SetValue(ActivesModelsCollectionProperty, value); }
+        }
+
+        public ObservableCollection<CategoryModel> Categories
+        {
+            get { return (ObservableCollection<CategoryModel>)GetValue(CategoriesProperty); }
+            set { SetValue(CategoriesProperty, value); }
+        }
+
+        public ObservableCollection<SubCategoryModel> SubCategories
+        {
+            get { return (ObservableCollection<SubCategoryModel>)GetValue(SubCategoriesProperty); }
+            set { SetValue(SubCategoriesProperty, value); }
+        }
+
+        public ObservableCollection<SubSubCategoryModel> SubSubCategories
+        {
+            get { return (ObservableCollection<SubSubCategoryModel>)GetValue(SubSubCategoriesProperty); }
+            set { SetValue(SubSubCategoriesProperty, value); }
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Create OpenFileDialog 
@@ -67,7 +104,7 @@ namespace Cosmetify.RenderView
 
             // Set filter for file extension and default file extension 
             dlg.DefaultExt = ".csv";
-            dlg.Filter = "csv Files (*.csv)|*.csv";
+            dlg.Filter = "Excel files(*.csv, *.xls, *.xlsx) | *.csv; *.xls; *.xlsx | All files(*.*) | *.* ";
 
             // Display OpenFileDialog by calling ShowDialog method 
             bool? result = dlg.ShowDialog();
@@ -315,13 +352,7 @@ namespace Cosmetify.RenderView
                     this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
                 }
             }
-        }
-
-        public ObservableCollection<ActivesModel> ActivesModelsCollection
-        {
-            get { return (ObservableCollection<ActivesModel>)GetValue(ActivesModelsCollectionProperty); }
-            set { SetValue(ActivesModelsCollectionProperty, value); }
-        }
+        }        
 
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
@@ -545,6 +576,33 @@ namespace Cosmetify.RenderView
                 {
                     var category = HomepageViewModel.CommonViewModel.SubSubCategoryRepository.GetSubSubCategory(item.Id);
                     this.SubSubCategory = category;
+                }
+            }
+        }
+
+        private void cbCateg1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cb = sender as ComboBox;
+            if (cb != null && cb.SelectedIndex >= 0)
+            {
+                var item = cb.SelectedItem as CategoryModel;
+                if (item != null)
+                {
+                    this.SubCategories = item.SubCategories;
+                }
+            }
+        }
+
+        private void cbSCateg1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cb = sender as ComboBox;
+            if (cb != null && cb.SelectedIndex >= 0)
+            {
+                var item = cb.SelectedItem as SubCategoryModel;
+                if (item != null)
+                {
+                    var category = HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategory(item.Id);
+                    this.SubSubCategories = category.SubSubCategories;
                 }
             }
         }

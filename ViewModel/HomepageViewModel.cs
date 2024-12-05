@@ -86,10 +86,11 @@ namespace Cosmetify.ViewModel
             });
             this.Menu.Add(new MenuItem()
             {
-                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FileInvoiceSolid },
-                Label = "Procurement",
-                NavigationType = typeof(PurchaseView),
-                NavigationDestination = new Uri("RenderView/PurchaseView.xaml", UriKind.RelativeOrAbsolute)
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FirstOrderBrands },
+                Label = "Sales Order",
+                NavigationType = typeof(OrderInvoice),
+                NavigationDestination = new Uri("RenderView/OrderInvoice.xaml", UriKind.RelativeOrAbsolute),
+                IsEnabled = true
             });
             this.Menu.Add(new MenuItem()
             {
@@ -101,14 +102,6 @@ namespace Cosmetify.ViewModel
             });
             this.Menu.Add(new MenuItem()
             {
-                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FirstOrderBrands },
-                Label = "Sales Order",
-                NavigationType = typeof(OrderInvoice),
-                NavigationDestination = new Uri("RenderView/OrderInvoice.xaml", UriKind.RelativeOrAbsolute),
-                IsEnabled = true
-            });
-            this.Menu.Add(new MenuItem()
-            {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UsersSolid },
                 Label = "Customer",
                 NavigationType = typeof(LeadsView),
@@ -116,28 +109,35 @@ namespace Cosmetify.ViewModel
             });
             this.Menu.Add(new MenuItem()
             {
-                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.SalesforceBrands },
-                Label = "Sales",
-                NavigationType = typeof(SalesPage),
-                NavigationDestination = new Uri("RenderView/SalesPage.xaml", UriKind.RelativeOrAbsolute),
-                IsEnabled = false
+                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FileInvoiceSolid },
+                Label = "Procurement",
+                NavigationType = typeof(PurchaseView),
+                NavigationDestination = new Uri("RenderView/PurchaseView.xaml", UriKind.RelativeOrAbsolute)
             });
-            this.Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.VenusDoubleSolid },
-                Label = "Vendors",
-                NavigationType = typeof(VendorsPage),
-                NavigationDestination = new Uri("RenderView/VendorsPage.xaml", UriKind.RelativeOrAbsolute),
-                IsEnabled = false
-            });            
-            this.Menu.Add(new MenuItem()
-            {
-                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.ChartBarSolid },
-                Label = "Batch Reports",
-                NavigationType = typeof(ReportsPage),
-                NavigationDestination = new Uri("RenderView/ReportsPage.xaml", UriKind.RelativeOrAbsolute),
-                IsEnabled = false
-            });
+            //this.Menu.Add(new MenuItem()
+            //{
+            //    Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.SalesforceBrands },
+            //    Label = "Sales",
+            //    NavigationType = typeof(SalesPage),
+            //    NavigationDestination = new Uri("RenderView/SalesPage.xaml", UriKind.RelativeOrAbsolute),
+            //    IsEnabled = false
+            //});
+            //this.Menu.Add(new MenuItem()
+            //{
+            //    Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.VenusDoubleSolid },
+            //    Label = "Vendors",
+            //    NavigationType = typeof(VendorsPage),
+            //    NavigationDestination = new Uri("RenderView/VendorsPage.xaml", UriKind.RelativeOrAbsolute),
+            //    IsEnabled = false
+            //});            
+            //this.Menu.Add(new MenuItem()
+            //{
+            //    Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.ChartBarSolid },
+            //    Label = "Batch Reports",
+            //    NavigationType = typeof(ReportsPage),
+            //    NavigationDestination = new Uri("RenderView/ReportsPage.xaml", UriKind.RelativeOrAbsolute),
+            //    IsEnabled = false
+            //});
 
             this.OptionsMenu.Add(new MenuItem()
             {
@@ -147,14 +147,14 @@ namespace Cosmetify.ViewModel
                 NavigationDestination = new Uri("RenderView/SettingsPage.xaml", UriKind.RelativeOrAbsolute),
                 IsEnabled = true
             });
-            this.OptionsMenu.Add(new MenuItem()
-            {
-                Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UserCogSolid },
-                Label = "Reminders",
-                NavigationType = typeof(RemindersPage),
-                NavigationDestination = new Uri("RenderView/RemindersPage.xaml", UriKind.RelativeOrAbsolute),
-                IsEnabled = false
-            });
+            //this.OptionsMenu.Add(new MenuItem()
+            //{
+            //    Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.UserCogSolid },
+            //    Label = "Reminders",
+            //    NavigationType = typeof(RemindersPage),
+            //    NavigationDestination = new Uri("RenderView/RemindersPage.xaml", UriKind.RelativeOrAbsolute),
+            //    IsEnabled = false
+            //});
             this.OptionsMenu.Add(new MenuItem()
             {
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.InfoCircleSolid },
