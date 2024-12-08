@@ -49,7 +49,7 @@ namespace Cosmetify.Dialogs
             {
                 if (!string.IsNullOrEmpty(this.tbBNames.Text))
                 {
-                    var str = this.tbBNames.Text.Split(',');
+                    var str = this.tbBNames.Text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                     foreach (var b in str)
                     {
                         HomepageViewModel.CommonViewModel.ColoursRepository.InsertColor(b);
@@ -60,7 +60,7 @@ namespace Cosmetify.Dialogs
             {
                 if (!string.IsNullOrEmpty(this.tbBNames.Text))
                 {
-                    var str = this.tbBNames.Text.Split(',');
+                    var str = this.tbBNames.Text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                     foreach (var b in str)
                     {
                         HomepageViewModel.CommonViewModel.PerfumeRepository.InsertPerfume(b);

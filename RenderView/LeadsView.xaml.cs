@@ -91,5 +91,80 @@ namespace Cosmetify.RenderView
         {
             this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
         }
+
+        private void DeleteBatch(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                var model = button.DataContext as CustomerModel;
+                if (model != null)
+                {
+                    HomepageViewModel.CommonViewModel.LeadsRepository.DeleteLead(model.Id);
+                    this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                }
+            }
+        }
+
+        private void cbAll_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.dataGrid1.Items)
+            {
+                var row = this.dataGrid1.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
+                if (row != null)
+                {
+                    row.IsSelected = true;
+                }
+            }
+        }
+
+        private void cbAll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.dataGrid1.Items)
+            {
+                var row = this.dataGrid1.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
+                if (row != null)
+                {
+                    row.IsSelected = false;
+                }
+            }
+        }
+
+        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var searchData = this.tbSearch.Text;
+                if (!string.IsNullOrEmpty(searchData))
+                {
+                    var data = HomepageViewModel.CommonViewModel.LeadsRepository.SearchLeads(searchData);
+                    this.addLead.CustomerLeads = data;
+                }
+                else
+                {
+                    this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                }
+            }
+        }
+
+        private void btnBulk_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.dataGrid1.SelectedItems != null && this.dataGrid1.SelectedItems.Count > 0)
+            {
+                foreach (CustomerModel model in this.dataGrid1.SelectedItems)
+                {
+                    if (model != null)
+                    {
+                        HomepageViewModel.CommonViewModel.LeadsRepository.DeleteLead(model.Id);
+                    }
+                }
+
+                this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            }
+            else
+            {
+                MessageBox.Show("Please select multiple rows to perform this action.", "Bulk Delete", MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+        }
     }
 }

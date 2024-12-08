@@ -65,29 +65,29 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width=".2*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Text="First Name"/>
-                <TextBlock Grid.Row="1" Text="Last Name"/>
-                <TextBlock Grid.Row="2" Text="Email ID"/>
-                <TextBlock Grid.Row="3" Text="Contact"/>
-                <TextBlock Grid.Row="4" Text="Address"/>
-                <TextBlock Grid.Row="5" Text="City"/>
-                <TextBlock Grid.Row="6" Text="District" Visibility="{Binding ElementName=cbDist, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBlock Grid.Row="7" Text="PinCode"/>
-                <TextBlock Grid.Row="8" Text="State"/>
-                <TextBlock Grid.Row="9" Text="Country"/>
+                <TextBlock Grid.Row="0" Text="Name"/>
+                <TextBlock Grid.Row="9" Text="Brand Name(s)"/>
+                <TextBlock Grid.Row="1" Text="Email ID"/>
+                <TextBlock Grid.Row="2" Text="Contact"/>
+                <TextBlock Grid.Row="3" Text="Address"/>
+                <TextBlock Grid.Row="4" Text="City"/>
+                <TextBlock Grid.Row="5" Text="District" Visibility="{Binding ElementName=cbDist, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Row="6" Text="PinCode"/>
+                <TextBlock Grid.Row="7" Text="State"/>
+                <TextBlock Grid.Row="8" Text="Country"/>
                 <TextBlock Grid.Row="10" Text="D.O.B" Visibility="{Binding ElementName=cbDob, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBlock Grid.Row="11" Text="D.O.A" Visibility="{Binding ElementName=cbDoa, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBlock Grid.Row="12" Text="Notes/Comments"/>
                 <TextBox x:Name="tbFname" Grid.Row="0" Grid.Column="2"/>
-                <TextBox x:Name="tbLname" Grid.Row="1" Grid.Column="2"/>
-                <TextBox x:Name="tbEmail" Grid.Row="2" Grid.Column="2"/>
-                <TextBox x:Name="tbContact" Grid.Row="3" Grid.Column="2" PreviewTextInput="tb_PreviewTextInput" MaxLength="10"/>
-                <TextBox x:Name="tbAddress" Grid.Row="4" Grid.Column="2" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Height="80"/>
-                <TextBox x:Name="tbCity" Grid.Row="5" Grid.Column="2"/>
-                <TextBox x:Name="tbDist" Grid.Row="6" Grid.Column="2" Visibility="{Binding ElementName=cbDist, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBox x:Name="tbPincode" Grid.Row="7" Grid.Column="2" PreviewTextInput="tb_PreviewTextInput" MaxLength="6" LostFocus="tbPincode_LostFocus"/>
-                <TextBox x:Name="tbState" Grid.Row="8" Grid.Column="2"/>
-                <TextBox x:Name="tbCountry" Grid.Row="9" Grid.Column="2"/>
+                <TextBox x:Name="tbBname" Grid.Row="9" Grid.Column="2" control:TextBoxHelper.Watermark="Comma seperated values"/>
+                <TextBox x:Name="tbEmail" Grid.Row="1" Grid.Column="2"/>
+                <TextBox x:Name="tbContact" Grid.Row="2" Grid.Column="2" PreviewTextInput="tb_PreviewTextInput" MaxLength="10"/>
+                <TextBox x:Name="tbAddress" Grid.Row="3" Grid.Column="2" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Height="80"/>
+                <TextBox x:Name="tbCity" Grid.Row="4" Grid.Column="2"/>
+                <TextBox x:Name="tbDist" Grid.Row="5" Grid.Column="2" Visibility="{Binding ElementName=cbDist, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBox x:Name="tbPincode" Grid.Row="6" Grid.Column="2" PreviewTextInput="tb_PreviewTextInput" MaxLength="6" LostFocus="tbPincode_LostFocus"/>
+                <TextBox x:Name="tbState" Grid.Row="7" Grid.Column="2"/>
+                <TextBox x:Name="tbCountry" Grid.Row="8" Grid.Column="2"/>
                 <DatePicker x:Name="tbDob" Grid.Row="10" Grid.Column="2" Margin="5" Visibility="{Binding ElementName=cbDob, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <DatePicker x:Name="tbDoa" Grid.Row="11" Grid.Column="2" Margin="5" Visibility="{Binding ElementName=cbDoa, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="tbNotes" Grid.Row="12" Grid.Column="2" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Height="80"/>

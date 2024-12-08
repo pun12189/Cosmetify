@@ -5,9 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Cosmetify.RenderView"
       xmlns:localv="clr-namespace:Cosmetify.RenderView.UserControls"
+      xmlns:control="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:conv="clr-namespace:Cosmetify.Helper"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LeadsView" x:Name="leadsView">
+    <Page.Resources>
+        <conv:IntToNotSetConverter x:Key="IntToNotSetConverter"/>
+    </Page.Resources>
     <TabControl Name="Tabs1" TabStripPlacement="Top" BorderBrush="Blue" Margin="10">
         <TabItem Header="Customers" IsSelected="True" Padding="10,5,10,5">
             <Grid>
@@ -17,8 +23,67 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Button Visibility="Collapsed" Content="Import CSV File" Click="ImportFile" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,10,10,0" Width="150"/>
-                <Button Visibility="Visible" Content="Refresh" Click="Button_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,10,10,0" Width="150"/>
-                <DataGrid AutoGenerateColumns="True" Grid.Row="2" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=addLead, Path=CustomerLeads}" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted"/>
+                <!--<Button Visibility="Visible" Content="Refresh" Click="Button_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,10,10,0" Width="150"/>-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">                    
+                    <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Width="250" Margin="5,0,5,0" control:TextBoxHelper.AutoWatermark="True" control:TextBoxHelper.ClearTextButton="True" VerticalContentAlignment="Center" control:TextBoxHelper.Watermark="Search"/>
+                    <!--<Button x:Name="btnFilters" Content="Filters" Width="150" Margin="0,0,5,0" Click="btnFilters_Click"/>-->
+                    <Button x:Name="btnRefresh" Content="Refresh" Margin="5,0,5,0" Width="150" Click="Button_Click"/>
+                    <Button Content="Bulk Delete" x:Name="btnBulk" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnBulk_Click"/>
+                </StackPanel>
+                <TextBlock Grid.Row="1" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
+                <DataGrid AutoGenerateColumns="False" Grid.Row="2" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=addLead, Path=CustomerLeads}" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.Header>
+                                <CheckBox x:Name="cbAll" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="cbAll_Checked" Unchecked="cbAll_Unchecked"/>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center" IsHitTestVisible="False" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=IsSelected, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!--<DataGridTextColumn Header="Brand Name(s)" Binding="{Binding BrandName, UpdateSourceTrigger=PropertyChanged}"/>-->
+                        <DataGridTemplateColumn Header="Brand Name(s)">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding BrandName}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Email" Binding="{Binding EmailId, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Contact" Binding="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Addess" Binding="{Binding Address, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="City" Binding="{Binding City, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="District" Binding="{Binding District, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Pincode" Binding="{Binding PinCode, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IntToNotSetConverter}}"/>
+                        <DataGridTextColumn Header="State" Binding="{Binding State, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Country" Binding="{Binding Country, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Notes" Binding="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <!--<Button Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="FilePdfSolid"/>
+                                        </Button>-->
+                                        <Button Background="Transparent" Click="DeleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="TrashSolid"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
             
         </TabItem>

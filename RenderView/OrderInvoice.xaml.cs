@@ -219,7 +219,7 @@ namespace Cosmetify.RenderView
                 batchModel.Perfume = perfume.Name + " " + this.tbPfumeVal.Text;
             }
 
-            var claims = this.tbClaims.Text.Split(',');
+            var claims = this.tbClaims.Text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             if (claims.Length > 0)
             {
                 batchModel.Claims = new ObservableCollection<string>(claims);
@@ -236,19 +236,19 @@ namespace Cosmetify.RenderView
 
             this.BatchModelCollection.Add(batchModel);
 
-            this.cbCust.IsEnabled = true;
-            this.cbBrand.SelectedIndex = 0;
-            this.cbProduct.SelectedIndex = 0;
+            this.cbCust.IsEnabled = false;
+            this.cbBrand.SelectedIndex = -1;
+            this.cbProduct.SelectedIndex = -1;
             this.tbMProd.Text = string.Empty;
             this.tbPkgQty.Text = string.Empty;
-            this.cbColor.SelectedIndex = 0;
-            this.cbPerfume.SelectedIndex = 0;
+            this.cbColor.SelectedIndex = -1;
+            this.cbPerfume.SelectedIndex = -1;
             this.tbPfumeVal.Text = string.Empty;
             this.tbClaims.Text = string.Empty;
             this.tbPkgType.Text = string.Empty;
             this.imgPkg.ClearValue(Image.SourceProperty);
-            this.cbProd.SelectedIndex = 0;
-            BindingOperations.ClearBinding(this.dataGrid1, DataGrid.ItemsSourceProperty);
+            this.cbProd.SelectedIndex = -1;
+            this.BatchOrderCollection.Clear();
         }
 
         private void btnCreateOrder_Click(object sender, RoutedEventArgs e)
@@ -272,9 +272,7 @@ namespace Cosmetify.RenderView
                 if (cust != null)
                 {
                      this.cbBrand.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetBrandsOfCustomer(cust.Id);
-                }
-
-                this.cbCust.IsEnabled = false;
+                }                
             }
         }        
 

@@ -117,6 +117,60 @@ namespace Cosmetify.Repository
             return leads;
         }
 
+        public ObservableCollection<CustomerModel> SearchLeads(string data)
+        {
+            ObservableCollection<CustomerModel> leads = null;
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "select * from customer_lead";
+                    command.CommandText = "select * from customer_lead where cust_fname LIKE @data OR cust_email LIKE @data OR cust_phone LIKE @data OR cust_pin LIKE @data OR cust_notes LIKE @data OR brand LIKE @data";
+                    command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
+                    var reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        leads = new ObservableCollection<CustomerModel>();
+                        while (reader.Read())
+                        {
+                            var lead = new CustomerModel
+                            {
+                                Id = reader.GetInt32(0),
+                                FirstName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                                LastName = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                EmailId = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
+                                PhoneNumber = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
+                                Address = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                                City = reader.IsDBNull(6) ? string.Empty : reader.GetString(6),
+                                District = reader.IsDBNull(7) ? string.Empty : reader.GetString(7),
+                                State = reader.IsDBNull(8) ? string.Empty : reader.GetString(8),
+                                PinCode = reader.IsDBNull(9) ? 0 : reader.GetInt32(9),
+                                Country = reader.IsDBNull(10) ? string.Empty : reader.GetString(10),
+                                DateOfAnniversary = reader.IsDBNull(11) ? DateTime.MinValue : reader.GetDateTime(11),
+                                DateOfBirth = reader.IsDBNull(12) ? DateTime.MinValue : reader.GetDateTime(12),
+                                Label = reader.IsDBNull(13) ? string.Empty : reader.GetString(13),
+                                Notes = reader.IsDBNull(14) ? string.Empty : reader.GetString(14),
+                                BrandName = reader.IsDBNull(15) ? null : JsonSerializer.Deserialize<ObservableCollection<string>>(reader.GetString(15))
+                            };
+
+                            leads.Add(lead);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return leads;
+        }
+
         public void InsertLead(CustomerModel lead)
         {
             try

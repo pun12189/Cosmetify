@@ -540,11 +540,11 @@ namespace Cosmetify.PdfCore
             row.Cells[0].Format.Font.Bold = true;
             row.Cells[0].Format.Alignment = ParagraphAlignment.Center;
             row.Cells[0].VerticalAlignment = VerticalAlignment.Center;
-            row.Cells[1].AddParagraph("Active Name");
+            row.Cells[1].AddParagraph("Ingredients");
             row.Cells[1].Format.Font.Bold = true;
             row.Cells[1].Format.Alignment = ParagraphAlignment.Center;
             row.Cells[1].VerticalAlignment = VerticalAlignment.Center;
-            row.Cells[2].AddParagraph("Short Code");
+            row.Cells[2].AddParagraph("Code");
             row.Cells[2].Format.Font.Bold = true;
             row.Cells[2].Format.Alignment = ParagraphAlignment.Center;
             row.Cells[2].VerticalAlignment = VerticalAlignment.Center;
@@ -600,7 +600,67 @@ namespace Cosmetify.PdfCore
                 row1.Cells[5].AddParagraph();
                 row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
             }
-            
+
+            if (batchModel.BatchOrderCollection != null && batchModel.BatchOrderCollection.Count > 0)
+            {
+                var remaining = 100.0;
+                var size = 0.0;
+                foreach (var item in batchModel.BatchOrderCollection)
+                {
+                    remaining -= item.PercentageRequired;
+                    size = item.BatchSize;
+                }
+
+                var row1 = this._table.AddRow();
+                row1.Cells[0].AddParagraph((++count).ToString());
+                row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[1].AddParagraph("Water");
+                row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[2].AddParagraph("H2O");
+                row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[3].AddParagraph(remaining + "%");
+                row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[4].AddParagraph(Math.Round(size * remaining/100, 2).ToString());
+                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[5].AddParagraph();
+                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+            }
+
+            // Add an invisible row as a space line to the table.
+            if (!string.IsNullOrEmpty(batchModel.Colour))
+            {
+                var row1 = this._table.AddRow();
+                row1.Cells[0].AddParagraph((++count).ToString());
+                row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[1].AddParagraph(batchModel.Colour);
+                row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[2].AddParagraph();
+                row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[3].AddParagraph();
+                row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[4].AddParagraph();
+                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[5].AddParagraph();
+                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+            }
+
+            if (!string.IsNullOrEmpty(batchModel.Perfume))
+            {
+                var row1 = this._table.AddRow();
+                row1.Cells[0].AddParagraph((++count).ToString());
+                row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[1].AddParagraph(batchModel.Perfume);
+                row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[2].AddParagraph();
+                row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[3].AddParagraph();
+                row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[4].AddParagraph();
+                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[5].AddParagraph();
+                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+            }
+
             _table.SetEdge(0, _table.Rows.Count - 1, 6, 1, Edge.Box, BorderStyle.Single, 1);
             /*while (iter.MoveNext())
             {
@@ -644,44 +704,7 @@ namespace Cosmetify.PdfCore
             }*/
 
             var row = _table.AddRow();
-            row.Borders.Visible = false;
-
-            if (batchModel.BatchOrderCollection != null && batchModel.BatchOrderCollection.Count > 0)
-            {
-                var remaining = 100.0;
-                foreach (var item in batchModel.BatchOrderCollection)
-                {
-                    remaining -= item.PercentageRequired;
-                }
-
-                paragraph = section.AddParagraph();
-                paragraph.AddFormattedText("Water: " + remaining + "%");
-                paragraph.Format.Alignment = ParagraphAlignment.Left;
-                //paragraph.Format.Font.Size = 8;
-                // We use an empty paragraph to move the first text line below the address field.
-                paragraph.Format.SpaceAfter = "2mm";
-            }
-
-            // Add an invisible row as a space line to the table.
-            if (!string.IsNullOrEmpty(batchModel.Colour))
-            {
-                paragraph = section.AddParagraph();
-                paragraph.AddFormattedText("Colors: " + batchModel.Colour);
-                paragraph.Format.Alignment = ParagraphAlignment.Left;
-                //paragraph.Format.Font.Size = 8;
-                // We use an empty paragraph to move the first text line below the address field.
-                paragraph.Format.SpaceAfter = "1mm";
-            }
-
-            if (!string.IsNullOrEmpty(batchModel.Perfume))
-            {
-                paragraph = section.AddParagraph();
-                paragraph.AddFormattedText("Perfume: " + batchModel.Perfume);
-                paragraph.Format.Alignment = ParagraphAlignment.Left;
-                //paragraph.Format.Font.Size = 8;
-                // We use an empty paragraph to move the first text line below the address field.
-                paragraph.Format.SpaceAfter = "1mm";
-            }
+            row.Borders.Visible = false;            
 
             if (batchModel.Claims != null && batchModel.Claims.Count > 0)
             {

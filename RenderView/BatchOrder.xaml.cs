@@ -7,6 +7,7 @@ using MigraDoc.Rendering;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,6 +24,8 @@ namespace Cosmetify.RenderView
     /// </summary>
     public partial class BatchOrder : Page
     {
+        private static readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text        
+
         // Using a DependencyProperty as the backing store for BatchModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BatchModelProperty =
             DependencyProperty.Register("BatchModel", typeof(BatchModel), typeof(BatchOrder), new PropertyMetadata(new BatchModel()));
@@ -100,11 +103,13 @@ namespace Cosmetify.RenderView
 
             if (!string.IsNullOrEmpty(this.dpPlan.Text))
             {
-                this.BatchModel.PlannedDate = DateTime.Parse(this.dpPlan.Text);
+                this.BatchModel.PlannedDate = DateTime.Now;
+                this.BatchModel.PlanningDate = DateTime.Parse(this.dpPlan.Text);
             }
             else
             {
                 this.BatchModel.PlannedDate = DateTime.MinValue;
+                this.BatchModel.PlanningDate = DateTime.MinValue;
             }
             
             this.BatchModel.PkgType = this.tbPkg.Text;
@@ -204,6 +209,7 @@ namespace Cosmetify.RenderView
                     {
                         foreach (var item in model.BatchOrderCollection)
                         {
+                            item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
                             HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                         }
                     }
@@ -374,6 +380,7 @@ namespace Cosmetify.RenderView
                         {
                             foreach (var item in product.BatchOrderCollection)
                             {
+                                item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
                                 HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                             }
                         }
@@ -590,10 +597,50 @@ namespace Cosmetify.RenderView
                     var dialog = new BatchEditView(dc);
                     if ((bool)dialog.ShowDialog())
                     {
+                        if (dialog.BatchModel.Status == BatchStatus.Processed)
+                        {
+                            foreach (var item in dialog.BatchModel.BatchOrderCollection)
+                            {
+                                item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
+                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                            }
+                        }
+
                         HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(dialog.BatchModel);
                     }
                 }
-            }            
+            }
+
+            this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+        }
+
+        private void BatchSizeUpdate(object sender, TextChangedEventArgs e)
+        {
+            var tb = sender as System.Windows.Controls.TextBox;
+            if (tb != null && !string.IsNullOrEmpty(tb.Text))
+            {
+                var bsize = long.Parse(tb.Text);
+                if (bsize >= 0)
+                {
+                    if (this.BatchModel != null && this.BatchModel.BatchOrderCollection != null && this.BatchModel.BatchOrderCollection.Count > 0)
+                    {
+                        foreach (var item in this.BatchModel.BatchOrderCollection)
+                        {
+                            item.BatchSize = bsize;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextAllowed(e.Text);
         }
     }
 }

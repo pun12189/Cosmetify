@@ -12,6 +12,7 @@ using Cosmetify.ViewModel;
 using System.Text.Json;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Globalization;
 
 namespace Cosmetify.Repository
 {
@@ -73,7 +74,7 @@ namespace Cosmetify.Repository
             {
                 Helper.Helper.BugReport(e);
             }
-           
+
             return product;
         }
 
@@ -134,7 +135,7 @@ namespace Cosmetify.Repository
             {
                 Helper.Helper.BugReport(e);
             }
-            
+
             return batches;
         }
 
@@ -148,53 +149,31 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    bool isappend = false;
                     var cmdText = "select * from batchorder where";
-
+                    var conditions = string.Empty;
                     if (fromDate != null)
                     {
-                        if (isappend)
-                        {
-                            cmdText += cmdText + " AND batch_date= " + fromDate;
-                        }
-                        else
-                        {
-                            isappend = true;
-                            cmdText += cmdText + " batch_date= " + fromDate;
-                        }
+                        var date = DateTime.ParseExact(fromDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                        fromDate = date.ToString("yyyy-MM-dd");
+                        conditions = " planning_date BETWEEN " + "'" + fromDate + "'";
                     }
                     else
                     {
-                        isappend = true;
-                        cmdText += cmdText + " batch_date= " + DateTime.Now.Date;
+                        conditions = " planning_date BETWEEN " + "'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "'";
                     }
 
                     if (toDate != null)
                     {
-                        if (isappend)
-                        {
-                            cmdText += cmdText + " AND batch_date= " + toDate;
-                        }
-                        else
-                        {
-                            isappend = true;
-                            cmdText += cmdText + " batch_date= " + toDate;
-                        }
+                        var date = DateTime.ParseExact(toDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                        toDate = date.ToString("yyyy-MM-dd");
+                        conditions = conditions + " AND" + "'" + toDate + "'";                        
                     }
                     else
                     {
-                        if (isappend)
-                        {
-                            cmdText += cmdText + " AND batch_date= " + DateTime.Now.AddDays(30).Date;
-                        }
-                        else
-                        {
-                            isappend = true;
-                            cmdText += cmdText + " batch_date= " + DateTime.Now.AddDays(30).Date;
-                        }
+                        conditions = conditions + " AND " + "'" + DateTime.Now.AddDays(30).Date.ToString("yyyy-MM-dd") + "'";
                     }
 
-                    command.CommandText = cmdText;
+                    command.CommandText = cmdText + conditions;
                     MySqlDataReader reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {
@@ -239,7 +218,7 @@ namespace Cosmetify.Repository
             catch (Exception e)
             {
                 Helper.Helper.BugReport(e);
-            }            
+            }
 
             return batches;
         }
@@ -401,7 +380,7 @@ namespace Cosmetify.Repository
             {
                 Helper.Helper.BugReport(e);
             }
-            
+
             return batches;
         }
 
@@ -415,7 +394,7 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    command.CommandText = "select * from batchorder where order_id=@order_id"; 
+                    command.CommandText = "select * from batchorder where order_id=@order_id";
                     command.Parameters.Add("@order_id", MySqlDbType.VarChar).Value = orderId;
                     MySqlDataReader reader = command.ExecuteReader();
                     if (reader.HasRows)
@@ -522,7 +501,7 @@ namespace Cosmetify.Repository
             {
                 Helper.Helper.BugReport(e);
             }
-            
+
             return leads;
         }
 
@@ -567,7 +546,7 @@ namespace Cosmetify.Repository
             catch (Exception e)
             {
                 Helper.Helper.BugReport(e);
-            }            
+            }
         }
 
         public void UpdateProduct(BatchModel lead)
@@ -612,7 +591,7 @@ namespace Cosmetify.Repository
             catch (Exception e)
             {
                 Helper.Helper.BugReport(e);
-            }            
+            }
         }
 
         public void DeleteProduct(int id)
@@ -633,7 +612,7 @@ namespace Cosmetify.Repository
             catch (Exception e)
             {
                 Helper.Helper.BugReport(e);
-            }            
+            }
         }
 
         public BitmapImage ByteToImage(byte[] array)

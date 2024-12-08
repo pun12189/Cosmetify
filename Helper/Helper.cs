@@ -1,4 +1,5 @@
-﻿using PdfSharp.Drawing;
+﻿using Microsoft.Office.Core;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
@@ -34,21 +35,34 @@ namespace Cosmetify.Helper
         public static DataTable ToDataTable<T>(List<T> items)
         {
             DataTable dataTable = new DataTable(typeof(T).Name);
-
+            var count = 0;
             //Get all the properties
             PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo prop in Props)
             {
+                if (prop.Name.ToLower() == "id" || prop.Name.ToLower().Contains("category") || prop.Name.ToLower().Contains("diffstock"))
+                {
+                    count++;
+                    continue;
+                }
                 //Setting column names as Property names
                 dataTable.Columns.Add(prop.Name);
             }
+
             foreach (T item in items)
             {
-                var values = new object[Props.Length];
+                var j = 0;
+                var values = new object[Props.Length - count];
                 for (int i = 0; i < Props.Length; i++)
                 {
+                    var name = Props[i].Name;
+                    if (name.ToLower() == "id" || name.ToLower().Contains("category") || name.ToLower().Contains("diffstock"))
+                    {
+                        j++;
+                        continue;
+                    }
                     //inserting property values to datatable rows
-                    values[i] = Props[i].GetValue(item, null);
+                    values[i - j] = Props[i].GetValue(item, null);
                 }
                 dataTable.Rows.Add(values);
             }
@@ -68,7 +82,7 @@ namespace Cosmetify.Helper
             //Creating columns
             if (rows.Length > 0)
             {
-                foreach (string columnName in rows[0].Split(','))
+                foreach (string columnName in rows[0].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
                     dtData.Columns.Add(columnName);
             }
 
@@ -79,7 +93,7 @@ namespace Cosmetify.Helper
             //Creating row for each line.(except the first line, which contain column names)
             for (int row = 1; row < rows.Length; row++)
             {
-                rowValues = rows[row].Split(',');
+                rowValues = rows[row].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                 dr = dtData.NewRow();
                 dr.ItemArray = rowValues;
                 dtData.Rows.Add(dr);

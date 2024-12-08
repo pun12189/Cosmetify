@@ -60,7 +60,7 @@ namespace Cosmetify.Dialogs
             {                
                 if (!string.IsNullOrEmpty(this.tbBNames.Text))
                 {
-                    var str = this.tbBNames.Text.Split(',');
+                    var str = this.tbBNames.Text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                     this.CustomerModel.BrandName ??= new System.Collections.ObjectModel.ObservableCollection<string>();
                     foreach (var b in str)
                     {

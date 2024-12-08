@@ -44,7 +44,6 @@ namespace Cosmetify.RenderView.UserControls
             var lead = new CustomerModel
             {
                 FirstName = this.tbFname.Text,
-                LastName = this.tbLname.Text,
                 EmailId = this.tbEmail.Text,
                 PhoneNumber = this.tbContact.Text,
                 Address = this.tbAddress.Text,
@@ -54,6 +53,16 @@ namespace Cosmetify.RenderView.UserControls
                 Country = this.tbCountry.Text,                
                 Notes = this.tbNotes.Text,
             };
+
+            if (string.IsNullOrEmpty(this.tbBname.Text))
+            {
+                var str = this.tbBname.Text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                lead.BrandName = new ObservableCollection<string>(str);
+            }
+            else
+            {
+                lead.PinCode = Convert.ToInt32(this.tbPincode.Text);
+            }
 
             if (string.IsNullOrEmpty(this.tbPincode.Text))
             {

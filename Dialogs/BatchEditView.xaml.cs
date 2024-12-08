@@ -77,6 +77,7 @@ namespace Cosmetify.Dialogs
         {
             this.BatchModel.BatchDate = (DateTime)this.dtBatch.SelectedDateTime;
             this.BatchModel.PlanningDate = (DateTime)this.dtPlan.SelectedDate;
+            this.BatchModel.PlannedDate = DateTime.Now;
             this.BatchModel.MfgDate = (DateTime)this.dtMfg.SelectedDate;
             this.BatchModel.Expiry = (DateTime)this.dtExp.SelectedDate;
             this.DialogResult = true;

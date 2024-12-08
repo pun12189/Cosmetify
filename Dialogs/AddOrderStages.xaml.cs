@@ -59,7 +59,7 @@ namespace Cosmetify.Dialogs
             }
             else
             {
-                var stages = this.OrderStages.Split(',');
+                var stages = this.OrderStages.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                 foreach (var stage in stages)
                 {
                     if (string.IsNullOrEmpty(stage)) continue;

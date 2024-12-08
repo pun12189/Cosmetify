@@ -70,7 +70,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="5" Orientation="Horizontal">
                         <TextBlock Text="Batch Size" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        <TextBox x:Name="tbSize" Width="100" control:TextBoxHelper.Watermark="Enter Batch Size" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBox x:Name="tbSize" Width="100" control:TextBoxHelper.Watermark="Enter Batch Size" Margin="0,0,5,0" VerticalAlignment="Center" TextChanged="BatchSizeUpdate" PreviewTextInput="TextBox_PreviewTextInput"/>
                         <ComboBox x:Name="cbUnits" VerticalAlignment="Center" Width="50"/>
                     </StackPanel>
                     <StackPanel Grid.Row="3" Orientation="Horizontal" IsEnabled="{Binding ElementName=rbMF, Path=IsChecked}">
@@ -237,54 +237,54 @@
                         <DataGridTemplateColumn Header="Mfg Date" Visibility="Collapsed">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding MfgDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding MfgDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding MfgDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding MfgDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Expiry Date" Visibility="Collapsed">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Expiry, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding Expiry, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding Expiry, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding Expiry, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Created On">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding BatchDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding BatchDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <control:DateTimePicker IsTodayHighlighted="True" SelectedDateTime="{Binding BatchDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <control:DateTimePicker IsTodayHighlighted="True" SelectedDateTime="{Binding BatchDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Planned On">
+                        <DataGridTemplateColumn Header="Planned For">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding PlannedDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding PlanningDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding PlannedDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding PlannedDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <!--<DataGridTextColumn Header="Mfg Date" Binding="{Binding MfgDate, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->
-                        <!--<DataGridTextColumn Header="Expiry Date" Binding="{Binding Expiry, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Planning Date" Binding="{Binding PlannedDate, StringFormat={}{0:MM/dd/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->                        
+                        <!--<DataGridTextColumn Header="Mfg Date" Binding="{Binding MfgDate, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->
+                        <!--<DataGridTextColumn Header="Expiry Date" Binding="{Binding Expiry, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Planning Date" Binding="{Binding PlannedDate, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->                        
                         <DataGridTextColumn Header="Order Stage" Binding="{Binding OrderStage.StageName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Visibility="Collapsed"/>
                         <DataGridTemplateColumn Header="Completed On">
                             <DataGridTemplateColumn.CellTemplate>

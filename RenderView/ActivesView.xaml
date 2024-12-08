@@ -154,9 +154,9 @@
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Brand Names" Binding="{Binding BrandNames, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />
-                        <DataGridTextColumn Header="SKU" Binding="{Binding SKU, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Stock" Binding="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />                        
+                        <DataGridTextColumn Header="InStock" Binding="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" />
+                        
                         <!--<DataGridTextColumn Header="Stock Diff" Binding="{Binding DiffStock, UpdateSourceTrigger=PropertyChanged}">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">
@@ -164,24 +164,36 @@
                                 </Style>
                             </DataGridTextColumn.CellStyle>
                         </DataGridTextColumn>-->
-                        <DataGridTextColumn Header="Processed Batches" Binding="{Binding TotalBatchOrders, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Planned Orders" Binding="{Binding TotalBatchOrders, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Qty Rqt" Binding="{Binding TotalRequired, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
+                            <DataGridTextColumn.CellStyle> <!--green-->
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="{StaticResource ProsClr}"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Created Oders" Binding="{Binding TotalCreated, UpdateSourceTrigger=PropertyChanged}" /> <!--gray-->
+                        <DataGridTextColumn Header="Qty Rqt" Binding="{Binding TotalCreatedRequired, UpdateSourceTrigger=PropertyChanged}" />
+                        
+                        <!--<DataGridTextColumn Header="Processed Batches" Binding="{Binding TotalBatchOrders, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
                         <DataGridTextColumn Header="Processed Rqt" Binding="{Binding TotalRequired, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Background" Value="{StaticResource ProsClr}"/>
                                 </Style>
                             </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Created Batches" Binding="{Binding TotalCreated, UpdateSourceTrigger=PropertyChanged}" />
-                        <DataGridTextColumn Header="Created Rqt" Binding="{Binding TotalCreatedRequired, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataGridTextColumn>-->
+                        
                         <DataGridTextColumn Header="Hold Batches" Binding="{Binding TotalHold, UpdateSourceTrigger=PropertyChanged}" />
-                        <!--<DataGridTextColumn Header="Hold Rqt" Binding="{Binding TotalHoldRequired, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGridTextColumn Header="Hold Rqt" Binding="{Binding TotalHoldRequired, UpdateSourceTrigger=PropertyChanged}">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Background" Value="{StaticResource holdClr}"/>
                                 </Style>
                             </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>-->
+                        </DataGridTextColumn>
+                        
                         <DataGridTextColumn Header="Remaining" Binding="{Binding RemainingStock, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">
@@ -189,6 +201,8 @@
                                 </Style>
                             </DataGridTextColumn.CellStyle>
                         </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="SKU" Binding="{Binding SKU, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

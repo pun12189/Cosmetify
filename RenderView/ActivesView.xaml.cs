@@ -249,7 +249,7 @@ namespace Cosmetify.RenderView
             {
                 foreach (var batchOrder in batchOrders)
                 {
-                    if (batchOrder.Status == BatchStatus.Processed)
+                    if (batchOrder.Status == BatchStatus.Planned)
                     {
                         foreach (var model in batchOrder.BatchOrderCollection)
                         {
@@ -260,7 +260,7 @@ namespace Cosmetify.RenderView
                                 {
                                     actives.TotalRequired += model.StocksRequired;
                                     actives.TotalBatchOrders += 1;
-                                    actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
                                 }
                             }
                         }
@@ -277,7 +277,7 @@ namespace Cosmetify.RenderView
                                 {
                                     actives.TotalCreatedRequired += model.StocksRequired;
                                     actives.TotalCreated += 1;
-                                    actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
                                 }
                             }
                         }
@@ -294,7 +294,7 @@ namespace Cosmetify.RenderView
                                 {
                                     actives.TotalHoldRequired += model.StocksRequired;
                                     actives.TotalHold += 1;
-                                    actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
                                 }
                             }
                         }
@@ -439,7 +439,7 @@ namespace Cosmetify.RenderView
             {
                 foreach (var batchOrder in batchOrders)
                 {
-                    if (batchOrder.Status == BatchStatus.Processed)
+                    if (batchOrder.Status == BatchStatus.Planned)
                     {
                         foreach (var model in batchOrder.BatchOrderCollection)
                         {
@@ -448,7 +448,7 @@ namespace Cosmetify.RenderView
                             {
                                 actives.TotalRequired += model.StocksRequired;
                                 actives.TotalBatchOrders += 1;
-                                actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
                             }
                         }
                     }
@@ -462,7 +462,7 @@ namespace Cosmetify.RenderView
                             {
                                 actives.TotalCreatedRequired += model.StocksRequired;
                                 actives.TotalCreated += 1;
-                                actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
                             }
                         }
                     }
@@ -476,7 +476,7 @@ namespace Cosmetify.RenderView
                             {
                                 actives.TotalHoldRequired += model.StocksRequired;
                                 actives.TotalHold += 1;
-                                actives.BrandNames += batchOrder.ProductName + Environment.NewLine;
+                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
                             }
                         }
                     }
