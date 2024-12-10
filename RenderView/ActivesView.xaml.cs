@@ -73,6 +73,8 @@ namespace Cosmetify.RenderView
 
         public SubSubCategoryModel SubSubCategory { get; set; }
 
+        private ObservableCollection<BatchModel> FilteredBatchModels { get; set; }
+
         public ObservableCollection<ActivesModel> ActivesModelsCollection
         {
             get { return (ObservableCollection<ActivesModel>)GetValue(ActivesModelsCollectionProperty); }
@@ -258,9 +260,14 @@ namespace Cosmetify.RenderView
                                 var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
                                 if (actives != null)
                                 {
+                                    actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
+                                    actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
+                                    actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
                                     actives.TotalRequired += model.StocksRequired;
                                     actives.TotalBatchOrders += 1;
                                     actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                    actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                                 }
                             }
                         }
@@ -275,9 +282,14 @@ namespace Cosmetify.RenderView
                                 var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
                                 if (actives != null)
                                 {
+                                    actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
+                                    actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
+                                    actives.BatchQty += model.StocksRequired + Environment.NewLine;
                                     actives.TotalCreatedRequired += model.StocksRequired;
                                     actives.TotalCreated += 1;
                                     actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                    actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                                 }
                             }
                         }
@@ -292,9 +304,14 @@ namespace Cosmetify.RenderView
                                 var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
                                 if (actives != null)
                                 {
+                                    actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
+                                    actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
+                                    actives.BatchQty += model.StocksRequired + Environment.NewLine;
                                     actives.TotalHoldRequired += model.StocksRequired;
                                     actives.TotalHold += 1;
                                     actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                    actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                                 }
                             }
                         }
@@ -434,10 +451,11 @@ namespace Cosmetify.RenderView
                 this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             }
 
-            var batchOrders = HomepageViewModel.CommonViewModel.BatchOrderRepository.BatchFilters(fromDate, toDate);
-            if (batchOrders != null)
+            this.FilteredBatchModels.Clear();
+            this.FilteredBatchModels = HomepageViewModel.CommonViewModel.BatchOrderRepository.BatchFilters(fromDate, toDate);
+            if (this.FilteredBatchModels != null)
             {
-                foreach (var batchOrder in batchOrders)
+                foreach (var batchOrder in this.FilteredBatchModels)
                 {
                     if (batchOrder.Status == BatchStatus.Planned)
                     {
@@ -449,6 +467,11 @@ namespace Cosmetify.RenderView
                                 actives.TotalRequired += model.StocksRequired;
                                 actives.TotalBatchOrders += 1;
                                 actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
+                                actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
+                                actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                             }
                         }
                     }
@@ -463,6 +486,11 @@ namespace Cosmetify.RenderView
                                 actives.TotalCreatedRequired += model.StocksRequired;
                                 actives.TotalCreated += 1;
                                 actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
+                                actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
+                                actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                             }
                         }
                     }
@@ -477,6 +505,11 @@ namespace Cosmetify.RenderView
                                 actives.TotalHoldRequired += model.StocksRequired;
                                 actives.TotalHold += 1;
                                 actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
+                                actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
+                                actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                             }
                         }
                     }
@@ -521,20 +554,27 @@ namespace Cosmetify.RenderView
 
         private void btnExcel_Click(object sender, RoutedEventArgs e)
         {
-            GenerateExcel(Helper.Helper.ToDataTable(this.ActivesModelsCollection.ToList()));
-            var dialog = new SaveFileDialog();
-            dialog.FileName = Math.Abs(DateTime.Now.GetHashCode()).ToString();
-            dialog.AddExtension = true;
-            dialog.DefaultExt = ".xlsx";
-            if ((bool)dialog.ShowDialog())
+            try
             {
-                workBook.SaveAs(dialog.FileName);
-                // ...and start a viewer.
-                //Process.Start(dialog.FileName);
+                GenerateExcel(Helper.Helper.ToDataTable(this.ActivesModelsCollection.ToList()));
+                var dialog = new SaveFileDialog();
+                dialog.FileName = Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                dialog.AddExtension = true;
+                dialog.DefaultExt = ".xlsx";
+                if ((bool)dialog.ShowDialog())
+                {
+                    workBook.SaveAs(dialog.FileName);
+                    // ...and start a viewer.
+                    //Process.Start(dialog.FileName);
+                }
+
+                workBook.Close();
+                excel.Quit();
             }
-            
-            workBook.Close(); 
-            excel.Quit();
+            catch (Exception ex)
+            {
+                Helper.Helper.BugReport(ex);
+            }
         }
 
         private void cbCateg_SelectionChanged(object sender, SelectionChangedEventArgs e)

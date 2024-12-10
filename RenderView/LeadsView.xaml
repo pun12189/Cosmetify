@@ -31,7 +31,7 @@
                     <Button Content="Bulk Delete" x:Name="btnBulk" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnBulk_Click"/>
                 </StackPanel>
                 <TextBlock Grid.Row="1" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
-                <DataGrid AutoGenerateColumns="False" Grid.Row="2" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=addLead, Path=CustomerLeads}" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted">
+                <DataGrid AutoGenerateColumns="False" Grid.Row="2" CanUserAddRows="False" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=addLead, Path=CustomerLeads}" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.Header>

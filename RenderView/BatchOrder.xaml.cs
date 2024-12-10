@@ -139,8 +139,8 @@ namespace Cosmetify.RenderView
                 if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
                 {
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(product.Id);
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
-                }
+                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();                    
+                }                
             }
         }
 

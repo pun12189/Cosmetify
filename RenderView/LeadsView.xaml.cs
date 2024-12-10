@@ -151,11 +151,15 @@ namespace Cosmetify.RenderView
         {
             if (this.dataGrid1.SelectedItems != null && this.dataGrid1.SelectedItems.Count > 0)
             {
-                foreach (CustomerModel model in this.dataGrid1.SelectedItems)
-                {
+                foreach (var model in this.dataGrid1.SelectedItems)
+                {                    
                     if (model != null)
                     {
-                        HomepageViewModel.CommonViewModel.LeadsRepository.DeleteLead(model.Id);
+                        var cModel = model as CustomerModel;
+                        if (cModel != null)
+                        {
+                            HomepageViewModel.CommonViewModel.LeadsRepository.DeleteLead(cModel.Id);
+                        }                        
                     }
                 }
 

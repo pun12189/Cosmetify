@@ -10,6 +10,7 @@
       xmlns:conv="clr-namespace:Cosmetify.Helper"
       xmlns:System="clr-namespace:System;assembly=mscorlib"
       xmlns:enums="clr-namespace:Cosmetify.Model.Enums"
+      xmlns:cc="clr-namespace:Cosmetify.CustomControl"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="BatchOrder" x:Name="batchView">
     <Page.Resources>
@@ -237,48 +238,48 @@
                         <DataGridTemplateColumn Header="Mfg Date" Visibility="Collapsed">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding MfgDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding MfgDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding MfgDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <cc:CustomDatePicker IsTodayHighlighted="True" SelectedDate="{Binding MfgDate, Mode=TwoWay, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Expiry Date" Visibility="Collapsed">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Expiry, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding Expiry, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding Expiry, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <cc:CustomDatePicker IsTodayHighlighted="True" SelectedDate="{Binding Expiry, Mode=TwoWay, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Created On">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding BatchDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding BatchDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <control:DateTimePicker IsTodayHighlighted="True" SelectedDateTime="{Binding BatchDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <control:DateTimePicker IsTodayHighlighted="True" SelectedDateTime="{Binding BatchDate, Mode=TwoWay, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Planned For">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding PlanningDate, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding PlanningDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <DatePicker IsTodayHighlighted="True" SelectedDate="{Binding PlannedDate, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <cc:CustomDatePicker IsTodayHighlighted="True" SelectedDate="{Binding PlanningDate, Mode=TwoWay, Converter={StaticResource NotSetDateConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
@@ -289,12 +290,12 @@
                         <DataGridTemplateColumn Header="Completed On">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding CompletionDate, Converter={StaticResource IsBeforeTodayConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{Binding CompletionDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <control:DateTimePicker IsTodayHighlighted="True" SelectedDateTime="{Binding CompletionDate, Converter={StaticResource NotSetDateConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <control:DateTimePicker IsTodayHighlighted="True" SelectedDateTime="{Binding CompletionDate, Mode=TwoWay, Converter={StaticResource NotSetDateConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>

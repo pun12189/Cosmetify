@@ -66,16 +66,16 @@
         <TextBox Grid.Row="6" Grid.Column="2" Margin="0,5" Width="180" Height="60" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" Text="{Binding ElementName=batchView, Path=BatchModel.Description}"/>
         
         <TextBlock Text="Batch Date" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <control:DateTimePicker x:Name="dtBatch" Grid.Row="1" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True" IsClockVisible="False"/>
+        <control:DateTimePicker x:Name="dtBatch" SelectedDateFormat="Short" Grid.Row="1" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True" IsClockVisible="False"/>
         
         <TextBlock Text="Planning Date" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <DatePicker x:Name="dtPlan" Grid.Row="2" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True"/>
         
         <TextBlock Text="Mfg Date" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <DatePicker x:Name="dtMfg" Grid.Row="3" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True"/>
+        <DatePicker x:Name="dtMfg" SelectedDateFormat="Short" Grid.Row="3" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True"/>
         
         <TextBlock Text="Expiry Date" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <DatePicker x:Name="dtExp" Grid.Row="4" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True"/>
+        <DatePicker x:Name="dtExp" SelectedDateFormat="Short" Grid.Row="4" Grid.Column="6" Margin="0,5" Width="180" Height="30" IsTodayHighlighted="True"/>
         
         <!--<TextBlock Text="Completion Date" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <control:DateTimePicker Grid.Row="5" Grid.Column="6" Margin="0,5" Width="180" IsTodayHighlighted="True" Height="30" SelectedDateTime="{Binding ElementName=batchView, Path=BatchModel.CompletionDate}"/>

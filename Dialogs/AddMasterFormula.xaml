@@ -42,7 +42,7 @@
         <TextBox x:Name="tbCode" control:TextBoxHelper.Watermark="Enter Code Name" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="3" Width="200"/>
         <TextBlock Text="Select Actives" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Row="6" Grid.Column="1"/>
         <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3" HorizontalAlignment="Left">
-            <ComboBox control:ComboBoxHelper.CharacterCasing="Normal" x:Name="ddActives" DisplayMemberPath="ActivesName" Width="150" Height="20"/>
+            <ComboBox control:ComboBoxHelper.CharacterCasing="Normal" IsEditable="True" IsTextSearchEnabled="True" x:Name="ddActives" DisplayMemberPath="ActivesName" Width="150" Height="20"/>
             <TextBox x:Name="tbRem" control:TextBoxHelper.Watermark="% Value" Margin="2,0" Height="20"/>
             <Button Click="ActivesListAdd" VerticalAlignment="Center" Margin="3,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                 <icon:PackIconFontAwesome Kind="CheckSquareSolid"/>

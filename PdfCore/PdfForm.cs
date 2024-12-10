@@ -649,13 +649,24 @@ namespace Cosmetify.PdfCore
                 var row1 = this._table.AddRow();
                 row1.Cells[0].AddParagraph((++count).ToString());
                 row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[1].AddParagraph(batchModel.Perfume);
+                var str = batchModel.Perfume.Substring(0, batchModel.Perfume.Length - 3);
+                var last = batchModel.Perfume.Substring(str.Length, 3);
+                var pval = double.TryParse(last.Trim(), out var val);
+                row1.Cells[1].AddParagraph(str.Trim());
                 row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
                 row1.Cells[2].AddParagraph();
                 row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[3].AddParagraph();
+                row1.Cells[3].AddParagraph(last + "%");
                 row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[4].AddParagraph();
+                if (pval)
+                {
+                    row1.Cells[4].AddParagraph(Math.Round(batchModel.BatchOrderCollection[0].BatchSize * val / 100, 2).ToString());
+                }
+                else
+                {
+                    row1.Cells[4].AddParagraph();
+                }
+
                 row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
                 row1.Cells[5].AddParagraph();
                 row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;

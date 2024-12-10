@@ -36,6 +36,16 @@ namespace Cosmetify.Model
 
         public string BrandNames { get; set; }
 
+        public string PkgTypes { get; set; }
+
+        public string PkgQty { get; set; }
+
+        public string BatchQty { get; set; }
+
+        public string ProductNames { get; set; }
+
+        public string QtyReqd { get; set; }
+
         public double TotalBatchOrders
         {
             get => this.totalBatchOrders; set

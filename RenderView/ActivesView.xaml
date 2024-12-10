@@ -156,7 +156,13 @@
                         <DataGridTextColumn Header="Brand Names" Binding="{Binding BrandNames, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />                        
                         <DataGridTextColumn Header="InStock" Binding="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" />
-                        
+
+                        <DataGridTextColumn Header="Product Names" Binding="{Binding ProductNames, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <!--<DataGridTextColumn Header="Pkg Types" Binding="{Binding PkgTypes, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Pkg Qty" Binding="{Binding PkgQty, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Batch Rqt" Binding="{Binding BatchQty, UpdateSourceTrigger=PropertyChanged}" />-->
+
                         <!--<DataGridTextColumn Header="Stock Diff" Binding="{Binding DiffStock, UpdateSourceTrigger=PropertyChanged}">
                             <DataGridTextColumn.CellStyle>
                                 <Style TargetType="DataGridCell">

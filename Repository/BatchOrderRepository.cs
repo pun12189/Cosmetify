@@ -155,11 +155,11 @@ namespace Cosmetify.Repository
                     {
                         var date = DateTime.ParseExact(fromDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                         fromDate = date.ToString("yyyy-MM-dd");
-                        conditions = " planning_date BETWEEN " + "'" + fromDate + "'";
+                        conditions = " batch_date BETWEEN " + "'" + fromDate + "'";
                     }
                     else
                     {
-                        conditions = " planning_date BETWEEN " + "'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "'";
+                        conditions = " batch_date BETWEEN " + "'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "'";
                     }
 
                     if (toDate != null)
