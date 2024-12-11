@@ -660,7 +660,7 @@ namespace Cosmetify.PdfCore
                 row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
                 if (pval)
                 {
-                    row1.Cells[4].AddParagraph(Math.Round(batchModel.BatchOrderCollection[0].BatchSize * val / 100, 2).ToString());
+                    row1.Cells[4].AddParagraph(Math.Round(batchModel.BatchOrderCollection[0].BatchSize * val / 100, 3).ToString());
                 }
                 else
                 {

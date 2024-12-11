@@ -73,8 +73,6 @@ namespace Cosmetify.RenderView
 
         public SubSubCategoryModel SubSubCategory { get; set; }
 
-        private ObservableCollection<BatchModel> FilteredBatchModels { get; set; }
-
         public ObservableCollection<ActivesModel> ActivesModelsCollection
         {
             get { return (ObservableCollection<ActivesModel>)GetValue(ActivesModelsCollectionProperty); }
@@ -451,11 +449,11 @@ namespace Cosmetify.RenderView
                 this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             }
 
-            this.FilteredBatchModels.Clear();
-            this.FilteredBatchModels = HomepageViewModel.CommonViewModel.BatchOrderRepository.BatchFilters(fromDate, toDate);
-            if (this.FilteredBatchModels != null)
+            // this.FilteredBatchModels.Clear();
+            var batchModels = HomepageViewModel.CommonViewModel.BatchOrderRepository.BatchFilters(fromDate, toDate);
+            if (batchModels != null)
             {
-                foreach (var batchOrder in this.FilteredBatchModels)
+                foreach (var batchOrder in batchModels)
                 {
                     if (batchOrder.Status == BatchStatus.Planned)
                     {
@@ -526,10 +524,12 @@ namespace Cosmetify.RenderView
                 excel.Visible = false;
                 workBook = excel.Workbooks.Add(Type.Missing);
                 workSheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.ActiveSheet;
-                workSheet.Name = "LearningExcel";
+                workSheet.Name = "Cosmetify Planning Sheet";
                 System.Data.DataTable tempDt = DtIN;
                 //dgExcel.ItemsSource = tempDt.DefaultView;
                 workSheet.Cells.Font.Size = 11;
+                workSheet.Columns.AutoFit();
+                workSheet.Rows.AutoFit();
                 int rowcount = 1;
                 for (int i = 1; i <= tempDt.Columns.Count; i++) //taking care of Headers.  
                 {
