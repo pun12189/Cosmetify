@@ -86,20 +86,27 @@ namespace Cosmetify.Dialogs
 
         private void BatchSizeUpdate(object sender, TextChangedEventArgs e)
         {
-            var tb = sender as TextBox;
-            if (tb != null && !string.IsNullOrEmpty(tb.Text))
+            try
             {
-                var bsize = long.Parse(tb.Text);
-                if (bsize >= 0) {
-                    if (this.BatchModel != null && this.BatchModel.BatchOrderCollection != null && this.BatchModel.BatchOrderCollection.Count > 0)
+                var tb = sender as TextBox;
+                if (tb != null && !string.IsNullOrEmpty(tb.Text) && !tb.Text.EndsWith('.'))
+                {
+                    var bsize = double.Parse(tb.Text);
+                    if (bsize >= 0)
                     {
-                        foreach (var item in this.BatchModel.BatchOrderCollection)
+                        if (this.BatchModel != null && this.BatchModel.BatchOrderCollection != null && this.BatchModel.BatchOrderCollection.Count > 0)
                         {
-                            item.BatchSize = bsize;
+                            foreach (var item in this.BatchModel.BatchOrderCollection)
+                            {
+                                item.BatchSize = bsize;
+                            }
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+            }            
         }
 
         private static bool IsTextAllowed(string text)

@@ -51,7 +51,7 @@
         <TextBox Grid.Row="2" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.BrandName}"/>
         
         <TextBlock Text="Batch Size" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="3" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.BatchOrderCollection[0].BatchSize, Mode=OneWay}" TextChanged="BatchSizeUpdate" PreviewTextInput="TextBox_PreviewTextInput"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.BatchOrderCollection[0].BatchSize, Mode=OneWay}" TextChanged="BatchSizeUpdate"/>
         
         <TextBlock Text="Pkg Type" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBox Grid.Row="4" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.PkgType}"/>

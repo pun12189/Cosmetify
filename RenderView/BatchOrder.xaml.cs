@@ -164,7 +164,7 @@ namespace Cosmetify.RenderView
                     pdfRenderer.RenderDocument();
 
                     // Save the PDF document...
-                    var filename = model.Customer.FirstName + "_" + model.Customer.LastName + "_" + model.ProductName + ".pdf";
+                    var filename = model.Customer.FirstName + "_" + model.BrandName + "_" + DateTime.Now.ToShortTimeString().Trim() + ".pdf";
 
                     var dialog = new SaveFileDialog();
                     dialog.FileName = filename;

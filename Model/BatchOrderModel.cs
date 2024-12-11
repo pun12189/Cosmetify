@@ -15,13 +15,13 @@ namespace Cosmetify.Model
         private double percentageRequired = 1.0;
         private ActivesModel actives;
         private ProductUnits units = ProductUnits.kg;
-        private long batchSize;
+        private double batchSize;
 
         public int Id { get; set; }
 
         public string MFName { get; set; }
 
-        public long BatchSize
+        public double BatchSize
         {
             get => batchSize; 
             set
