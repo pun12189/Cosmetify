@@ -66,7 +66,7 @@ WizardSmallImageFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.bmp
 VersionInfoVersion={# Version}
 AppVersion={# Version}
 ;If IncludeFramework, append _FW to end of compiled setup;
-ArchitecturesAllowed = x86os x64os
+ArchitecturesAllowed = x86compatible x64compatible
 ArchitecturesInstallIn64BitMode=x64
 ;without the framework included
 OutputBaseFilename=Cosmetify
@@ -405,9 +405,9 @@ settingpermission = Setting Program Access Permissions
 ;uk.StandardVersion=стандарт версія
 ;uk.StarterVersion=стартер версія
 [icons]
-Name: {group}\Cosmetify; Filename: {app}\Cosmetify.exe;   WorkingDir: {app} ; 
+Name: {group}\Cosmetify; Filename: {app}\Cosmetify.exe; WorkingDir: {app}; IconFilename: "{#SourceFileDir}SetupFiles\BahiKitab-Icon.ico";
 Name: "{group}\Help"; Filename: "http://sofric.com/"; 
-Name: {group}\Uninstall; Filename: {uninstallexe};  WorkingDir: {app}
+Name: {group}\Uninstall; Filename: {uninstallexe};  WorkingDir: {app}; IconFilename: "{#SourceFileDir}SetupFiles\BahiKitab-Icon.ico";
 Name: {commondesktop}\Cosmetify;  Filename: {app}\Cosmetify.exe; IconFilename: "{#SourceFileDir}SetupFiles\BahiKitab-Icon.ico"; WorkingDir: {app}; 
 
 [Run]
