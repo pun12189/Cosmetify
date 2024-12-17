@@ -36,21 +36,21 @@
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>            
-            <DataGrid Grid.Row="0" AutoGenerateColumns="False" ColumnWidth="*" RowEditEnding="dataGrid1_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=categPage, Path=Categories}">
+            <DataGrid Grid.Row="0" CanUserAddRows="False" AutoGenerateColumns="False" ColumnWidth="*" RowEditEnding="dataGrid1_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=categPage, Path=Categories}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Category Name" Binding="{Binding CategoryName, UpdateSourceTrigger=PropertyChanged}" />
                     <DataGridTextColumn Header="GST Rate" Binding="{Binding GstRate, StringFormat='\{0\}%', UpdateSourceTrigger=PropertyChanged}" />
                 </DataGrid.Columns>
             </DataGrid>
-                <DataGrid Grid.Row="2" AutoGenerateColumns="False" ColumnWidth="*" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid2_PreviewExecuted" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid2" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=categPage, Path=SubCategories}">
+                <DataGrid Grid.Row="2" CanUserAddRows="False" AutoGenerateColumns="False" ColumnWidth="*" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid2_PreviewExecuted" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid2" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=categPage, Path=SubCategories}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Category Name" Binding="{Binding CategoryName, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="Parent Category" Binding="{Binding ParentCategoryId, UpdateSourceTrigger=PropertyChanged}" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <DataGrid Grid.Row="4" AutoGenerateColumns="False" ColumnWidth="*" RowEditEnding="dataGrid3_RowEditEnding" CommandManager.PreviewExecuted="dataGrid3_PreviewExecuted" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid3" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=categPage, Path=SubSubCategories}">
+                <DataGrid Grid.Row="4" CanUserAddRows="False" AutoGenerateColumns="False" ColumnWidth="*" RowEditEnding="dataGrid3_RowEditEnding" CommandManager.PreviewExecuted="dataGrid3_PreviewExecuted" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid3" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=categPage, Path=SubSubCategories}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Category Name" Binding="{Binding CategoryName, UpdateSourceTrigger=PropertyChanged}" />

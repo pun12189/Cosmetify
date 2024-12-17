@@ -266,7 +266,7 @@ namespace Cosmetify.RenderView
                                 {
                                     actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                     actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                    actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                    actives.BatchQty += model.BatchSize + Environment.NewLine;
                                     actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
                                     actives.TotalRequired += model.StocksRequired;
                                     actives.TotalBatchOrders += 1;
