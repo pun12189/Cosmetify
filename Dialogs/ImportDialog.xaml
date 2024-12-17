@@ -22,15 +22,22 @@
             <RowDefinition/>
             <RowDefinition Height=".3*"/>
             <RowDefinition/>
+            <RowDefinition Height=".3*"/>
+            <RowDefinition/>
+            <RowDefinition Height=".3*"/>
             <RowDefinition/>
             <RowDefinition Height="*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Download Sample Format" VerticalAlignment="Center"/>
-        <Button Grid.Column="2" Grid.Row="0" Content="Download" VerticalAlignment="Center" Padding="6,5,6,5"/>
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Select (xlxs,csv) file" VerticalAlignment="Center"/>
-        <Button Grid.Column="0" Grid.Row="3" Content="Choose File" VerticalAlignment="Center" Padding="6,5,6,5" Click="UploadExcelFile"/>
-        <TextBlock x:Name="fileNameTb" Grid.Row="3" Grid.Column="2" Text="No File Chosen" VerticalAlignment="Center" TextWrapping="Wrap"/>
-        <Button Grid.ColumnSpan="3" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Submit" Padding="20,8,20,8" Click="SubmitFile"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Select Category" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Select Sub-Category" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Select Sub-Sub-Category" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cbCateg" Grid.Row="0" Grid.Column="2" IsTextSearchEnabled="True" IsEditable="True" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbCateg_SelectionChanged"/>
+        <ComboBox x:Name="cbSCateg" Grid.Row="2" Grid.Column="2" IsTextSearchEnabled="True" IsEditable="True" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSCateg_SelectionChanged"/>
+        <ComboBox x:Name="cbSSCateg" Grid.Row="4" Grid.Column="2" IsTextSearchEnabled="True" IsEditable="True" DisplayMemberPath="CategoryName" SelectedValuePath="Id" SelectionChanged="cbSSCateg_SelectionChanged"/>
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Upload file" VerticalAlignment="Center"/>
+        <Button Grid.Column="2" Grid.Row="6" Content="Choose File" VerticalAlignment="Center" Padding="6,5,6,5" Click="UploadExcelFile"/>
+        <TextBlock x:Name="fileNameTb" Grid.Row="7" Grid.Column="2" Text="No File Chosen" VerticalAlignment="Center" TextWrapping="Wrap"/>
+        <Button Grid.ColumnSpan="3" Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Submit" Padding="20,8,20,8" Click="SubmitFile"/>
     </Grid>
 </Window>

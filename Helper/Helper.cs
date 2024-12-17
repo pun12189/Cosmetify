@@ -104,7 +104,7 @@ namespace Cosmetify.Helper
             return dataTable;
         }
 
-        public static DataTable ConvertCsvToDataTable(string filePath)
+        public static DataTable ConvertCsvToDataTable(string filePath, int categ, int scateg, int sscateg)
         {
             //reading all the lines(rows) from the file.
             string[] rows = File.ReadAllLines(filePath);
@@ -127,9 +127,19 @@ namespace Cosmetify.Helper
             //Creating row for each line.(except the first line, which contain column names)
             for (int row = 1; row < rows.Length; row++)
             {
+                var rowStr = new string[8];
                 rowValues = rows[row].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < rowValues.Length; i++)
+                {
+                    rowStr[i] = rowValues[i].Trim();
+                }
+
+                rowStr[5] = categ.ToString();
+                rowStr[6] = scateg.ToString();
+                rowStr[7] = sscateg.ToString();
+
                 dr = dtData.NewRow();
-                dr.ItemArray = rowValues;
+                dr.ItemArray = rowStr;
                 dtData.Rows.Add(dr);
             }
 

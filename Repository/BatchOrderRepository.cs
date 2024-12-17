@@ -88,9 +88,9 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    command.CommandText = "select * from batchorder where order_no LIKE @data OR description LIKE @data OR prod_name LIKE @data OR status LIKE @data OR pkgtype LIKE @data";
+                    command.CommandText = "select * from batchorder where order_no LIKE @data OR add_info LIKE @data OR order_id LIKE @data OR color LIKE @data OR perfume LIKE @data OR brand_name LIKE @data OR product_id LIKE @data OR remarks LIKE @data OR description LIKE @data OR prod_name LIKE @data OR status LIKE @data OR pkgtype LIKE @data";
                     command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = command.ExecuteReader(); 
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -155,11 +155,11 @@ namespace Cosmetify.Repository
                     {
                         var date = DateTime.ParseExact(fromDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                         fromDate = date.ToString("yyyy-MM-dd");
-                        conditions = " batch_date BETWEEN " + "'" + fromDate + "'";
+                        conditions = " planning_date BETWEEN " + "'" + fromDate + "'";
                     }
                     else
                     {
-                        conditions = " batch_date BETWEEN " + "'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "'";
+                        conditions = " planning_date BETWEEN " + "'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "'";
                     }
 
                     if (toDate != null)

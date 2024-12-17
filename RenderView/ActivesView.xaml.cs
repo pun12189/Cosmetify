@@ -25,6 +25,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Cosmetify.Dialogs;
 
 namespace Cosmetify.RenderView
 {
@@ -99,25 +100,30 @@ namespace Cosmetify.RenderView
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Create OpenFileDialog 
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            //// Create OpenFileDialog 
+            //Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-            // Set filter for file extension and default file extension 
-            dlg.DefaultExt = ".csv";
-            dlg.Filter = "Excel files(*.csv, *.xls, *.xlsx) | *.csv; *.xls; *.xlsx | All files(*.*) | *.* ";
+            //// Set filter for file extension and default file extension 
+            //dlg.DefaultExt = ".csv";
+            //dlg.Filter = "Excel files(*.csv, *.xls, *.xlsx) | *.csv; *.xls; *.xlsx | All files(*.*) | *.* ";
 
-            // Display OpenFileDialog by calling ShowDialog method 
-            bool? result = dlg.ShowDialog();
+            //// Display OpenFileDialog by calling ShowDialog method 
+            //bool? result = dlg.ShowDialog();
 
-            // Get the selected file name and display in a TextBox 
-            if (result == true)
+            //// Get the selected file name and display in a TextBox 
+            //if (result == true)
+            //{
+            //    // Open document 
+            //    var dataTable = Helper.Helper.ConvertCsvToDataTable(dlg.FileName);
+            //    HomepageViewModel.CommonViewModel.ActivesRepository.BulkInsertMySQL(dataTable, "actives");
+            //}
+
+            var dialog = new ImportDialog();
+            dialog.Owner = App.Current.MainWindow;
+            if ((bool)dialog.ShowDialog())
             {
-                // Open document 
-                var dataTable = Helper.Helper.ConvertCsvToDataTable(dlg.FileName);
-                HomepageViewModel.CommonViewModel.ActivesRepository.BulkInsertMySQL(dataTable, "actives");
-            }
-
-            this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+            }            
         }
 
         private void btnAddActive_Click(object sender, RoutedEventArgs e)
