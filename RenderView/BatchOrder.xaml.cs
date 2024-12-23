@@ -2,18 +2,13 @@
 using Cosmetify.Model;
 using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
-using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using MigraDoc.Rendering;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static MaterialDesignThemes.Wpf.Theme;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using Button = System.Windows.Controls.Button;
 using ComboBox = System.Windows.Controls.ComboBox;
 using TabControl = System.Windows.Controls.TabControl;
@@ -39,7 +34,7 @@ namespace Cosmetify.RenderView
         {
             InitializeComponent();
             this.Loaded += BatchOrder_Loaded;
-            this.cbUnits.ItemsSource = Enum.GetValues(typeof(ProductUnits));
+            this.cbUnits.ItemsSource = System.Enum.GetValues(typeof(ProductUnits));
             this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
             this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             this.cbMF.ItemsSource = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
@@ -182,7 +177,7 @@ namespace Cosmetify.RenderView
                     pdfRenderer.RenderDocument();
 
                     // Save the PDF document...
-                    var filename = model.Customer.FirstName + "_" + model.BrandName + "_" + DateTime.Now.ToShortTimeString().Trim() + ".pdf";
+                    var filename = "Batch-" + model.Customer.FirstName + "_" + model.BrandName + ".pdf";
 
                     var dialog = new SaveFileDialog();
                     dialog.FileName = filename;
@@ -350,7 +345,7 @@ namespace Cosmetify.RenderView
                     {
                         var batchOrder = new BatchOrderModel();
                         batchOrder.BatchSize = Convert.ToInt64(this.tbSize.Text);
-                        batchOrder.Units = (ProductUnits)Enum.Parse(typeof(ProductUnits), this.cbUnits.SelectedItem.ToString());
+                        batchOrder.Units = (ProductUnits)System.Enum.Parse(typeof(ProductUnits), this.cbUnits.SelectedItem.ToString());
                         batchOrder.Actives = HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(actives.Id);
                         batchOrder.PercentageRequired = actives.Required;
                         this.BatchModel.BatchOrderCollection.Add(batchOrder);
@@ -380,7 +375,7 @@ namespace Cosmetify.RenderView
             {
                 var batchOrder = new BatchOrderModel();
                 batchOrder.BatchSize = Convert.ToInt64(this.tbSize.Text);
-                batchOrder.Units = (ProductUnits)Enum.Parse(typeof(ProductUnits), this.cbUnits.SelectedItem.ToString());
+                batchOrder.Units = (ProductUnits)System.Enum.Parse(typeof(ProductUnits), this.cbUnits.SelectedItem.ToString());
                 batchOrder.Actives = this.cbProd.SelectedItem as ActivesModel;
                 this.BatchModel.BatchOrderCollection.Add(batchOrder);
             }

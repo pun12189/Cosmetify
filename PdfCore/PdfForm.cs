@@ -585,7 +585,7 @@ namespace Cosmetify.PdfCore
             }
 
             int count = 0;
-            var masterFormula = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetFormulaUsingCode(batchModel.ProductID);
+            /*var masterFormula = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetFormulaUsingCode(batchModel.ProductID);
             if (masterFormula != null)
             {
                 foreach (var batchOrderModel in batchModel.BatchOrderCollection)
@@ -619,7 +619,7 @@ namespace Cosmetify.PdfCore
                 }
             }
             else
-            {
+            {*/
                 foreach (var batchOrderModel in batchModel.BatchOrderCollection)
                 {
                     var row1 = this._table.AddRow();
@@ -636,7 +636,7 @@ namespace Cosmetify.PdfCore
                     row1.Cells[5].AddParagraph();
                     row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
                 }
-            }            
+            //}            
 
             // Add an invisible row as a space line to the table.
             if (!string.IsNullOrEmpty(batchModel.Colour))
@@ -864,11 +864,36 @@ namespace Cosmetify.PdfCore
                 row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
                 var actContent = string.Empty;
                 var remaining = 100.0;
-                foreach (var act in bModel.BatchOrderCollection)
+                var masterFormula = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetFormulaUsingCode(bModel.ProductID);
+                if (masterFormula != null)
                 {
-                    remaining -= act.PercentageRequired;
-                    actContent += act.Actives.ActivesName + " " + act.PercentageRequired + "%" + Environment.NewLine;
+                    foreach (var act in bModel.BatchOrderCollection)
+                    {
+                        var present = false;
+                        foreach (var item in masterFormula.Requirements)
+                        {
+                            if (item.Name.ToLower() == act.Actives.ActivesName.ToLower())
+                            {
+                                present = true;
+                                break;
+                            }
+                        }
+
+                        remaining -= act.PercentageRequired;
+                        if (!present)
+                        {                            
+                            actContent += act.Actives.ActivesName + " " + act.PercentageRequired + "%" + Environment.NewLine;
+                        }
+                    }
                 }
+                else
+                {
+                    foreach (var act in bModel.BatchOrderCollection)
+                    {
+                        remaining -= act.PercentageRequired;
+                        actContent += act.Actives.ActivesName + " " + act.PercentageRequired + "%" + Environment.NewLine;
+                    }
+                }                
 
                 actContent += "Water: " + remaining + "%";
 
