@@ -304,6 +304,9 @@
                                         <Button Visibility="{Binding OrderId, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToVisibilityConverter}}" Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="FilePdfSolid"/>
                                         </Button>
+                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="RedoSolid"/>
+                                        </Button>
                                         <Button Background="Transparent" Click="DeleteBatch1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="TrashSolid"/>
                                         </Button>

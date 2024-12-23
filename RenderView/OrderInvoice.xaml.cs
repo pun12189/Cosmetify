@@ -262,6 +262,8 @@ namespace Cosmetify.RenderView
 
                 HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(batchModel);
             }
+
+            this.BatchModelCollection.Clear();
         }
 
         private void cbCust_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -404,6 +406,29 @@ namespace Cosmetify.RenderView
                 if (row != null)
                 {
                     row.IsSelected = false;
+                }
+            }
+        }
+
+        private void ReorderBatch(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                var model = button.DataContext as BatchModel;
+                if (model != null)
+                {
+                    model.BatchOrderNo = "COS-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    model.OrderId = "OD-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    model.Status = BatchStatus.Created;
+                    model.BatchDate = DateTime.Now;
+                    model.PlannedDate = DateTime.MinValue;
+                    model.PlanningDate = DateTime.MinValue;
+                    model.MfgDate = DateTime.MinValue;
+                    model.Expiry = DateTime.MinValue;
+                    model.CompletionDate = DateTime.MinValue;
+                    HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(model);
+                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }

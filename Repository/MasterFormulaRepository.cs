@@ -54,6 +54,45 @@ namespace Cosmetify.Repository
             return product;
         }
 
+        public MasterFormulaModel GetFormulaUsingCode(string code)
+        {
+            MasterFormulaModel? product = null;
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "select * from masterformula where code=@code";
+                    command.Parameters.Add("@code", MySqlDbType.VarChar).Value = code;
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            product = new MasterFormulaModel
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                                Code = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                Requirements = reader.IsDBNull(3) ? null : JsonSerializer.Deserialize<ObservableCollection<MasterProductModel>>(reader.GetString(3)),
+                                RemainingWater = reader.IsDBNull(4) ? double.MinValue : reader.GetDouble(4),
+                            };
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return product;
+        }
+
         public ObservableCollection<MasterFormulaModel> GetAllFormulas()
         {
             ObservableCollection<MasterFormulaModel> leads = null;

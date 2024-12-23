@@ -153,12 +153,25 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Brand Names" Binding="{Binding BrandNames, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!--<DataGridTextColumn Header="Brand Names" Binding="{Binding BrandNamesCount, UpdateSourceTrigger=PropertyChanged}"/>-->
+                        <DataGridTemplateColumn Header="Brand Names">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="BrandProductClick" Content="{Binding BrandNamesCount, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="Blue"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />                        
                         <DataGridTextColumn Header="InStock" Binding="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <DataGridTextColumn Header="Product Names" Binding="{Binding ProductNames, UpdateSourceTrigger=PropertyChanged}" />
-
+                        <!--<DataGridTextColumn Header="Product Names" Binding="{Binding ProductNamesCount, UpdateSourceTrigger=PropertyChanged}" />-->
+                        <DataGridTemplateColumn Header="Product Names">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="BrandProductClick" Content="{Binding ProductNamesCount, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="Blue"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <!--<DataGridTextColumn Header="Pkg Types" Binding="{Binding PkgTypes, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="Pkg Qty" Binding="{Binding PkgQty, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="Batch Rqt" Binding="{Binding BatchQty, UpdateSourceTrigger=PropertyChanged}" />-->

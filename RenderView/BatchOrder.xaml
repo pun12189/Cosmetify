@@ -315,7 +315,7 @@
                                         <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="CompleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="CheckSolid"/>
                                         </Button>
-                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Completed'}" Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="RedoSolid"/>
                                         </Button>
                                         <Button Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">

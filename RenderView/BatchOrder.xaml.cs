@@ -2,6 +2,7 @@
 using Cosmetify.Model;
 using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using MigraDoc.Rendering;
 using System.Collections.ObjectModel;
@@ -22,7 +23,7 @@ namespace Cosmetify.RenderView
     /// <summary>
     /// Interaction logic for BatchOrder.xaml
     /// </summary>
-    public partial class BatchOrder : Page
+    public partial class BatchOrder : System.Windows.Controls.Page
     {
         private static readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text        
 
@@ -138,6 +139,23 @@ namespace Cosmetify.RenderView
                 BatchModel product = dg.SelectedItem as BatchModel;
                 if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
                 {
+                    if (product.Status == BatchStatus.Processed || product.Status == BatchStatus.Completed)
+                    {
+                        var result1 = MessageBox.Show("Do you want to add inventory of this batch?", "Inventory Update", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (result1 == MessageBoxResult.Yes)
+                        {
+                            var actives = product.BatchOrderCollection;
+                            if (actives != null)
+                            {
+                                foreach (var active in actives)
+                                {
+                                    active.Actives.Stocks = active.Actives.Stocks + active.StocksRequired;
+                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active.Actives);
+                                }
+                            }
+                        }
+                    }
+
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(product.Id);
                     this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();                    
                 }                
@@ -185,12 +203,33 @@ namespace Cosmetify.RenderView
             var button = sender as Button;
             if (button != null)
             {
-                var model = button.DataContext as BatchModel;
-                if (model != null)
+                var result = MessageBox.Show("Do you want to delete the batch?", "Delete Batch", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes) 
                 {
-                    HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
-                }
+                    var model = button.DataContext as BatchModel;
+                    if (model != null)
+                    {
+                        if (model.Status == BatchStatus.Processed || model.Status == BatchStatus.Completed)
+                        {
+                            var result1 = MessageBox.Show("Do you want to add inventory of this batch?", "Inventory Update", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (result1 == MessageBoxResult.Yes)
+                            {
+                                var actives = model.BatchOrderCollection;
+                                if (actives != null) 
+                                {
+                                    foreach (var active in actives)
+                                    { 
+                                        active.Actives.Stocks = active.Actives.Stocks + active.StocksRequired;
+                                        HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active.Actives);
+                                    }
+                                }
+                            }
+                        }                       
+
+                        HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
+                        this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    }
+                }                
             }
         }
 
@@ -275,6 +314,7 @@ namespace Cosmetify.RenderView
                 if (model != null)
                 {
                     model.BatchOrderNo = "COS-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    model.OrderId = "OD-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
                     model.Status = BatchStatus.Created;
                     model.BatchDate = DateTime.Now;
                     model.PlannedDate = DateTime.MinValue;

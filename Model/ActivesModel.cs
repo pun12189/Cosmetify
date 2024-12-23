@@ -36,6 +36,8 @@ namespace Cosmetify.Model
 
         public string BrandNames { get; set; }
 
+        public int BrandNamesCount { get; set; }
+
         public string PkgTypes { get; set; }
 
         public string PkgQty { get; set; }
@@ -43,6 +45,8 @@ namespace Cosmetify.Model
         public string BatchQty { get; set; }
 
         public string ProductNames { get; set; }
+
+        public int ProductNamesCount { get; set; }
 
         public string QtyReqd { get; set; }
 

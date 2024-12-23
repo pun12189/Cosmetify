@@ -267,10 +267,20 @@ namespace Cosmetify.RenderView
                                     actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                     actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
                                     actives.BatchQty += model.BatchSize + Environment.NewLine;
-                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                    if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                    {
+                                        actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                        actives.ProductNamesCount += 1;
+                                    }
+
                                     actives.TotalRequired += model.StocksRequired;
                                     actives.TotalBatchOrders += 1;
-                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                    if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                    {
+                                        actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                        actives.BrandNamesCount += 1;
+                                    }
+
                                     actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                                 }
                             }
@@ -291,8 +301,18 @@ namespace Cosmetify.RenderView
                                     actives.BatchQty += model.StocksRequired + Environment.NewLine;
                                     actives.TotalCreatedRequired += model.StocksRequired;
                                     actives.TotalCreated += 1;
-                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
-                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                    if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                    {
+                                        actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                        actives.BrandNamesCount += 1;
+                                    }
+
+                                    if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                    {
+                                        actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                        actives.ProductNamesCount += 1;
+                                    }
+
                                     actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                                 }
                             }
@@ -313,8 +333,18 @@ namespace Cosmetify.RenderView
                                     actives.BatchQty += model.StocksRequired + Environment.NewLine;
                                     actives.TotalHoldRequired += model.StocksRequired;
                                     actives.TotalHold += 1;
-                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
-                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                    if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                    {
+                                        actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                        actives.BrandNamesCount += 1;
+                                    }
+
+                                    if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                    {
+                                        actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                        actives.ProductNamesCount += 1;
+                                    }
+
                                     actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                                 }
                             }
@@ -470,11 +500,21 @@ namespace Cosmetify.RenderView
                             {
                                 actives.TotalRequired += model.StocksRequired;
                                 actives.TotalBatchOrders += 1;
-                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                {
+                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                    actives.BrandNamesCount += 1;
+                                }
+                                
                                 actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                 actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
                                 actives.BatchQty += model.StocksRequired + Environment.NewLine;
-                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                {
+                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                    actives.ProductNamesCount += 1;
+                                }
+                                
                                 actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                             }
                         }
@@ -489,11 +529,21 @@ namespace Cosmetify.RenderView
                             {
                                 actives.TotalCreatedRequired += model.StocksRequired;
                                 actives.TotalCreated += 1;
-                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                {
+                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                    actives.BrandNamesCount += 1;
+                                }
+
                                 actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                 actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
                                 actives.BatchQty += model.StocksRequired + Environment.NewLine;
-                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                {
+                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                    actives.ProductNamesCount += 1;
+                                }
+
                                 actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                             }
                         }
@@ -508,11 +558,21 @@ namespace Cosmetify.RenderView
                             {
                                 actives.TotalHoldRequired += model.StocksRequired;
                                 actives.TotalHold += 1;
-                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                {
+                                    actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
+                                    actives.BrandNamesCount += 1;
+                                }
+
                                 actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                 actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
                                 actives.BatchQty += model.StocksRequired + Environment.NewLine;
-                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                {
+                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
+                                    actives.ProductNamesCount += 1;
+                                }
+
                                 actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                             }
                         }
@@ -649,6 +709,21 @@ namespace Cosmetify.RenderView
                 {
                     var category = HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategory(item.Id);
                     this.SubSubCategories = category.SubSubCategories;
+                }
+            }
+        }
+
+        private void BrandProductClick(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as System.Windows.Controls.Button;
+            if (btn != null)
+            {
+                var dc = btn.DataContext as ActivesModel;
+                if (dc != null)
+                {
+                    var dialog = new ActivesViewDialog();
+                    dialog.ActivesModelsCollection.Add(dc);
+                    dialog.ShowDialog();
                 }
             }
         }

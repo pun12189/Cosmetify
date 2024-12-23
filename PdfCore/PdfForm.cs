@@ -1,4 +1,5 @@
 ﻿using Cosmetify.Model;
+using Cosmetify.ViewModel;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
@@ -584,22 +585,58 @@ namespace Cosmetify.PdfCore
             }
 
             int count = 0;
-            foreach (var batchOrderModel in batchModel.BatchOrderCollection)
+            var masterFormula = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetFormulaUsingCode(batchModel.ProductID);
+            if (masterFormula != null)
             {
-                var row1 = this._table.AddRow();
-                row1.Cells[0].AddParagraph((++count).ToString());
-                row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[1].AddParagraph(batchOrderModel.Actives.ActivesName);
-                row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[2].AddParagraph(batchOrderModel.Actives.ShortCode);
-                row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[3].AddParagraph(batchOrderModel.PercentageRequired.ToString() + "%");
-                row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[4].AddParagraph(batchOrderModel.StocksRequired.ToString() + batchOrderModel.Units);
-                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[5].AddParagraph();
-                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+                foreach (var batchOrderModel in batchModel.BatchOrderCollection)
+                {
+                    var present = false;
+                    foreach (var item in masterFormula.Requirements)
+                    {
+                        if (item.Name.ToLower() == batchOrderModel.Actives.ActivesName.ToLower())
+                        {
+                            present = true; 
+                            break;
+                        }
+                    }
+
+                    if (!present)
+                    {
+                        var row1 = this._table.AddRow();
+                        row1.Cells[0].AddParagraph((++count).ToString());
+                        row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[1].AddParagraph(batchOrderModel.Actives.ActivesName);
+                        row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[2].AddParagraph(batchOrderModel.Actives.ShortCode);
+                        row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[3].AddParagraph(batchOrderModel.PercentageRequired.ToString() + "%");
+                        row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[4].AddParagraph(batchOrderModel.StocksRequired.ToString() + batchOrderModel.Units);
+                        row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+                        row1.Cells[5].AddParagraph();
+                        row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+                    }                    
+                }
             }
+            else
+            {
+                foreach (var batchOrderModel in batchModel.BatchOrderCollection)
+                {
+                    var row1 = this._table.AddRow();
+                    row1.Cells[0].AddParagraph((++count).ToString());
+                    row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[1].AddParagraph(batchOrderModel.Actives.ActivesName);
+                    row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[2].AddParagraph(batchOrderModel.Actives.ShortCode);
+                    row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[3].AddParagraph(batchOrderModel.PercentageRequired.ToString() + "%");
+                    row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[4].AddParagraph(batchOrderModel.StocksRequired.ToString() + batchOrderModel.Units);
+                    row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[5].AddParagraph();
+                    row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+                }
+            }            
 
             // Add an invisible row as a space line to the table.
             if (!string.IsNullOrEmpty(batchModel.Colour))
@@ -654,7 +691,7 @@ namespace Cosmetify.PdfCore
                 var size = 0.0;
                 foreach (var item in batchModel.BatchOrderCollection)
                 {
-                    remaining -= item.PercentageRequired;
+                    Math.Round(remaining -= item.PercentageRequired, 3);
                     size = item.BatchSize;
                 }
 
@@ -665,9 +702,9 @@ namespace Cosmetify.PdfCore
                 row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
                 row1.Cells[2].AddParagraph("H2O");
                 row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[3].AddParagraph(remaining + "%");
+                row1.Cells[3].AddParagraph(Math.Round(remaining, 3) + "%");
                 row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[4].AddParagraph(Math.Round(size * remaining/100, 2).ToString());
+                row1.Cells[4].AddParagraph(Math.Round(size * remaining/100, 3).ToString());
                 row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
                 row1.Cells[5].AddParagraph();
                 row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
