@@ -5,6 +5,7 @@ using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Security.Claims;
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace Cosmetify.PdfCore
@@ -448,7 +449,11 @@ namespace Cosmetify.PdfCore
             paragraph.Format.LineSpacing = "1.25cm";
             paragraph.Format.SpaceBefore = "0.5mm";
 
-            paragraph = section.AddParagraph("Batch Size: " + batchModel.BatchOrderCollection[0].BatchSize + " " + batchModel.BatchOrderCollection[0].Units);
+            if (batchModel.BatchOrderCollection != null && batchModel.BatchOrderCollection.Count > 0)
+            {
+                paragraph = section.AddParagraph("Batch Size: " + batchModel.BatchOrderCollection[0].BatchSize + " " + batchModel.BatchOrderCollection[0].Units);
+            }
+            
             // We use an empty paragraph to move the first text line below the address field.
             paragraph.Format.Alignment = ParagraphAlignment.Left;
             //paragraph.Format.Font.Size = 10;
@@ -571,7 +576,7 @@ namespace Cosmetify.PdfCore
         {
             // Fill the address in the address text frame.
             var paragraph = _addressFrame.AddParagraph();
-            paragraph.AddText(batchModel.Customer.FirstName + " " + batchModel.Customer.LastName);
+            paragraph.AddText(batchModel.Customer.FirstName);
             paragraph.AddLineBreak();
             paragraph.AddText(batchModel.Customer.Address + ", " + batchModel.Customer.City);
             paragraph.AddLineBreak();
@@ -839,7 +844,7 @@ namespace Cosmetify.PdfCore
         {
             // Fill the address in the address text frame.
             var paragraph = _addressFrame.AddParagraph();
-            paragraph.AddText(batchModel.Customer.FirstName + " " + batchModel.Customer.LastName);
+            paragraph.AddText(batchModel.Customer.FirstName);
             paragraph.AddLineBreak();
             paragraph.AddText(batchModel.Customer.Address + ", " + batchModel.Customer.City);
             paragraph.AddLineBreak();
@@ -899,20 +904,64 @@ namespace Cosmetify.PdfCore
 
                 row1.Cells[3].AddParagraph(actContent);
                 row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[4].AddParagraph(bModel.Colour);
-                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[5].AddParagraph(bModel.Perfume);
-                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
-                var claims = string.Empty;
-                foreach (var act in bModel.Claims)
+                if (string.IsNullOrEmpty(bModel.Colour))
                 {
-                    claims += act + Environment.NewLine;
+                    row1.Cells[4].AddParagraph("**No Color**");
                 }
-                row1.Cells[6].AddParagraph(claims);
+                else
+                {
+                    row1.Cells[4].AddParagraph(bModel.Colour);
+                }
+                
+                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+
+                if (string.IsNullOrEmpty(bModel.Perfume))
+                {
+                    row1.Cells[5].AddParagraph("**No Perfume**");
+                }
+                else
+                {
+                    row1.Cells[5].AddParagraph(bModel.Perfume);
+                }
+                
+                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+
+                if (bModel.Claims != null && bModel.Claims.Count > 0)
+                {
+                    var claims = string.Empty;
+                    foreach (var act in bModel.Claims)
+                    {
+                        claims += act + Environment.NewLine;
+                    }
+                    row1.Cells[6].AddParagraph(claims);
+                }
+                else
+                {
+                    row1.Cells[6].AddParagraph("**No Claims**");
+                }
+                
                 row1.Cells[6].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[7].AddParagraph(bModel.PkgType);
+
+                if (string.IsNullOrEmpty(bModel.PkgType))
+                {
+                    row1.Cells[7].AddParagraph();
+                }
+                else
+                {
+                    row1.Cells[7].AddParagraph(bModel.PkgType);
+                }
+                
                 row1.Cells[7].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[8].AddParagraph(bModel.PkgOrderQuantity);
+
+                if (string.IsNullOrEmpty(bModel.PkgOrderQuantity))
+                {
+                    row1.Cells[8].AddParagraph();
+                }
+                else
+                {
+                    row1.Cells[8].AddParagraph(bModel.PkgOrderQuantity);
+                }
+
                 row1.Cells[8].Format.Alignment = ParagraphAlignment.Center;
             }
 

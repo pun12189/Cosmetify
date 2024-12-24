@@ -54,14 +54,10 @@ namespace Cosmetify.RenderView.UserControls
                 Notes = this.tbNotes.Text,
             };
 
-            if (string.IsNullOrEmpty(this.tbBname.Text))
+            if (!string.IsNullOrEmpty(this.tbBname.Text))
             {
                 var str = this.tbBname.Text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                 lead.BrandName = new ObservableCollection<string>(str);
-            }
-            else
-            {
-                lead.PinCode = Convert.ToInt32(this.tbPincode.Text);
             }
 
             if (string.IsNullOrEmpty(this.tbPincode.Text))
