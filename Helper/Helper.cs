@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Cosmetify.Helper
@@ -108,42 +109,59 @@ namespace Cosmetify.Helper
 
         public static DataTable ConvertCsvToDataTable(string filePath, int categ, int scateg, int sscateg)
         {
-            //reading all the lines(rows) from the file.
-            string[] rows = File.ReadAllLines(filePath);
-
             DataTable dtData = new DataTable();
-            string[] rowValues = null;
-            DataRow dr = dtData.NewRow();
-
-            //Creating columns
-            if (rows.Length > 0)
+            try
             {
-                foreach (string columnName in rows[0].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-                    dtData.Columns.Add(columnName);
-            }
+                //reading all the lines(rows) from the file.
+                string[] rows = File.ReadAllLines(filePath);                
+                string[] rowValues = null;
+                DataRow dr = dtData.NewRow();
 
-            dtData.Columns.Add("category");
-            dtData.Columns.Add("subcategory");
-            dtData.Columns.Add("subsubcategory");
-
-            //Creating row for each line.(except the first line, which contain column names)
-            for (int row = 1; row < rows.Length; row++)
-            {
-                var rowStr = new string[8];
-                rowValues = rows[row].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0; i < rowValues.Length; i++)
+                //Creating columns
+                if (rows.Length > 0)
                 {
-                    rowStr[i] = rowValues[i].Trim();
+                    foreach (string columnName in rows[0].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+                        dtData.Columns.Add(columnName);
                 }
 
-                rowStr[5] = categ.ToString();
-                rowStr[6] = scateg.ToString();
-                rowStr[7] = sscateg.ToString();
+                dtData.Columns.Add("category");
+                dtData.Columns.Add("subcategory");
+                dtData.Columns.Add("subsubcategory");
 
-                dr = dtData.NewRow();
-                dr.ItemArray = rowStr;
-                dtData.Rows.Add(dr);
+                //Creating row for each line.(except the first line, which contain column names)
+                for (int row = 1; row < rows.Length; row++)
+                {
+                    var rowStr = new string[8];
+                    rowValues = rows[row].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < rowValues.Length; i++)
+                    {
+                        rowStr[i] = rowValues[i].Trim();
+                    }
+
+                    rowStr[5] = categ.ToString();
+                    rowStr[6] = scateg.ToString();
+                    rowStr[7] = sscateg.ToString();
+
+                    dr = dtData.NewRow();
+                    dr.ItemArray = rowStr;
+                    dtData.Rows.Add(dr);
+                }
             }
+            catch (IOException e) 
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.LogError(e);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.LogError(e);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.LogError(e);
+            }           
 
             return dtData;
         }

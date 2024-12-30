@@ -233,8 +233,8 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Pkg Type" Binding="{Binding PkgType, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Pkg Order Qty" Binding="{Binding PkgOrderQuantity, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!--<DataGridTextColumn Header="Pkg Type" Binding="{Binding PkgType, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Pkg Order Qty" Binding="{Binding PkgOrderQuantity, UpdateSourceTrigger=PropertyChanged}"/>-->
                         <DataGridTemplateColumn Header="Mfg Date" Visibility="Collapsed">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

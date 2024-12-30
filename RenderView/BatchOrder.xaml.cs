@@ -5,6 +5,7 @@ using Cosmetify.ViewModel;
 using Microsoft.Win32;
 using MigraDoc.Rendering;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -159,37 +160,55 @@ namespace Cosmetify.RenderView
 
         private void ExportBatch(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null)
+            try
             {
-                var model = button.DataContext as BatchModel;
-                if (model != null)
+                var button = sender as Button;
+                if (button != null)
                 {
-                    var batch = new PdfCore.PdfForm();
-                    var document = batch.CreateDocument(model);
-                    document.UseCmykColor = true;
-                    var pdfRenderer = new PdfDocumentRenderer(true);
-
-                    // Set the MigraDoc document.
-                    pdfRenderer.Document = document;
-
-                    // Create the PDF document.
-                    pdfRenderer.RenderDocument();
-
-                    // Save the PDF document...
-                    var filename = "Batch-" + model.Customer.FirstName + "_" + model.BrandName + ".pdf";
-
-                    var dialog = new SaveFileDialog();
-                    dialog.FileName = filename;
-                    dialog.AddExtension = true;
-                    dialog.DefaultExt = ".pdf";
-                    if ((bool)dialog.ShowDialog())
+                    var model = button.DataContext as BatchModel;
+                    if (model != null)
                     {
-                        pdfRenderer.Save(dialog.FileName);
-                        // ...and start a viewer.
-                        //Process.Start(dialog.FileName);
+                        var batch = new PdfCore.PdfForm();
+                        var document = batch.CreateDocument(model);
+                        document.UseCmykColor = true;
+                        var pdfRenderer = new PdfDocumentRenderer(true);
+
+                        // Set the MigraDoc document.
+                        pdfRenderer.Document = document;
+
+                        // Create the PDF document.
+                        pdfRenderer.RenderDocument();
+
+                        // Save the PDF document...
+                        var filename = "Batch-" + model.Customer.FirstName + "_" + model.BrandName + ".pdf";
+
+                        var dialog = new SaveFileDialog();
+                        dialog.FileName = filename;
+                        dialog.AddExtension = true;
+                        dialog.DefaultExt = ".pdf";
+                        if ((bool)dialog.ShowDialog())
+                        {
+                            pdfRenderer.Save(dialog.FileName);
+                            // ...and start a viewer.
+                            //Process.Start(dialog.FileName);
+                        }
                     }
                 }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
             }
         }
 

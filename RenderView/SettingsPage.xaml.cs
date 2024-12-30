@@ -1,5 +1,6 @@
 ﻿using Cosmetify.Dialogs;
 using Cosmetify.Model;
+using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -232,6 +233,39 @@ namespace Cosmetify.RenderView
         private void UploadPerfumes(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void dgColor_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                var product = e.Row.DataContext as ColoursModel;
+                if (product != null)
+                {
+                    if (product.Id > 0)
+                    {
+                        HomepageViewModel.CommonViewModel.ColoursRepository.UpdateColor(product);
+                    }
+                    else
+                    {
+                        HomepageViewModel.CommonViewModel.ColoursRepository.InsertColor(product.Name);
+                    }
+                }
+            }
+        }
+
+        private void dgColor_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dg = sender as System.Windows.Controls.DataGrid;
+            if (dg != null)
+            {
+                var product = dg.SelectedItem as ColoursModel;
+                if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
+                {
+                    HomepageViewModel.CommonViewModel.ColoursRepository.DeleteColor(product.Id);
+                    this.dgColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
+                }
+            }
         }
     }
 }

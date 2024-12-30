@@ -77,10 +77,17 @@ namespace Cosmetify.Dialogs
             // Get the selected file name and display in a TextBox 
             if (result == true)
             {
-                // Open document 
-                string filename = System.IO.Path.GetFileName(dlg.FileName);
-                this.fileNameTb.Text = filename;
-                this.FilePath = dlg.FileName;
+                try
+                {
+                    // Open document 
+                    string filename = System.IO.Path.GetFileName(dlg.FileName);
+                    this.fileNameTb.Text = filename;
+                    this.FilePath = dlg.FileName;
+                }
+                catch (Exception ex)
+                { 
+                    Helper.Helper.LogError(ex);
+                }                
             }
         }
 

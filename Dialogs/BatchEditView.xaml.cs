@@ -125,7 +125,18 @@ namespace Cosmetify.Dialogs
             {
                 var batchOrder = new BatchOrderModel();
                 batchOrder.Actives = this.cbProd.SelectedItem as ActivesModel;
+                batchOrder.Units = batchOrder.Actives.Units;
                 this.BatchModel.BatchOrderCollection.Add(batchOrder);
+            }
+        }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SelectCategory();
+
+            if ((bool)dialog.ShowDialog())
+            {
+                this.cbProd.ItemsSource = dialog.ItemsCollection;
             }
         }
     }

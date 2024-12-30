@@ -58,6 +58,51 @@ namespace Cosmetify.Repository
             return product;
         }
 
+        public ObservableCollection<ActivesModel> SearchActivesBySSubCategory(int Id)
+        {
+            ObservableCollection<ActivesModel> leads = new ObservableCollection<ActivesModel>();
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "select * from actives where subsubcategory=@id";
+                    command.Parameters.Add("@id", MySqlDbType.Int32).Value = Id;
+                    var reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var lead = new ActivesModel
+                            {
+                                Id = reader.GetInt32(0),
+                                ActivesName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                                ShortCode = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                Stocks = reader.IsDBNull(3) ? double.MinValue : reader.GetDouble(3),
+                                Units = reader.IsDBNull(4) ? ProductUnits.Kilograms : (ProductUnits)Enum.Parse(typeof(ProductUnits), reader.GetString(4)),
+                                SKU = reader.IsDBNull(5) ? double.MinValue : reader.GetDouble(5),
+                                Category = reader.IsDBNull(6) ? null : HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
+                                SubCategory = reader.IsDBNull(7) ? null : HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategory(reader.GetInt32(7)),
+                                SubSubCategory = reader.IsDBNull(8) ? null : HomepageViewModel.CommonViewModel.SubSubCategoryRepository.GetSubSubCategory(reader.GetInt32(8)),
+                            };
+
+                            leads.Add(lead);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return leads;
+        }
+
         public ObservableCollection<ActivesModel> SearchActives(string searchData)
         {
             ObservableCollection<ActivesModel> leads = new ObservableCollection<ActivesModel>();
