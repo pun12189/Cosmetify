@@ -510,12 +510,13 @@ namespace Cosmetify.RenderView
                                         if (model != null)
                                         {
                                             model.Status = BatchStatus.Processed;
-                                            model.PlanningDate = DateTime.Now;
+                                            // model.PlanningDate = DateTime.Now;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
                                             if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
+                                                    item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
                                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                                                 }
                                             }

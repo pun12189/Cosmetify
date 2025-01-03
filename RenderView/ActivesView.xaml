@@ -79,15 +79,23 @@
                     <Button Content="Bulk Delete" x:Name="btnBulk" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnBulk_Click"/>
                 </StackPanel>
                 <Expander Grid.Row="1" Header="Filters" ExpandDirection="Down" IsExpanded="False" Background="White" controls:HeaderedControlHelper.HeaderFontWeight="Bold" controls:HeaderedControlHelper.HeaderBackground="White">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Select Status" Margin="0,0,5,0" VerticalAlignment="Center" Visibility="Collapsed"/>
-                        <ComboBox x:Name="cbStatus" Width="150" Margin="0,0,10,0" Visibility="Collapsed"/>
-                        <TextBlock Text="Date Range" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="From" VerticalAlignment="Center"/>
-                        <DatePicker x:Name="dtFrom" Width="150" IsTodayHighlighted="True" Margin="5,0"/>
-                        <TextBlock Text="To" VerticalAlignment="Center"/>
-                        <DatePicker x:Name="dtTo" Width="150" IsTodayHighlighted="True" Margin="5,0"/>
-                        <Button x:Name="btnApplyFilter" Content="Apply" Width="150" Click="btnApplyFilter_Click"/>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Select Status" Margin="0,0,5,0" VerticalAlignment="Center" Visibility="Collapsed"/>
+                            <ComboBox x:Name="cbStatus" Width="150" Margin="0,0,10,0" Visibility="Collapsed"/>
+                            <TextBlock Text="Date Range" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="From" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dtFrom" Width="150" IsTodayHighlighted="True" Margin="5,0"/>
+                            <TextBlock Text="To" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dtTo" Width="150" IsTodayHighlighted="True" Margin="5,0"/>
+                            <Button x:Name="btnApplyFilter" Content="Apply" Width="150" Click="btnApplyFilter_Click"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBlock Text="Select Category" Margin="0,0,5,0" VerticalAlignment="Center" Visibility="Visible"/>
+                            <ComboBox x:Name="cbFilterCateg" Width="150" Margin="0,0,10,0" Visibility="Visible" DisplayMemberPath="CategoryName" SelectedValuePath="Id"/>
+                            <Button x:Name="btnApplyCateg" Content="Apply" Margin="0,0,10,0" Width="150" Click="btnApplyCateg_Click"/>
+                            <Button x:Name="btnClearFilter" Content="Clear" Width="150" Click="btnClearFilter_Click"/>
+                        </StackPanel>
                     </StackPanel>
                 </Expander>
                 <TextBlock Grid.Row="2" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
@@ -161,8 +169,8 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />                        
-                        <DataGridTextColumn Header="InStock" Binding="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Units" Binding="{Binding Units, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="InStock" Binding="{Binding Stocks, UpdateSourceTrigger=LostFocus}" />
 
                         <!--<DataGridTextColumn Header="Product Names" Binding="{Binding ProductNamesCount, UpdateSourceTrigger=PropertyChanged}" />-->
                         <DataGridTemplateColumn Header="Product Names">

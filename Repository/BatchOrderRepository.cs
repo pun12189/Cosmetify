@@ -517,7 +517,15 @@ namespace Cosmetify.Repository
                     command.CommandText = "insert into batchorder(order_no, cust_id, prod_name, batch_date, expiry, batch_data, pkgtype, pkg_order_quantity, description, remarks, add_info, planning_date, planned_date, mfg_date, completion_date, status, order_stage, order_id, color, perfume, claims, pkg_img, brand_name, product_id) values(@order_no, @cust_id, @prod_name, @batch_date, @expiry, @batch_data, @pkgtype, @pkg_order_quantity, @description, @remarks, @add_info, @planning_date, @planned_date, @mfg_date, @completion_date, @status, @order_stage, @order_id, @color, @perfume, @claims, @pkg_img, @brand_name, @product_id)";
                     command.Parameters.Add("@order_no", MySqlDbType.VarChar).Value = lead.BatchOrderNo;
                     command.Parameters.Add("@cust_id", MySqlDbType.Int32).Value = lead.Customer.Id;
-                    command.Parameters.Add("@prod_name", MySqlDbType.VarChar).Value = lead.ProductName;
+                    if (string.IsNullOrEmpty(lead.ProductName))
+                    {
+                        command.Parameters.Add("@prod_name", MySqlDbType.VarChar).Value = lead.ProductID;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@prod_name", MySqlDbType.VarChar).Value = lead.ProductName;
+                    }
+                    
                     command.Parameters.Add("@batch_date", MySqlDbType.DateTime).Value = lead.BatchDate;
                     command.Parameters.Add("@expiry", MySqlDbType.DateTime).Value = lead.Expiry;
                     command.Parameters.Add("@batch_data", MySqlDbType.JSON).Value = JsonSerializer.Serialize(lead.BatchOrderCollection, options);

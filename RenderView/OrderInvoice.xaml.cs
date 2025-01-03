@@ -185,7 +185,15 @@ namespace Cosmetify.RenderView
             if (mfmodel != null) 
             {
                 batchModel.ProductID = mfmodel.Code;
-                batchModel.ProductName = mfmodel.Name;
+                if (string.IsNullOrEmpty(mfmodel.Name))
+                {
+                    batchModel.ProductName = mfmodel.Code;
+                }
+                else
+                {
+                    batchModel.ProductName = mfmodel.Name;
+                }
+                
             }
             
             var bname = this.cbBrand.SelectedItem as string;
