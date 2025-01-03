@@ -483,7 +483,22 @@ namespace Cosmetify.RenderView
 
             if (this.dataGrid1 != null)
             {
-                this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                if (this.cbFilterCateg != null && this.cbFilterCateg.SelectedIndex >= 0)
+                {
+                    var categ = this.cbFilterCateg.SelectedItem as SubSubCategoryModel;
+                    if (categ != null)
+                    {
+                        this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.SearchActivesBySSubCategory(categ.Id);
+                    }
+                    else 
+                    {
+                        this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                    }
+                }
+                else
+                {
+                    this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                }
             }
 
             // this.FilteredBatchModels.Clear();
@@ -729,122 +744,10 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void btnApplyCateg_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.cbFilterCateg != null && this.cbFilterCateg.SelectedIndex >= 0)
-            {
-                var categ = this.cbFilterCateg.SelectedItem as SubSubCategoryModel;
-                if (categ != null) 
-                {
-                    this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.SearchActivesBySSubCategory(categ.Id);
-                    var batchOrders = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
-                    if (batchOrders != null)
-                    {
-                        foreach (var batchOrder in batchOrders)
-                        {
-                            if (batchOrder.Status == BatchStatus.Planned)
-                            {
-                                foreach (var model in batchOrder.BatchOrderCollection)
-                                {
-                                    if (model.Actives != null)
-                                    {
-                                        var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
-                                        if (actives != null)
-                                        {
-                                            actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
-                                            actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                            actives.BatchQty += model.BatchSize + Environment.NewLine;
-                                            if (!string.IsNullOrEmpty(batchOrder.ProductName))
-                                            {
-                                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
-                                                actives.ProductNamesCount += 1;
-                                            }
-
-                                            actives.TotalRequired += model.StocksRequired;
-                                            actives.TotalBatchOrders += 1;
-                                            if (!string.IsNullOrEmpty(batchOrder.BrandName))
-                                            {
-                                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
-                                                actives.BrandNamesCount += 1;
-                                            }
-
-                                            actives.QtyReqd += model.StocksRequired + Environment.NewLine;
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (batchOrder.Status == BatchStatus.Created)
-                            {
-                                foreach (var model in batchOrder.BatchOrderCollection)
-                                {
-                                    if (model.Actives != null)
-                                    {
-                                        var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
-                                        if (actives != null)
-                                        {
-                                            actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
-                                            actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                            actives.BatchQty += model.StocksRequired + Environment.NewLine;
-                                            actives.TotalCreatedRequired += model.StocksRequired;
-                                            actives.TotalCreated += 1;
-                                            if (!string.IsNullOrEmpty(batchOrder.BrandName))
-                                            {
-                                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
-                                                actives.BrandNamesCount += 1;
-                                            }
-
-                                            if (!string.IsNullOrEmpty(batchOrder.ProductName))
-                                            {
-                                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
-                                                actives.ProductNamesCount += 1;
-                                            }
-
-                                            actives.QtyReqd += model.StocksRequired + Environment.NewLine;
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (batchOrder.Status == BatchStatus.Hold)
-                            {
-                                foreach (var model in batchOrder.BatchOrderCollection)
-                                {
-                                    if (model.Actives != null)
-                                    {
-                                        var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
-                                        if (actives != null)
-                                        {
-                                            actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
-                                            actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                            actives.BatchQty += model.StocksRequired + Environment.NewLine;
-                                            actives.TotalHoldRequired += model.StocksRequired;
-                                            actives.TotalHold += 1;
-                                            if (!string.IsNullOrEmpty(batchOrder.BrandName))
-                                            {
-                                                actives.BrandNames += batchOrder.BrandName + Environment.NewLine;
-                                                actives.BrandNamesCount += 1;
-                                            }
-
-                                            if (!string.IsNullOrEmpty(batchOrder.ProductName))
-                                            {
-                                                actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
-                                                actives.ProductNamesCount += 1;
-                                            }
-
-                                            actives.QtyReqd += model.StocksRequired + Environment.NewLine;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         private void btnClearFilter_Click(object sender, RoutedEventArgs e)
         {
+            this.dtFrom.Text = string.Empty;
+            this.dtTo.Text = string.Empty;
             this.cbFilterCateg.SelectedIndex = -1;
             this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             var batchOrders = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
