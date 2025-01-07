@@ -14,6 +14,7 @@
       Title="OrderInvoice" x:Name="odInv">
     <Page.Resources>
         <conv:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <conv:InvertableBooleanToVisibilityConverter x:Key="InvertableBooleanToVisibilityConverter"/>
     </Page.Resources>
     <TabControl Name="Tabs1" TabStripPlacement="Top" BorderBrush="Blue" Margin="10">
         <TabItem Header="Create Order" Padding="10,5,10,5">
@@ -63,10 +64,13 @@
                         </Button>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Vertical">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Select Product" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                            <ComboBox x:Name="cbProduct" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" DisplayMemberPath="Code" SelectionChanged="cbProduct_SelectionChanged"/>
-                            <Button x:Name="btnAddProd" Background="Transparent" Click="btnAddProd_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
+                        <CheckBox Content="Custom" x:Name="chCust"/>
+                        <StackPanel Orientation="Horizontal">                            
+                            <TextBlock Text="Select Product" Margin="0,0,5,0" VerticalAlignment="Center" Visibility="{Binding ElementName=chCust, Path=IsChecked, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=Inverted}"/>
+                            <ComboBox x:Name="cbProduct" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" DisplayMemberPath="Code" SelectionChanged="cbProduct_SelectionChanged" Visibility="{Binding ElementName=chCust, Path=IsChecked, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=Inverted}"/>
+                            <TextBlock Text="Product Name" Margin="0,0,5,0" VerticalAlignment="Center" Visibility="{Binding ElementName=chCust, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <TextBox x:Name="tbPname" Margin="0,0,5,0" VerticalAlignment="Center" Width="150" Visibility="{Binding ElementName=chCust, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <Button x:Name="btnAddProd" Visibility="{Binding ElementName=chCust, Path=IsChecked, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=Inverted}" Background="Transparent" Click="btnAddProd_Click" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip="Add New Customer">
                                 <icon:FontAwesome Kind="PlusCircleSolid"/>
                             </Button>
                         </StackPanel>

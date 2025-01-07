@@ -175,26 +175,42 @@ namespace Cosmetify.RenderView
         private void btnAddProduct_Click(object sender, RoutedEventArgs e)
         {
             var batchModel = new BatchModel();
+            if (this.chCust != null && this.chCust.IsChecked == true)
+            {
+                if (this.tbPname != null && string.IsNullOrEmpty(this.tbPname.Text))
+                {
+                    MessageBox.Show("Enter Product Name", "Custom Product", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    return;
+                }
+                else
+                {
+                    batchModel.ProductName = this.tbPname.Text;
+                    batchModel.ProductID = "PRD" + Math.Abs(DateTime.Now.GetHashCode());
+                }
+            }
+            else
+            {
+                var mfmodel = this.cbProduct.SelectedItem as MasterFormulaModel;
+                if (mfmodel != null)
+                {
+                    batchModel.ProductID = mfmodel.Code;
+                    if (string.IsNullOrEmpty(mfmodel.Name))
+                    {
+                        batchModel.ProductName = mfmodel.Code;
+                    }
+                    else
+                    {
+                        batchModel.ProductName = mfmodel.Name;
+                    }
+
+                }
+            }
+
             batchModel.BatchOrderNo = "COS-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
             var cust = this.cbCust.SelectedItem as CustomerModel;
             if (cust != null) {
                 batchModel.Customer = cust;
-            }
-
-            var mfmodel = this.cbProduct.SelectedItem as MasterFormulaModel;
-            if (mfmodel != null) 
-            {
-                batchModel.ProductID = mfmodel.Code;
-                if (string.IsNullOrEmpty(mfmodel.Name))
-                {
-                    batchModel.ProductName = mfmodel.Code;
-                }
-                else
-                {
-                    batchModel.ProductName = mfmodel.Name;
-                }
-                
-            }
+            }                        
             
             var bname = this.cbBrand.SelectedItem as string;
             if (bname != null) 
