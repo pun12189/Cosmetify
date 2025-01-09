@@ -140,5 +140,27 @@ namespace Cosmetify.Dialogs
             this.tbWater.Text = 100.ToString();
             this.Close();
         }
+
+        private void btnGen_Click(object sender, RoutedEventArgs e)
+        {
+            this.tbCode.Text = "MF" + Math.Abs(DateTime.Now.GetHashCode());
+        }
+
+        private void tbCode_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var code = this.tbCode.Text;
+            if (string.IsNullOrEmpty(code))
+            {
+                MessageBox.Show("Code cannot be empty, You can auto generate by click button beside textbox", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else 
+            {
+                var prod = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetFormulaUsingCode(code);
+                if (prod != null) 
+                {
+                    MessageBox.Show("This code is already exists, Please try another or generate new one", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
     }
 }

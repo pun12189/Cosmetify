@@ -43,7 +43,7 @@ namespace Cosmetify.RenderView
             InitializeComponent();
             this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
             this.dgColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
-            this.dgPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
+            this.dgPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();            
         }
 
         public BitmapImage ProfilePicture
@@ -264,6 +264,68 @@ namespace Cosmetify.RenderView
                 {
                     HomepageViewModel.CommonViewModel.ColoursRepository.DeleteColor(product.Id);
                     this.dgColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
+                }
+            }
+        }
+
+        private void btnCount_Click(object sender, RoutedEventArgs e)
+        {
+            var grid = sender as Button;
+            if (grid != null)
+            {
+                var model = grid.DataContext as MasterFormulaModel;
+                if (model != null)
+                {
+                    var dialog = new MasterFormulaViewDialog();
+                    dialog.MFActivesModelsCollection = model.Requirements;
+                    dialog.ShowDialog();
+                }
+            }
+        }
+
+        private void DeleteFormula(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn != null) 
+            {
+                var formula = btn.DataContext as MasterFormulaModel;
+                if (formula != null) 
+                {
+                    HomepageViewModel.CommonViewModel.MasterFormulaRepository.DeleteFormula(formula.Id);
+                    this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                }
+            }
+        }
+
+        private void EditFormula(object sender, RoutedEventArgs e)
+        {
+            var grid = sender as Button;
+            if (grid != null && grid.DataContext is MasterFormulaModel)
+            {
+                var model = grid.DataContext as MasterFormulaModel;
+                var addMasterFormula = new AddMasterFormula();
+                addMasterFormula.FormulaName = model.Name;
+                addMasterFormula.FormulaCode = model.Code;
+                addMasterFormula.ActivesList.Clear();
+                foreach (var item in model.Requirements)
+                {
+                    addMasterFormula.ActivesList.Add(item);
+                }
+                addMasterFormula.RemainingWater = model.RemainingWater;
+                addMasterFormula.ShowDialog();
+                if (!string.IsNullOrEmpty(addMasterFormula.FormulaName) || !string.IsNullOrEmpty(addMasterFormula.FormulaCode) || addMasterFormula.ActivesList.Count > 0)
+                {
+                    model.Name = addMasterFormula.FormulaName;
+                    model.Code = addMasterFormula.FormulaCode;
+                    model.Requirements.Clear();
+                    foreach (var item in addMasterFormula.ActivesList)
+                    {
+                        model.Requirements.Add(item);
+                    }
+
+                    model.RemainingWater = addMasterFormula.RemainingWater;
+                    HomepageViewModel.CommonViewModel.MasterFormulaRepository.UpdateFormula(model);
+                    this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                 }
             }
         }

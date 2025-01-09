@@ -1,0 +1,17 @@
+﻿<Window x:Class="Cosmetify.Dialogs.MasterFormulaViewDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cosmetify.Dialogs"
+        mc:Ignorable="d"
+        Title="MasterFormula Actives View" Height="200" Width="400" x:Name="mfView" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <DataGrid FontFamily="Arial" Foreground="Black" ItemsSource="{Binding ElementName=mfView, Path=MFActivesModelsCollection}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Requirement" Binding="{Binding Required, StringFormat='\{0\}%', UpdateSourceTrigger=PropertyChanged}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

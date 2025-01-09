@@ -714,19 +714,22 @@ namespace Cosmetify.PdfCore
                     }                        
                 }
 
-                var row1 = this._table.AddRow();
-                row1.Cells[0].AddParagraph((++count).ToString());
-                row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[1].AddParagraph("Water");
-                row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[2].AddParagraph("H2O");
-                row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[3].AddParagraph(Math.Round(remaining, 3) + "%");
-                row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[4].AddParagraph(Math.Round(size * remaining/100, 3).ToString());
-                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[5].AddParagraph();
-                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+                if (remaining > 0.0)
+                {
+                    var row1 = this._table.AddRow();
+                    row1.Cells[0].AddParagraph((++count).ToString());
+                    row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[1].AddParagraph("Water");
+                    row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[2].AddParagraph("H2O");
+                    row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[3].AddParagraph(Math.Round(remaining, 3) + "%");
+                    row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[4].AddParagraph(Math.Round(size * remaining / 100, 3).ToString());
+                    row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[5].AddParagraph();
+                    row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+                }
             }
 
             
@@ -930,9 +933,12 @@ namespace Cosmetify.PdfCore
                             actContent += act.Actives.ActivesName + " " + act.PercentageRequired + act.Units + Environment.NewLine;
                         }
                     }
-                }                
+                }
 
-                actContent += "Water: " + remaining + "%";
+                if (remaining > 0.0)
+                {
+                    actContent += "Water: " + remaining + "%";
+                }                
 
                 row1.Cells[3].AddParagraph(actContent);
                 row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;

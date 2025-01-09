@@ -39,7 +39,13 @@
         <TextBlock Text="Name" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Row="2" Grid.Column="1"/>
         <TextBox x:Name="tbName"  control:TextBoxHelper.Watermark="Enter Formula Name" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" Width="200"/>
         <TextBlock Text="Code" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Row="4" Grid.Column="1"/>
-        <TextBox x:Name="tbCode" control:TextBoxHelper.Watermark="Enter Code Name" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="3" Width="200"/>
+        <StackPanel Grid.Row="4" Grid.Column="3" Orientation="Horizontal">
+            <TextBox x:Name="tbCode" control:TextBoxHelper.Watermark="Enter Code Name" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" LostFocus="tbCode_LostFocus"/>
+            <Button Background="Transparent" ToolTip="Generate Code" VerticalAlignment="Center" x:Name="btnGen" Click="btnGen_Click">
+                <icon:BootstrapIcons Kind="ArrowClockwise"/>
+            </Button>
+        </StackPanel>
+        
         <TextBlock Text="Select Actives" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Row="6" Grid.Column="1"/>
         <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3" HorizontalAlignment="Left">
             <ComboBox control:ComboBoxHelper.CharacterCasing="Normal" IsEditable="True" IsTextSearchEnabled="True" x:Name="ddActives" DisplayMemberPath="ActivesName" Width="150" Height="20"/>
