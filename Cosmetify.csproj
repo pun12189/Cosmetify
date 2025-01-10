@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <SignAssembly>False</SignAssembly>
+    <SignAssembly>True</SignAssembly>
     <Description>With 13+ years of experience in this domain, we are one of the leading Software &amp; Applications development companies. Through the years, we have acquired the experience and track record in providing exceptional service and customer satisfaction.
 
 At Sofric (formerly known as LeadManch), we are specialized in LMS-CRM-ERP solution, customized Website, eCommerce website, customized online &amp; offline Software &amp; Mobile Application development. “With the recognition of being the most trustworthy software development company in the region, the responsibility on our shoulders is even bigger.”
@@ -16,6 +16,7 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <PackageIcon>bill.png</PackageIcon>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
+    <ApplicationIcon>SetupFiles\BahiKitab-Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +35,10 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <None Remove="Resources\Login.png" />
     <None Remove="Resources\tgBtn_default.png" />
     <None Remove="Resources\tgBtn_MouseOver.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SetupFiles\BahiKitab-Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -121,15 +126,6 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Extras\bahikitab.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Extras\cosmetify.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Extras\mysql-connector-net-8.0.33.1.msi">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
     <None Update="SetupFiles\BahiKitab-Icon.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -151,10 +147,6 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <None Update="TxtFile\text.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extras\" />
   </ItemGroup>
 
 </Project>

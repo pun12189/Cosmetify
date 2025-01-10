@@ -66,8 +66,8 @@ WizardSmallImageFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.bmp
 VersionInfoVersion={# Version}
 AppVersion={# Version}
 ;If IncludeFramework, append _FW to end of compiled setup;
-ArchitecturesAllowed = x86compatible x64compatible
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed = x86compatible and x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 ;without the framework included
 OutputBaseFilename=Cosmetify
 ;Directory where setup.exe will be compiled to
@@ -77,7 +77,6 @@ WindowShowCaption=no
 WindowResizable=yes
 SetupIconFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.ico
 SetupLogging=yes
-ShowUndisplayableLanguages=no
 ;#include <idp.iss>
  ;SignTool=sn /d $qTemplateToaster Installer$q $f
  ;UninstallIconFile=  {#SourceFileDir}uninstall.ico
@@ -477,7 +476,7 @@ Filename: Reg.exe; Parameters: "add ""HKLM\Software\Microsoft\Internet Explorer\
  [InstallDelete]
     
 ;Type: filesandordirs; Name: "{app}"       
-Type: files; Name: "{localappdata}\IconCache.db";  
+Type: files; Name: "{autoappdata}\IconCache.db";  
 Type: filesandordirs; Name: "{app}\Resources";
  [UninstallDelete]
     
@@ -485,8 +484,8 @@ Type: filesandordirs; Name: "{app}"
 Type: filesandordirs; Name: "{app}\Resources"
 Type:files;  Name:{commondesktop}\Cosmetify
 [UninstallRun]
-Filename: {win}\Microsoft.NET\Framework\v4.0.30319\CasPol.exe; Parameters: "-q -machine -remgroup ""Cosmetify"""; Flags: skipifdoesntexist runhidden;
-Filename: {win}\Microsoft.NET\Framework\v4.0.30319\CasPol.exe; Parameters: "-q -machine -remgroup ""Cosmetify"""; Flags: skipifdoesntexist runhidden;
+;Filename: {win}\Microsoft.NET\Framework\v4.0.30319\CasPol.exe; Parameters: "-q -machine -remgroup ""Cosmetify"""; Flags: skipifdoesntexist runhidden;
+;Filename: {win}\Microsoft.NET\Framework\v4.0.30319\CasPol.exe; Parameters: "-q -machine -remgroup ""Cosmetify"""; Flags: skipifdoesntexist runhidden;
 ;Filename: {app}\Deactivator.exe; 
 ;Filename: "https://templatetoaster.com/survey5/survey.php/?v={# Version}"; Flags: shellexec  waituntilterminated
 

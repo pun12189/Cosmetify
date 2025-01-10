@@ -144,7 +144,7 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    command.CommandText = "select * from masterformula where name=@data OR code=@data";
+                    command.CommandText = "select * from masterformula where name LIKE @data OR code LIKE @data";
                     command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
                     var reader = command.ExecuteReader();
                     if (reader.HasRows)
