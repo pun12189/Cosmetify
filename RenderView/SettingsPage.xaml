@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Cosmetify.RenderView"
-      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:model="clr-namespace:Cosmetify.Model"
       xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:dd="urn:gong-wpf-dragdrop"
@@ -289,6 +289,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
                     <Button Visibility="Collapsed" Content="Push to DB" HorizontalAlignment="Right" Click="PushToDBClick" Margin="0,0,10,0"/>
+                    <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Margin="0,0,5,0" VerticalContentAlignment="Center" Width="250" controls:TextBoxHelper.Watermark="Search" controls:TextBoxHelper.ClearTextButton="True"/>
                     <Button Content="Create Master Formula" HorizontalAlignment="Right" Click="CreateMasterFormula"/>
                 </StackPanel>
                 <DataGrid ItemsSource="{Binding ElementName=settingsPage, Path=MasterFormulaCollection}" AutoGenerateColumns="False" Grid.Row="2" CanUserSortColumns="True" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch">

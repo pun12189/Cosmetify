@@ -134,6 +134,48 @@ namespace Cosmetify.Repository
             return leads;
         }
 
+        public ObservableCollection<MasterFormulaModel> GetSearchFormulas(string data)
+        {
+            ObservableCollection<MasterFormulaModel> leads = null;
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "select * from masterformula where name=@data OR code=@data";
+                    command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
+                    var reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        leads = new ObservableCollection<MasterFormulaModel>();
+                        while (reader.Read())
+                        {
+                            var lead = new MasterFormulaModel
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                                Code = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                Requirements = reader.IsDBNull(3) ? null : JsonSerializer.Deserialize<ObservableCollection<MasterProductModel>>(reader.GetString(3)),
+                                RemainingWater = reader.IsDBNull(4) ? double.MinValue : reader.GetDouble(4),
+                            };
+
+                            leads.Add(lead);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return leads;
+        }
+
         public void InsertFormula(MasterFormulaModel lead)
         {
             try

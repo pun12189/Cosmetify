@@ -181,7 +181,7 @@
                         <!--<DataGridTextColumn Header="Batch ID" Binding="{Binding BatchOrderNo, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->
                         <DataGridTextColumn Header="Description" Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
                         <DataGridTextColumn Header="Customer" Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Brand Name" Binding="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
                         
                         <DataGridTemplateColumn Header="Status">
                             <DataGridTemplateColumn.CellTemplate>
@@ -305,23 +305,29 @@
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Created'}" Background="Transparent" Margin="0,0,2,0" Click="ProceedBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                        <Button ToolTip="Processed" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Created'}" Background="Transparent" Margin="0,0,2,0" Click="ProceedBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="ArrowRightSolid"/>
                                         </Button>
-                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="HoldBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Hold" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="HoldBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="HandPaperSolid"/>
                                         </Button>
-                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="CompleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Complete" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="CompleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="CheckSolid"/>
                                         </Button>
-                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Processed" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Planned'}" Background="Transparent" Margin="0,0,2,0" Click="ProceedBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="ArrowRightSolid"/>
+                                        </Button>
+                                        <Button ToolTip="Hold" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Planned'}" Background="Transparent" Margin="0,0,2,0" Click="HoldBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="HandPaperSolid"/>
+                                        </Button>
+                                        <Button ToolTip="Reorder" Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="RedoSolid"/>
                                         </Button>
-                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Export Batch PDF" Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="FilePdfSolid"/>
                                         </Button>
-                                        <Button Background="Transparent" Click="DeleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Delete Batch" Background="Transparent" Click="DeleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="TrashSolid"/>
                                         </Button>
                                     </StackPanel>

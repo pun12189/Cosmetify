@@ -329,5 +329,22 @@ namespace Cosmetify.RenderView
                 }
             }
         }
+
+        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var searchData = this.tbSearch.Text;
+                if (!string.IsNullOrEmpty(searchData))
+                {
+                    var data = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetSearchFormulas(searchData);
+                    this.MasterFormulaCollection = data;
+                }
+                else
+                {
+                    this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                }
+            }
+        }
     }
 }
