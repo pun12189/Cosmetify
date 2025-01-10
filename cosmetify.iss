@@ -119,12 +119,10 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
    [Dirs]
  Name: "{app}\de"
  Name: "{commonappdata}\Cosmetify"; Permissions: everyone-modify
- Name: "{app}\Extras"
  Name: "{app}\TxtFile"
  Name: "{app}\runtimes"
 [Files]
    Source: {#SourceFileDir}\de\*;  DestDir: "{app}\de"; Flags:ignoreversion recursesubdirs
-   Source: {#SourceFileDir}\Extras\*;  DestDir: "{app}\Extras"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\runtimes\*;  DestDir: "{app}\runtimes"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\TxtFile\*;  DestDir: "{app}\TxtFile"; Flags:ignoreversion recursesubdirs
    Source: {#SourceFileDir}\Cosmetify.exe;  DestDir: "{app}"; Flags:ignoreversion recursesubdirs
