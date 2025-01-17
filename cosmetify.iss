@@ -63,8 +63,8 @@ WizardSmallImageFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.bmp
 ;I use whatever my apps icon is                               
 ;UninstallDisplayIcon={app}\Cosmetify.exe
 ;Version number of your installer (not your app)
-VersionInfoVersion={# Version}
-AppVersion={# Version}
+VersionInfoVersion={#Version}
+AppVersion={#Version}
 ;If IncludeFramework, append _FW to end of compiled setup;
 ArchitecturesAllowed = x86compatible and x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
@@ -79,7 +79,7 @@ SetupIconFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.ico
 SetupLogging=yes
 ;#include <idp.iss>
  ;SignTool=sn /d $qTemplateToaster Installer$q $f
- ;UninstallIconFile=  {#SourceFileDir}uninstall.ico
+ UninstallIconFile={#SourceFileDir}SetupFiles\BahiKitab-Icon.ico
  [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
 ;Name: "da"; MessagesFile: "compiler:Languages\Danish.isl"
