@@ -20,15 +20,20 @@ namespace Cosmetify.RenderView
     {
         public OrderInvoice()
         {
-            InitializeComponent();
-            this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
-            this.cbBrand.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
-            this.cbProduct.ItemsSource = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+            this.Loaded += OrderInvoice_Loaded;
+            InitializeComponent();            
+        }
+
+        private async void OrderInvoice_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.cbBrand.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.cbProduct.ItemsSource = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
             this.cbColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
             this.cbPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
-            this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+            this.cbProd.ItemsSource = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             this.cbCust.IsEnabled = true;
-            this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
         }
 
         public ObservableCollection<BatchOrderModel> BatchOrderCollection
@@ -62,12 +67,12 @@ namespace Cosmetify.RenderView
         public static readonly DependencyProperty DBBatchModelCollectionProperty =
             DependencyProperty.Register("DBBatchModelCollection", typeof(ObservableCollection<BatchModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<BatchModel>()));
 
-        private void btnAddCust_Click(object sender, RoutedEventArgs e)
+        private async void btnAddCust_Click(object sender, RoutedEventArgs e)
         {
             var addCust = new AddCustomer();
             if ((bool)addCust.ShowDialog())
             {
-                this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
                 MessageBox.Show("List Refreshed, Please select added customer", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
@@ -93,7 +98,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void btnAddProd_Click(object sender, RoutedEventArgs e)
+        private async void btnAddProd_Click(object sender, RoutedEventArgs e)
         {
             var addCust = new AddMasterFormula();
             addCust.ActivesList.Clear();
@@ -112,7 +117,7 @@ namespace Cosmetify.RenderView
 
                     model.RemainingWater = addCust.RemainingWater;
                     HomepageViewModel.CommonViewModel.MasterFormulaRepository.InsertFormula(model); 
-                    this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                    this.cbProd.ItemsSource = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                     MessageBox.Show("List Refreshed, Please select added formula", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 }                
             }
@@ -145,7 +150,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void cbProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cbProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var t = this.cbProduct.SelectedItem as MasterFormulaModel;
             if (t != null)
@@ -154,7 +159,7 @@ namespace Cosmetify.RenderView
                 foreach (var actives in t.Requirements)
                 {
                     var batchOrder = new BatchOrderModel();
-                    batchOrder.Actives = HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(actives.Id);
+                    batchOrder.Actives = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(actives.Id);
                     batchOrder.PercentageRequired = actives.Required;
                     this.BatchOrderCollection.Add(batchOrder);
                 }                
@@ -307,7 +312,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void DeleteBatch1(object sender, RoutedEventArgs e)
+        private async void DeleteBatch1(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null)
@@ -316,7 +321,7 @@ namespace Cosmetify.RenderView
                 if (model != null)
                 {
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
-                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
@@ -339,12 +344,12 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        private async void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
         }
 
-        private void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        private async void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var dg = sender as System.Windows.Controls.DataGrid;
             if (dg != null)
@@ -353,7 +358,7 @@ namespace Cosmetify.RenderView
                 if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
                 {
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(product.Id);
-                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
@@ -385,7 +390,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        private async void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -397,7 +402,7 @@ namespace Cosmetify.RenderView
                 }
                 else
                 {
-                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
@@ -426,7 +431,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void ReorderBatch(object sender, RoutedEventArgs e)
+        private async void ReorderBatch(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null)
@@ -444,7 +449,7 @@ namespace Cosmetify.RenderView
                     model.Expiry = DateTime.MinValue;
                     model.CompletionDate = DateTime.MinValue;
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(model);
-                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }

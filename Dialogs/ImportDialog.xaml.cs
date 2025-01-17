@@ -35,8 +35,13 @@ namespace Cosmetify.Dialogs
         public ImportDialog()
         {
             InitializeComponent();
-            this.cbCateg.ItemsSource = HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
-        }        
+            this.LoadComponents();
+        }
+        
+        private async void LoadComponents()
+        {
+            this.cbCateg.ItemsSource = await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
+        }
 
         public string FilePath
         {

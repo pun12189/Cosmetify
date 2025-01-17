@@ -92,16 +92,16 @@ namespace Cosmetify.RenderView
             this.UpdateSubSubCategories();
         }
 
-        private void UpdateCategories()
+        private async void UpdateCategories()
         {
-            var categories = HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
+            var categories = await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
             this.cbCateg.ItemsSource = categories;
             this.Categories = categories;
         }
 
-        private void UpdateSubCategories()
+        private async void UpdateSubCategories()
         {
-            var categories = HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategories();
+            var categories = await HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategories();
             this.cbSubCateg.ItemsSource = categories;
             this.SubCategories = categories;
         }

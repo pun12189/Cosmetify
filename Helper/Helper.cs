@@ -1,4 +1,7 @@
-﻿using Microsoft.Office.Core;
+﻿using Cosmetify.Repository;
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Excel;
+using MySqlConnector;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System;
@@ -12,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using DataTable = System.Data.DataTable;
 
 namespace Cosmetify.Helper
 {
@@ -107,6 +111,49 @@ namespace Cosmetify.Helper
             return dataTable;
         }
 
+        public static async Task BulkUpdateDataAsync(System.Data.DataTable dt)
+        {
+            var _connectionString = string.Empty;
+#if DEBUG
+
+            //_connectionString = "DataSource=bahikitab-aws.c3s6wewcwox1.us-east-1.rds.amazonaws.com;Port=3306;Uid=admin;Pwd=Il6oOvguA2SB5IEQxWCJ;database=bahikitab";
+            _connectionString = "Server=localhost;Uid=root;Pwd='';database=bahikitab;AllowLoadLocalInfile=true";
+#endif
+#if RELEASE
+
+            _connectionString = "Server=localhost;Uid=root;Pwd='';database=bahikitab;AllowLoadLocalInfile=true";
+#endif
+
+            using (MySqlConnection conn = new MySqlConnection(_connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand("CREATE TABLE tmptable (`name` varchar(100), `code` varchar(100), `stocks` double, PRIMARY KEY (`code`))", conn))
+                {
+                    try
+                    {
+                        conn.Open();
+                        command.ExecuteNonQuery();
+
+                        var bulkCopy = new MySqlBulkCopy(conn);
+                        bulkCopy.DestinationTableName = "tmptable";
+                        var result = await bulkCopy.WriteToServerAsync(dt);
+
+                        command.CommandTimeout = 3000;
+                        command.CommandText = "UPDATE actives INNER JOIN tmptable ON actives.code = tmptable.code SET actives.stocks = tmptable.stocks WHERE tmptable.code = actives.code OR tmptable.name = actives.name; DROP TABLE tmptable";
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Bulk Update Failed: " + ex.Message, "Bulk Update", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        conn.Close();
+                        MessageBox.Show("Bulk Update runs successfully. Please check the inventory by clicking on refresh button.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+        }
+
         public static DataTable ConvertCsvToDataTable(string filePath, int categ, int scateg, int sscateg)
         {
             DataTable dtData = new DataTable();
@@ -162,6 +209,57 @@ namespace Cosmetify.Helper
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Helper.LogError(e);
             }           
+
+            return dtData;
+        }
+
+        public static DataTable UpdateConvertCsvToDataTable(string filePath)
+        {
+            DataTable dtData = new DataTable();
+            try
+            {
+                //reading all the lines(rows) from the file.
+                string[] rows = File.ReadAllLines(filePath);
+                string[] rowValues = null;
+                DataRow dr = dtData.NewRow();
+
+                //Creating columns
+                if (rows.Length > 0)
+                {
+                    foreach (string columnName in rows[0].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+                        dtData.Columns.Add(columnName);
+                }
+
+                //Creating row for each line.(except the first line, which contain column names)
+                for (int row = 1; row < rows.Length; row++)
+                {
+                    var rowStr = new string[3];
+                    rowValues = rows[row].Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < rowValues.Length; i++)
+                    {
+                        rowStr[i] = rowValues[i].Trim();
+                    }
+
+                    dr = dtData.NewRow();
+                    dr.ItemArray = rowStr;
+                    dtData.Rows.Add(dr);
+                }
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.LogError(e);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.LogError(e);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.LogError(e);
+            }
 
             return dtData;
         }

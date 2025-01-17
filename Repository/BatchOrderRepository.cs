@@ -1,12 +1,7 @@
 ﻿using Cosmetify.Model.Enums;
 using Cosmetify.Model;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+using MySqlConnector;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Cosmetify.ViewModel;
 using System.Text.Json;
@@ -445,7 +440,7 @@ namespace Cosmetify.Repository
             return leads;
         }
 
-        public ObservableCollection<BatchModel> GetAllProducts()
+        public async Task<ObservableCollection<BatchModel>> GetAllProducts()
         {
             ObservableCollection<BatchModel> leads = new ObservableCollection<BatchModel>();
             try
@@ -456,7 +451,7 @@ namespace Cosmetify.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = "select * from batchorder";
-                    var reader = command.ExecuteReader();
+                    var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())

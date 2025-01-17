@@ -37,14 +37,19 @@ namespace Cosmetify.RenderView.UserControls
 
         public AddProduct()
         {
+            this.Loaded += AddProduct_Loaded;
             InitializeComponent();
-            this.CategoryList = HomepageViewModel.CommonViewModel.CategoriesList;
-            this.Products = HomepageViewModel.CommonViewModel.ProductRepository.GetAllProducts();
+            this.CategoryList = HomepageViewModel.CommonViewModel.CategoriesList;            
             this.cbMnth.ItemsSource = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Take(12).ToList();
             this.cbYear.ItemsSource = Enumerable.Range(2015, DateTime.Now.Year - 2015 + 1).ToList();
             this.cbMnth1.ItemsSource = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Take(12).ToList();
             this.cbYear1.ItemsSource = Enumerable.Range(2022, 20).ToList();
             this.cbStk.ItemsSource = new ObservableCollection<string> { "grams", "pieces", "ltrs"};
+        }
+
+        private async void AddProduct_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Products = await HomepageViewModel.CommonViewModel.ProductRepository.GetAllProducts();
         }
 
         public ObservableCollection<ProductModel> Products
@@ -65,7 +70,7 @@ namespace Cosmetify.RenderView.UserControls
             set { SetValue(ProductImageProperty, value); }
         }
 
-        private void SaveProduct(object sender, RoutedEventArgs e)
+        private async void SaveProduct(object sender, RoutedEventArgs e)
         {
             var product = new ProductModel();
             product.Name = this.tbName.Text;
@@ -102,7 +107,7 @@ namespace Cosmetify.RenderView.UserControls
             product.ProductImage = this.ProductImage;
            
             HomepageViewModel.CommonViewModel.ProductRepository.InsertProduct(product);
-            this.Products = HomepageViewModel.CommonViewModel.ProductRepository.GetAllProducts();
+            this.Products = await HomepageViewModel.CommonViewModel.ProductRepository.GetAllProducts();
         }
 
         private void UploadProductImage(object sender, RoutedEventArgs e)

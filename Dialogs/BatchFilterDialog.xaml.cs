@@ -31,8 +31,13 @@ namespace Cosmetify.Dialogs
         public BatchFilterDialog()
         {
             InitializeComponent();
-            this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.LoadComponents();
             this.cbStatus.ItemsSource = Enum.GetValues(typeof(BatchStatus));
+        }
+
+        private async void LoadComponents()
+        {
+            this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)

@@ -40,10 +40,15 @@ namespace Cosmetify.RenderView
 
         public SettingsPage()
         {
-            InitializeComponent();
-            this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+            this.Loaded += SettingsPage_Loaded;
+            InitializeComponent();            
             this.dgColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
             this.dgPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();            
+        }
+
+        private async void SettingsPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
         }
 
         public BitmapImage ProfilePicture
@@ -130,7 +135,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void CreateMasterFormula(object sender, RoutedEventArgs e)
+        private async void CreateMasterFormula(object sender, RoutedEventArgs e)
         {
             var addMasterFormula = new AddMasterFormula();
             addMasterFormula.ActivesList.Clear();
@@ -148,11 +153,11 @@ namespace Cosmetify.RenderView
 
                 model.RemainingWater = addMasterFormula.RemainingWater;
                 HomepageViewModel.CommonViewModel.MasterFormulaRepository.InsertFormula(model);
-                this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
             }
         }
 
-        private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount >= 2)
             {
@@ -182,13 +187,13 @@ namespace Cosmetify.RenderView
 
                         model.RemainingWater = addMasterFormula.RemainingWater;
                         HomepageViewModel.CommonViewModel.MasterFormulaRepository.UpdateFormula(model);
-                        this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                        this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                     }
                 }
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private async void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             var menu = sender as System.Windows.Controls.MenuItem;
             if (menu != null)
@@ -197,7 +202,7 @@ namespace Cosmetify.RenderView
                 if (model != null)
                 {                    
                     HomepageViewModel.CommonViewModel.MasterFormulaRepository.DeleteFormula(model.Id);
-                    this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                    this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                 }
             }
         }
@@ -283,7 +288,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void DeleteFormula(object sender, RoutedEventArgs e)
+        private async void DeleteFormula(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             if (btn != null) 
@@ -292,12 +297,12 @@ namespace Cosmetify.RenderView
                 if (formula != null) 
                 {
                     HomepageViewModel.CommonViewModel.MasterFormulaRepository.DeleteFormula(formula.Id);
-                    this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                    this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                 }
             }
         }
 
-        private void EditFormula(object sender, RoutedEventArgs e)
+        private async void EditFormula(object sender, RoutedEventArgs e)
         {
             var grid = sender as Button;
             if (grid != null && grid.DataContext is MasterFormulaModel)
@@ -325,12 +330,12 @@ namespace Cosmetify.RenderView
 
                     model.RemainingWater = addMasterFormula.RemainingWater;
                     HomepageViewModel.CommonViewModel.MasterFormulaRepository.UpdateFormula(model);
-                    this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                    this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                 }
             }
         }
 
-        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        private async void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -342,7 +347,7 @@ namespace Cosmetify.RenderView
                 }
                 else
                 {
-                    this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                    this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                 }
             }
         }

@@ -27,7 +27,12 @@ namespace Cosmetify.Dialogs
             InitializeComponent();
             this.Owner = Application.Current.MainWindow;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            this.cbCateg.ItemsSource = HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
+            this.LoadComponents();
+        }
+
+        private async void LoadComponents()
+        {
+            this.cbCateg.ItemsSource = await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
         }
 
         public ObservableCollection<ActivesModel> ItemsCollection
@@ -66,7 +71,7 @@ namespace Cosmetify.Dialogs
             }
         }
 
-        private void cbSSCateg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cbSSCateg_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = sender as System.Windows.Controls.ComboBox;
             if (cb != null && cb.SelectedIndex >= 0)
@@ -74,7 +79,7 @@ namespace Cosmetify.Dialogs
                 var item = cb.SelectedItem as SubSubCategoryModel;
                 if (item != null)
                 {
-                    this.ItemsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.SearchActivesBySSubCategory(item.Id);
+                    this.ItemsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.SearchActivesBySSubCategory(item.Id);
                 }
             }
         }

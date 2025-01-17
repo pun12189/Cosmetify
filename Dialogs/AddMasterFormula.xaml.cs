@@ -42,15 +42,15 @@ namespace Cosmetify.Dialogs
         public AddMasterFormula()
         {
             this.Loaded += AddMasterFormula_Loaded;
-            InitializeComponent();
-            this.ddActives.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();            
+            InitializeComponent();            
         }
 
-        private void AddMasterFormula_Loaded(object sender, RoutedEventArgs e)
+        private async void AddMasterFormula_Loaded(object sender, RoutedEventArgs e)
         {
             this.tbName.Text = this.FormulaName;
             this.tbCode.Text = this.FormulaCode;
             this.tbWater.Text = this.RemainingWater.ToString();
+            this.ddActives.ItemsSource = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
         }
 
         public ObservableCollection<MasterProductModel> ActivesList

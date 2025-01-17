@@ -1,15 +1,9 @@
-﻿using Cosmetify.Model.Enums;
-using Cosmetify.Model;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿using Cosmetify.Model;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using MySqlConnector;
 
 namespace Cosmetify.Repository
 {
@@ -93,7 +87,7 @@ namespace Cosmetify.Repository
             return product;
         }
 
-        public ObservableCollection<MasterFormulaModel> GetAllFormulas()
+        public async Task<ObservableCollection<MasterFormulaModel>> GetAllFormulas()
         {
             ObservableCollection<MasterFormulaModel> leads = null;
             try
@@ -104,7 +98,7 @@ namespace Cosmetify.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = "select * from masterformula";
-                    var reader = command.ExecuteReader();
+                    var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         leads = new ObservableCollection<MasterFormulaModel>();

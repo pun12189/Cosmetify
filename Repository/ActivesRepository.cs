@@ -1,21 +1,17 @@
 ﻿using Cosmetify.Model.Enums;
 using Cosmetify.Model;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Data;
 using Cosmetify.ViewModel;
+using MySqlConnector;
 
 namespace Cosmetify.Repository
 {
     public class ActivesRepository : RepositoryBase
     {
-        public ActivesModel GetProduct(int id)
+        public async Task<ActivesModel> GetProduct(int id)
         {
             ActivesModel? product = null;
             try
@@ -40,7 +36,7 @@ namespace Cosmetify.Repository
                                 Stocks = reader.IsDBNull(3) ? double.MinValue : reader.GetDouble(3),
                                 Units = reader.IsDBNull(4) ? ProductUnits.Kilograms : (ProductUnits)Enum.Parse(typeof(ProductUnits), reader.GetString(4)),
                                 SKU = reader.IsDBNull(5) ? double.MinValue : reader.GetDouble(5),
-                                Category = reader.IsDBNull(6) ? null : HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
+                                Category = reader.IsDBNull(6) ? null : await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
                                 SubCategory = reader.IsDBNull(7) ? null : HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategory(reader.GetInt32(7)),
                                 SubSubCategory = reader.IsDBNull(8) ? null : HomepageViewModel.CommonViewModel.SubSubCategoryRepository.GetSubSubCategory(reader.GetInt32(8)),
                             };
@@ -58,7 +54,7 @@ namespace Cosmetify.Repository
             return product;
         }
 
-        public ObservableCollection<ActivesModel> SearchActivesBySSubCategory(int Id)
+        public async Task<ObservableCollection<ActivesModel>> SearchActivesBySSubCategory(int Id)
         {
             ObservableCollection<ActivesModel> leads = new ObservableCollection<ActivesModel>();
             try
@@ -83,7 +79,7 @@ namespace Cosmetify.Repository
                                 Stocks = reader.IsDBNull(3) ? double.MinValue : reader.GetDouble(3),
                                 Units = reader.IsDBNull(4) ? ProductUnits.Kilograms : (ProductUnits)Enum.Parse(typeof(ProductUnits), reader.GetString(4)),
                                 SKU = reader.IsDBNull(5) ? double.MinValue : reader.GetDouble(5),
-                                Category = reader.IsDBNull(6) ? null : HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
+                                Category = reader.IsDBNull(6) ? null : await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
                                 SubCategory = reader.IsDBNull(7) ? null : HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategory(reader.GetInt32(7)),
                                 SubSubCategory = reader.IsDBNull(8) ? null : HomepageViewModel.CommonViewModel.SubSubCategoryRepository.GetSubSubCategory(reader.GetInt32(8)),
                             };
@@ -103,7 +99,7 @@ namespace Cosmetify.Repository
             return leads;
         }
 
-        public ObservableCollection<ActivesModel> SearchActives(string searchData)
+        public async Task<ObservableCollection<ActivesModel>> SearchActives(string searchData)
         {
             ObservableCollection<ActivesModel> leads = new ObservableCollection<ActivesModel>();
             try
@@ -128,7 +124,7 @@ namespace Cosmetify.Repository
                                 Stocks = reader.IsDBNull(3) ? double.MinValue : reader.GetDouble(3),
                                 Units = reader.IsDBNull(4) ? ProductUnits.Kilograms : (ProductUnits)Enum.Parse(typeof(ProductUnits), reader.GetString(4)),
                                 SKU = reader.IsDBNull(5) ? double.MinValue : reader.GetDouble(5),
-                                Category = reader.IsDBNull(6) ? null : HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
+                                Category = reader.IsDBNull(6) ? null : await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
                                 SubCategory = reader.IsDBNull(7) ? null : HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategory(reader.GetInt32(7)),
                                 SubSubCategory = reader.IsDBNull(8) ? null : HomepageViewModel.CommonViewModel.SubSubCategoryRepository.GetSubSubCategory(reader.GetInt32(8)),
                             };
@@ -148,7 +144,7 @@ namespace Cosmetify.Repository
             return leads;
         }
 
-        public ObservableCollection<ActivesModel> GetAllProducts()
+        public async Task<ObservableCollection<ActivesModel>> GetAllProducts()
         {
             ObservableCollection<ActivesModel> leads = new ObservableCollection<ActivesModel>();
             try
@@ -159,7 +155,7 @@ namespace Cosmetify.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = "select * from actives";
-                    var reader = command.ExecuteReader();
+                    var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -172,7 +168,7 @@ namespace Cosmetify.Repository
                                 Stocks = reader.IsDBNull(3) ? double.MinValue : reader.GetDouble(3),
                                 Units = reader.IsDBNull(4) ? ProductUnits.Kilograms : (ProductUnits)Enum.Parse(typeof(ProductUnits), reader.GetString(4)),
                                 SKU = reader.IsDBNull(5) ? double.MinValue : reader.GetDouble(5),
-                                Category = reader.IsDBNull(6) ? null : HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
+                                Category = reader.IsDBNull(6) ? null : await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategory(reader.GetInt32(6)),
                                 SubCategory = reader.IsDBNull(7) ? null : HomepageViewModel.CommonViewModel.SubCategoryRepository.GetSubCategory(reader.GetInt32(7)),
                                 SubSubCategory = reader.IsDBNull(8) ? null : HomepageViewModel.CommonViewModel.SubSubCategoryRepository.GetSubSubCategory(reader.GetInt32(8)),
                             };
@@ -318,7 +314,7 @@ namespace Cosmetify.Repository
             }            
         }
 
-        public void BulkInsertMySQL(DataTable table, string tableName)
+        public async void BulkInsertMySQL(DataTable table, string tableName)
         {
             try
             {
@@ -343,7 +339,7 @@ namespace Cosmetify.Repository
                                     {
                                         cb.SetAllValues = true;
                                         adapter.Update(table);
-                                        tran.Commit();
+                                        await tran.CommitAsync();
                                     }
                                 };
                             }

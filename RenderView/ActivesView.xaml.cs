@@ -44,7 +44,7 @@ namespace Cosmetify.RenderView
 
         // Using a DependencyProperty as the backing store for ActivesModelsCollection.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ActivesModelsCollectionProperty =
-            DependencyProperty.Register("ActivesModelsCollection", typeof(ObservableCollection<ActivesModel>), typeof(ActivesView), new PropertyMetadata(HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts()));
+            DependencyProperty.Register("ActivesModelsCollection", typeof(ObservableCollection<ActivesModel>), typeof(ActivesView), new PropertyMetadata(new ObservableCollection<ActivesModel>()));
 
         // Using a DependencyProperty as the backing store for SubSubCategories.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SubSubCategoriesProperty =
@@ -60,12 +60,17 @@ namespace Cosmetify.RenderView
 
         public ActivesView()
         {
+            this.Loaded += ActivesView_Loaded;
             InitializeComponent();
             this.cbUnits.ItemsSource = System.Enum.GetValues(typeof(ProductUnits));
-            this.cbStatus.ItemsSource = System.Enum.GetValues(typeof(BatchStatus));
-            this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
-            this.cbCateg.ItemsSource = HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
-            this.Categories = HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
+            this.cbStatus.ItemsSource = System.Enum.GetValues(typeof(BatchStatus)); 
+        }
+
+        private async void ActivesView_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+            this.cbCateg.ItemsSource = await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
+            this.Categories = await HomepageViewModel.CommonViewModel.CategoryRepository.GetCategories();
             this.cbFilterCateg.ItemsSource = HomepageViewModel.CommonViewModel.SubSubCategoryRepository.GetSubSubCategories();
         }
 
@@ -99,7 +104,7 @@ namespace Cosmetify.RenderView
             set { SetValue(SubSubCategoriesProperty, value); }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             //// Create OpenFileDialog 
             //Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -123,7 +128,7 @@ namespace Cosmetify.RenderView
             dialog.Owner = App.Current.MainWindow;
             if ((bool)dialog.ShowDialog())
             {
-                this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             }            
         }
 
@@ -244,14 +249,14 @@ namespace Cosmetify.RenderView
         {                       
         }
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        private async void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
             if (this.dataGrid1 != null)
             {
-                this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             }
 
-            var batchOrders = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            var batchOrders = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
             if (batchOrders != null)
             {
                 foreach (var batchOrder in batchOrders)
@@ -392,7 +397,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void DeleteActives(object sender, RoutedEventArgs e)
+        private async void DeleteActives(object sender, RoutedEventArgs e)
         {
             var button = sender as System.Windows.Controls.Button;
             if (button != null)
@@ -401,24 +406,24 @@ namespace Cosmetify.RenderView
                 if (model != null)
                 {
                     HomepageViewModel.CommonViewModel.ActivesRepository.DeleteProduct(model.Id);
-                    this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                    this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
                 }
             }
         }        
 
-        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        private async void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 var searchData = this.tbSearch.Text;
                 if (!string.IsNullOrEmpty(searchData))
                 {
-                    var data = HomepageViewModel.CommonViewModel.ActivesRepository.SearchActives(searchData);
+                    var data = await HomepageViewModel.CommonViewModel.ActivesRepository.SearchActives(searchData);
                     this.ActivesModelsCollection = data;
                 }
                 else
                 {
-                    this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                    this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
                 }
             }
         }
@@ -447,7 +452,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void btnBulk_Click(object sender, RoutedEventArgs e)
+        private async void btnBulk_Click(object sender, RoutedEventArgs e)
         {
             if (this.dataGrid1.SelectedItems != null && this.dataGrid1.SelectedItems.Count > 0)
             {
@@ -459,7 +464,7 @@ namespace Cosmetify.RenderView
                     }
                 }
 
-                this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             }
             else
             {
@@ -467,7 +472,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void btnApplyFilter_Click(object sender, RoutedEventArgs e)
+        private async void btnApplyFilter_Click(object sender, RoutedEventArgs e)
         {
             string fromDate = null;
             string toDate = null;
@@ -486,16 +491,16 @@ namespace Cosmetify.RenderView
                 var categ = this.cbFilterCateg.SelectedItem as SubSubCategoryModel;
                 if (categ != null)
                 {
-                    this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.SearchActivesBySSubCategory(categ.Id);
+                    this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.SearchActivesBySSubCategory(categ.Id);
                 }
                 else 
                 {
-                    this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                    this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
                 }
             }
             else
             {
-                this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+                this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             }            
 
             // this.FilteredBatchModels.Clear();
@@ -683,13 +688,13 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void btnClearFilter_Click(object sender, RoutedEventArgs e)
+        private async void btnClearFilter_Click(object sender, RoutedEventArgs e)
         {
             this.dtFrom.Text = string.Empty;
             this.dtTo.Text = string.Empty;
             this.cbFilterCateg.SelectedIndex = -1;
-            this.ActivesModelsCollection = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
-            var batchOrders = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.ActivesModelsCollection = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+            var batchOrders = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
             if (batchOrders != null)
             {
                 foreach (var batchOrder in batchOrders)
@@ -791,6 +796,57 @@ namespace Cosmetify.RenderView
                     }
                 }
             }
+        }
+
+        private async void btnBulkUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog 
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension 
+            dlg.DefaultExt = ".csv";
+            dlg.Filter = "Excel files(*.csv, *.xls, *.xlsx) | *.csv; *.xls; *.xlsx | All files(*.*) | *.* ";
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            bool? result = dlg.ShowDialog();
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                // Open document 
+                var dataTable = Helper.Helper.UpdateConvertCsvToDataTable(dlg.FileName);
+                await Helper.Helper.BulkUpdateDataAsync(dataTable);
+            }
+        }
+
+        private void miInsert_Click(object sender, RoutedEventArgs e)
+        {
+            File.Copy(System.AppDomain.CurrentDomain.BaseDirectory + @"TxtFile\Sample_Test.csv", System.IO.Path.GetTempPath() + "\\Sample.csv", true);
+            Process excel = new Process();
+            excel.StartInfo.UseShellExecute = true;
+            excel.StartInfo.FileName = System.IO.Path.GetTempPath() + "\\Sample.csv";
+            excel.Start();
+
+            // Need to wait for excel to start
+            excel.WaitForInputIdle();
+
+            IntPtr p = excel.MainWindowHandle;
+            ShowWindow(p, 1);
+        }
+
+        private void miUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            File.Copy(System.AppDomain.CurrentDomain.BaseDirectory + @"TxtFile\Sample_Update.csv", System.IO.Path.GetTempPath() + "\\Sample_Update.csv", true);
+            Process excel = new Process();
+            excel.StartInfo.UseShellExecute = true;
+            excel.StartInfo.FileName = System.IO.Path.GetTempPath() + "\\Sample_Update.csv";
+            excel.Start();
+
+            // Need to wait for excel to start
+            excel.WaitForInputIdle();
+
+            IntPtr p = excel.MainWindowHandle;
+            ShowWindow(p, 1);
         }
     }
 }

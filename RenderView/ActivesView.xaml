@@ -71,10 +71,32 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,10">
-                    <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Margin="0,0,5,0" VerticalContentAlignment="Center" Width="250" controls:TextBoxHelper.Watermark="Search" controls:TextBoxHelper.ClearTextButton="True"/>
+                    <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Margin="0,0,5,0" VerticalContentAlignment="Center" Width="250" controls:TextBoxHelper.Watermark="Search" controls:TextBoxHelper.ClearTextButton="True"/>                    
+                    <controls:DropDownButton x:Name="ddFormat" Content="Download Format" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,5,0">
+                        <controls:DropDownButton.Items>
+                            <MenuItem x:Name="miInsert" Header="Insert Format" Click="miInsert_Click">
+                                <MenuItem.Icon>
+                                    <icon:PackIconModern Kind="ArrowDownUp"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="miUpdate" Header="Update Format" Click="miUpdate_Click">
+                                <MenuItem.Icon>
+                                    <icon:BootstrapIcons Kind="Upload"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </controls:DropDownButton.Items>
+                    </controls:DropDownButton>
                     <Button x:Name="btnRefresh"  Content="Refresh" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnRefresh_Click" Margin="0,0,5,0"/>
-                    <Button x:Name="btnFormat" Click="btnFormat_Click" Content="Download Format" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,5,0"/>
-                    <Button Content="Upload CSV" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Button_Click" Margin="0,0,5,0"/>
+                    <!--<Button x:Name="btnFormat" Content="Download Format" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,5,0">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="miInsert" Header="Insert Format" Click="miInsert_Click"/>
+                                <MenuItem x:Name="miUpdate" Header="Update Format" Click="miUpdate_Click"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>-->
+                    <Button Content="Insert Bulk" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Button_Click" Margin="0,0,5,0"/>
+                    <Button x:Name="btnBulkUpdate" Content="Update Bulk" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnBulkUpdate_Click" Margin="0,0,5,0"/>
                     <Button Content="Export Excel" x:Name="btnExcel" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnExcel_Click" Margin="0,0,5,0"/>
                     <Button Content="Bulk Delete" x:Name="btnBulk" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnBulk_Click"/>
                 </StackPanel>

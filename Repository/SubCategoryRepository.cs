@@ -1,5 +1,5 @@
 ﻿using Cosmetify.Model;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -54,7 +54,7 @@ namespace Cosmetify.Repository
             return category;
         }
 
-        public ObservableCollection<SubCategoryModel> GetSubCategories()
+        public async Task<ObservableCollection<SubCategoryModel>> GetSubCategories()
         {
             ObservableCollection<SubCategoryModel> categories = null;
             try
@@ -65,7 +65,7 @@ namespace Cosmetify.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = "select * from sub_category";
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         categories = new ObservableCollection<SubCategoryModel>();
@@ -99,7 +99,7 @@ namespace Cosmetify.Repository
             return categories;
         }
 
-        public ObservableCollection<SubCategoryModel> GetSubCategoriesByParentId(int parent_id)
+        public async Task<ObservableCollection<SubCategoryModel>> GetSubCategoriesByParentId(int parent_id)
         {
             ObservableCollection<SubCategoryModel> categories = null;
             try
@@ -111,7 +111,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from sub_category where parent_categ_id=@parent_id";
                     command.Parameters.Add("@parent_id", MySqlDbType.Int32).Value = parent_id;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         categories = new ObservableCollection<SubCategoryModel>();
