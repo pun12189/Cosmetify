@@ -458,7 +458,7 @@ namespace Cosmetify.RenderView
                 var searchData = this.tbSearch.Text;
                 if (!string.IsNullOrEmpty(searchData))
                 {
-                    var data = HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
+                    var data = await HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
                     this.BatchModelCollection = data;
                 }
                 else

@@ -40,7 +40,7 @@ namespace Cosmetify.Dialogs
             this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
         }
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             int? cstid = null;
             string? oid = null;
@@ -135,7 +135,7 @@ namespace Cosmetify.Dialogs
 
             if (isSearch)
             {
-                BatchModels = BatchOrderRepository.BatchFilters(cstid, oid, ptype, bname, status, mfg, exp, cd);
+                BatchModels = await BatchOrderRepository.BatchFilters(cstid, oid, ptype, bname, status, mfg, exp, cd);
             }
             else
             {

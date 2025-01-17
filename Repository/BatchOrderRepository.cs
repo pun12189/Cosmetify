@@ -73,7 +73,7 @@ namespace Cosmetify.Repository
             return product;
         }
 
-        public ObservableCollection<BatchModel> SearchBatch(string data)
+        public async Task<ObservableCollection<BatchModel>> SearchBatch(string data)
         {
             ObservableCollection<BatchModel> batches = new ObservableCollection<BatchModel>();
             try
@@ -85,7 +85,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from batchorder where order_no LIKE @data OR add_info LIKE @data OR order_id LIKE @data OR color LIKE @data OR perfume LIKE @data OR brand_name LIKE @data OR product_id LIKE @data OR remarks LIKE @data OR description LIKE @data OR prod_name LIKE @data OR status LIKE @data OR pkgtype LIKE @data";
                     command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
-                    MySqlDataReader reader = command.ExecuteReader(); 
+                    MySqlDataReader reader = await command.ExecuteReaderAsync(); 
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -134,7 +134,7 @@ namespace Cosmetify.Repository
             return batches;
         }
 
-        public ObservableCollection<BatchModel> BatchFilters(string? fromDate = null, string? toDate = null)
+        public async Task<ObservableCollection<BatchModel>> BatchFilters(string? fromDate = null, string? toDate = null)
         {
             ObservableCollection<BatchModel> batches = new ObservableCollection<BatchModel>();
             try
@@ -144,7 +144,7 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    var cmdText = "select * from batchorder where";
+                    var cmdText = "select * from batchorder where status='Planned' and ";
                     var conditions = string.Empty;
                     if (fromDate != null)
                     {
@@ -169,7 +169,7 @@ namespace Cosmetify.Repository
                     }
 
                     command.CommandText = cmdText + conditions;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -218,7 +218,7 @@ namespace Cosmetify.Repository
             return batches;
         }
 
-        public ObservableCollection<BatchModel> BatchFilters(int? custid = null, string? orderid = null, string? pkgtype = null, string? bName = null, string? status = null, string? mfgDate = null, string? expDate = null, string? cdDate = null)
+        public async Task<ObservableCollection<BatchModel>> BatchFilters(int? custid = null, string? orderid = null, string? pkgtype = null, string? bName = null, string? status = null, string? mfgDate = null, string? expDate = null, string? cdDate = null)
         {
             ObservableCollection<BatchModel> batches = new ObservableCollection<BatchModel>();
             try
@@ -329,7 +329,7 @@ namespace Cosmetify.Repository
                     }
 
                     command.CommandText = cmdText;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -379,7 +379,7 @@ namespace Cosmetify.Repository
             return batches;
         }
 
-        public ObservableCollection<BatchModel> GetAllProductsWithOrderId(string orderId)
+        public async Task<ObservableCollection<BatchModel>> GetAllProductsWithOrderId(string orderId)
         {
             ObservableCollection<BatchModel> leads = new ObservableCollection<BatchModel>();
             try
@@ -391,7 +391,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from batchorder where order_id=@order_id";
                     command.Parameters.Add("@order_id", MySqlDbType.VarChar).Value = orderId;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())

@@ -139,11 +139,20 @@ namespace Cosmetify.Helper
 
                         command.CommandTimeout = 3000;
                         command.CommandText = "UPDATE actives INNER JOIN tmptable ON actives.code = tmptable.code SET actives.stocks = tmptable.stocks WHERE tmptable.code = actives.code OR tmptable.name = actives.name; DROP TABLE tmptable";
-                        command.ExecuteNonQuery();
+                        await command.ExecuteNonQueryAsync();
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Bulk Update Failed: " + ex.Message, "Bulk Update", MessageBoxButton.OK, MessageBoxImage.Error);
+                        using var cmd = new MySqlCommand("DROP TABLE tmptable;");
+                        try
+                        {
+                            conn.Open();
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                     finally
                     {

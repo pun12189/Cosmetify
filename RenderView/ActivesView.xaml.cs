@@ -504,13 +504,13 @@ namespace Cosmetify.RenderView
             }            
 
             // this.FilteredBatchModels.Clear();
-            var batchModels = HomepageViewModel.CommonViewModel.BatchOrderRepository.BatchFilters(fromDate, toDate);
+            var batchModels = await HomepageViewModel.CommonViewModel.BatchOrderRepository.BatchFilters(fromDate, toDate);
             if (batchModels != null)
             {
                 foreach (var batchOrder in batchModels)
                 {
-                    if (batchOrder.Status == BatchStatus.Planned)
-                    {
+                    //if (batchOrder.Status == BatchStatus.Planned)
+                    //{
                         foreach (var model in batchOrder.BatchOrderCollection)
                         {
                             var actives = this.ActivesModelsCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
@@ -536,7 +536,7 @@ namespace Cosmetify.RenderView
                                 actives.QtyReqd += model.StocksRequired + Environment.NewLine;
                             }
                         }
-                    }
+                    //}
                 }
             }
         }

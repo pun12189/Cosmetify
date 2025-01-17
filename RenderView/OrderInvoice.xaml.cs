@@ -397,7 +397,7 @@ namespace Cosmetify.RenderView
                 var searchData = this.tbSearch.Text;
                 if (!string.IsNullOrEmpty(searchData))
                 {
-                    var data = HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
+                    var data = await HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
                     this.DBBatchModelCollection = data;
                 }
                 else
@@ -454,7 +454,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void ExportBatch(object sender, RoutedEventArgs e)
+        private async void ExportBatch(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -464,7 +464,7 @@ namespace Cosmetify.RenderView
                     var model = button.DataContext as BatchModel;
                     if (model != null)
                     {
-                        var batchCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                        var batchCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
                         var batch = new PdfCore.PdfForm();
                         var document = batch.CreateOrder(model, batchCollection);
                         document.UseCmykColor = true;

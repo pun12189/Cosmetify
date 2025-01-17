@@ -66,7 +66,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from actives where subsubcategory=@id";
                     command.Parameters.Add("@id", MySqlDbType.Int32).Value = Id;
-                    var reader = command.ExecuteReader();
+                    var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -111,7 +111,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from actives where name LIKE @data OR code LIKE @data";
                     command.Parameters.Add("@data", MySqlDbType.VarChar).Value = "%" + searchData + "%";
-                    var reader = command.ExecuteReader();
+                    var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
