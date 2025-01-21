@@ -233,19 +233,19 @@ namespace Cosmetify.Repository
                     if (custid != null)
                     {
                         isappend = true;
-                        cmdText += cmdText + " cust_id=" + custid;
+                        cmdText = cmdText + " cust_id=" + "'" + custid + "'";
                     }
 
                     if (orderid != null)
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND order_no=" + orderid;
+                            cmdText = cmdText + " AND order_no=" + "'" + orderid + "'";
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " order_no=" + orderid;
+                            cmdText = cmdText + " order_no=" + "'" + orderid + "'";
                         }
 
                     }
@@ -254,12 +254,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND pkgtype=" + pkgtype;
+                            cmdText = cmdText + " AND pkgtype=" + "'" + pkgtype + "'";
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " pkgtype=" + pkgtype;
+                            cmdText = cmdText + " pkgtype=" + "'" + pkgtype + "'";
                         }
                     }
 
@@ -267,12 +267,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND prod_name=" + bName;
+                            cmdText = cmdText + " AND prod_name=" + "'" + bName + "'";
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " prod_name=" + bName;
+                            cmdText = cmdText + " prod_name=" + "'" + bName + "'";
                         }
                     }
 
@@ -280,12 +280,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND status=" + status;
+                            cmdText = cmdText + " AND status=" + "'" + status + "'";
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " status=" + status;
+                            cmdText = cmdText + " status=" + "'" + status + "'";
                         }
                     }
 
@@ -293,12 +293,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND mfg_date= " + mfgDate;
+                            cmdText = cmdText + " AND mfg_date " + mfgDate;
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " mfg_date= " + mfgDate;
+                            cmdText = cmdText + " mfg_date " + mfgDate;
                         }
                     }
 
@@ -306,12 +306,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND expiry= " + expDate;
+                            cmdText = cmdText + " AND expiry " + expDate;
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " expiry= " + expDate;
+                            cmdText = cmdText + " expiry " + expDate;
                         }
                     }
 
@@ -319,12 +319,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND completion_date= " + cdDate;
+                            cmdText = cmdText + " AND completion_date " + cdDate;
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " completion_date= " + cdDate;
+                            cmdText = cmdText + " completion_date " + cdDate;
                         }
                     }
 

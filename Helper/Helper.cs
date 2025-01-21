@@ -37,6 +37,56 @@ namespace Cosmetify.Helper
             return result;
         }
 
+        public static DataTable ToBatchDataTable<T>(List<T> items)
+        {
+            DataTable dataTable = new DataTable(typeof(T).Name);
+            var count = 0;
+            //Get all the properties
+            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            //foreach (PropertyInfo prop in Props)
+            //{
+            //    if (prop.Name.ToLower() == "id" || prop.Name.ToLower().Contains("category") || prop.Name.ToLower().Contains("diffstock"))
+            //    {
+            //        count++;
+            //        continue;
+            //    }
+
+            //    //Setting column names as Property names
+            //    //dataTable.Columns.Add(prop.Name);
+            //}
+
+            dataTable.Columns.Add("Item Name");
+            dataTable.Columns.Add("Product Name");
+            dataTable.Columns.Add("Brand Name");
+            dataTable.Columns.Add("Total Reqd");
+
+            foreach (T item in items)
+            {
+                var j = 0;
+                var values = new object[4];
+                //for (int i = 0; i < Props.Length; i++)
+                //{
+                //    var name = Props[i].Name;
+                //    if (name.ToLower() == "id" || name.ToLower().Contains("category") || name.ToLower().Contains("diffstock"))
+                //    {
+                //        j++;
+                //        continue;
+                //    }
+
+                //    item.GetType().GetProperty("")
+                //    //inserting property values to datatable rows
+                //    values[i - j] = Props[i].GetValue(item, null);
+                //}
+                values[0] = item.GetType().GetProperty("ActivesName").GetValue(item);
+                values[1] = item.GetType().GetProperty("ProductNames").GetValue(item);
+                values[2] = item.GetType().GetProperty("BrandNames").GetValue(item);
+                values[3] = item.GetType().GetProperty("TotalRequired").GetValue(item);
+                dataTable.Rows.Add(values);
+            }
+            //put a breakpoint here and check datatable
+            return dataTable;
+        }
+
         public static DataTable ToDataTable<T>(List<T> items)
         {
             DataTable dataTable = new DataTable(typeof(T).Name);
@@ -58,8 +108,6 @@ namespace Cosmetify.Helper
             dataTable.Columns.Add("Item Name");
             dataTable.Columns.Add("Product Name");
             dataTable.Columns.Add("Brand Name");
-            dataTable.Columns.Add("Pkg Type");
-            dataTable.Columns.Add("Pkg Qty");
             dataTable.Columns.Add("Batch Qty");
             dataTable.Columns.Add("Qty Reqt");
             dataTable.Columns.Add("Total Orders");
@@ -75,7 +123,7 @@ namespace Cosmetify.Helper
             foreach (T item in items)
             {
                 var j = 0;
-                var values = new object[16];
+                var values = new object[14];
                 //for (int i = 0; i < Props.Length; i++)
                 //{
                 //    var name = Props[i].Name;
@@ -92,19 +140,17 @@ namespace Cosmetify.Helper
                 values[0] = item.GetType().GetProperty("ActivesName").GetValue(item);
                 values[1] = item.GetType().GetProperty("ProductNames").GetValue(item);
                 values[2] = item.GetType().GetProperty("BrandNames").GetValue(item);
-                values[3] = item.GetType().GetProperty("PkgTypes").GetValue(item);
-                values[4] = item.GetType().GetProperty("PkgQty").GetValue(item);
-                values[5] = item.GetType().GetProperty("BatchQty").GetValue(item);
-                values[6] = item.GetType().GetProperty("QtyReqd").GetValue(item);
-                values[7] = item.GetType().GetProperty("TotalBatchOrders").GetValue(item);
-                values[8] = item.GetType().GetProperty("TotalRequired").GetValue(item);
-                values[9] = item.GetType().GetProperty("Stocks").GetValue(item);
-                values[10] = item.GetType().GetProperty("RemainingStock").GetValue(item);
-                values[11] = item.GetType().GetProperty("SKU").GetValue(item);
-                values[12] = item.GetType().GetProperty("TotalCreated").GetValue(item);
-                values[13] = item.GetType().GetProperty("TotalCreatedRequired").GetValue(item);
-                values[14] = item.GetType().GetProperty("TotalHold").GetValue(item);
-                values[15] = item.GetType().GetProperty("TotalHoldRequired").GetValue(item);
+                values[3] = item.GetType().GetProperty("BatchQty").GetValue(item);
+                values[4] = item.GetType().GetProperty("QtyReqd").GetValue(item);
+                values[5] = item.GetType().GetProperty("TotalBatchOrders").GetValue(item);
+                values[6] = item.GetType().GetProperty("TotalRequired").GetValue(item);
+                values[7] = item.GetType().GetProperty("Stocks").GetValue(item);
+                values[8] = item.GetType().GetProperty("RemainingStock").GetValue(item);
+                values[9] = item.GetType().GetProperty("SKU").GetValue(item);
+                values[10] = item.GetType().GetProperty("TotalCreated").GetValue(item);
+                values[11] = item.GetType().GetProperty("TotalCreatedRequired").GetValue(item);
+                values[12] = item.GetType().GetProperty("TotalHold").GetValue(item);
+                values[13] = item.GetType().GetProperty("TotalHoldRequired").GetValue(item);
                 dataTable.Rows.Add(values);
             }
             //put a breakpoint here and check datatable

@@ -5,6 +5,7 @@ using Cosmetify.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,49 +89,61 @@ namespace Cosmetify.Dialogs
             if (!string.IsNullOrEmpty(this.dpMfgFrom.Text) && !string.IsNullOrEmpty(this.dpMfgTo.Text))
             {
                 isSearch = true;
-                mfg = "between " + this.dpMfgFrom.Text + " AND " + this.dpMfgTo.Text;
+                var m = DateTime.ParseExact(this.dpMfgFrom.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                var t = DateTime.ParseExact(this.dpMfgTo.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                mfg = "between " + "'" + m.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + t.ToString("yyyy-MM-dd") + "'";
             }
             else if (!string.IsNullOrEmpty(this.dpMfgFrom.Text) && string.IsNullOrEmpty(this.dpMfgTo.Text))
             {
                 isSearch = true;
-                mfg = " = " + this.dpMfgFrom.Text;
+                var m = DateTime.ParseExact(this.dpMfgFrom.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                mfg = "between " + "'" + m.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + DateTime.Now.AddDays(30).Date.ToString("yyyy-MM-dd") + "'";
             }
             else if (string.IsNullOrEmpty(this.dpMfgFrom.Text) && !string.IsNullOrEmpty(this.dpMfgTo.Text))
             {
                 isSearch = true;
-                mfg = "between " + DateOnly.FromDateTime(DateTime.Now) + " AND " + this.dpMfgTo.Text;
+                var t = DateTime.ParseExact(this.dpMfgTo.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                mfg = "between " + "'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + t.ToString("yyyy-MM-dd") + "'";
             }
 
             if (!string.IsNullOrEmpty(this.dpExpFrom.Text) && !string.IsNullOrEmpty(this.dpExpTo.Text))
             {
                 isSearch = true;
-                exp = "between " + this.dpExpFrom.Text + " AND " + this.dpExpTo.Text;
+                var x = DateTime.ParseExact(this.dpExpFrom.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                var y = DateTime.ParseExact(this.dpExpTo.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                exp = "between " + "'" + x.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + y.ToString("yyyy-MM-dd") + "'";
             }
             else if (!string.IsNullOrEmpty(this.dpExpFrom.Text) && string.IsNullOrEmpty(this.dpExpTo.Text))
             {
                 isSearch = true;
-                exp = " = " + this.dpExpFrom.Text;
+                var x = DateTime.ParseExact(this.dpExpFrom.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                exp = "between " + "'" + x.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + DateTime.Now.AddDays(30).Date.ToString("yyyy-MM-dd") + "'";
             }
             else if (string.IsNullOrEmpty(this.dpExpFrom.Text) && !string.IsNullOrEmpty(this.dpExpTo.Text))
             {
                 isSearch = true;
-                exp = "between " + DateOnly.FromDateTime(DateTime.Now) + " AND " + this.dpExpTo.Text;
+                var y = DateTime.ParseExact(this.dpExpTo.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                exp = "between " + "'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + y.ToString("yyyy-MM-dd") + "'";
             }
 
             if (!string.IsNullOrEmpty(this.dpCdFrom.Text) && !string.IsNullOrEmpty(this.dpCdTo.Text))
             {
                 isSearch = true;
-                cd = "between " + this.dpCdFrom.Text + " AND " + this.dpCdTo.Text;
+                var c = DateTime.ParseExact(this.dpCdFrom.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                var d = DateTime.ParseExact(this.dpCdTo.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                cd = "between " + "'" + c.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + d.ToString("yyyy-MM-dd") + "'";
             }
             else if (!string.IsNullOrEmpty(this.dpCdFrom.Text) && string.IsNullOrEmpty(this.dpCdTo.Text))
             {
                 isSearch = true;
-                cd = " = " + this.dpCdFrom.Text;
+                var c = DateTime.ParseExact(this.dpCdFrom.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                cd = "between " + "'" + c.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + DateTime.Now.AddDays(30).Date.ToString("yyyy-MM-dd") + "'";
             }
             else if (string.IsNullOrEmpty(this.dpCdFrom.Text) && !string.IsNullOrEmpty(this.dpCdTo.Text))
             {
                 isSearch = true;
-                cd = "between " + DateOnly.FromDateTime(DateTime.Now) + " AND " + this.dpCdTo.Text;
+                var d = DateTime.ParseExact(this.dpCdTo.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                cd = "between " + "'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "'" + " AND " + "'" + d.ToString("yyyy-MM-dd") + "'";
             }
 
             if (isSearch)

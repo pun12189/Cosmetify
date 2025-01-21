@@ -304,7 +304,7 @@ namespace Cosmetify.RenderView
                                 {
                                     actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                     actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                    actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                    actives.BatchQty += model.BatchSize + Environment.NewLine;
                                     actives.TotalCreatedRequired += model.StocksRequired;
                                     actives.TotalCreated += 1;
                                     if (!string.IsNullOrEmpty(batchOrder.BrandName))
@@ -336,7 +336,7 @@ namespace Cosmetify.RenderView
                                 {
                                     actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                     actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                    actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                    actives.BatchQty += model.BatchSize + Environment.NewLine;
                                     actives.TotalHoldRequired += model.StocksRequired;
                                     actives.TotalHold += 1;
                                     if (!string.IsNullOrEmpty(batchOrder.BrandName))
@@ -526,7 +526,7 @@ namespace Cosmetify.RenderView
                                 
                                 actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                 actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                actives.BatchQty += model.BatchSize + Environment.NewLine;
                                 if (!string.IsNullOrEmpty(batchOrder.ProductName))
                                 {
                                     actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + Environment.NewLine;
@@ -554,8 +554,10 @@ namespace Cosmetify.RenderView
                 System.Data.DataTable tempDt = DtIN;
                 //dgExcel.ItemsSource = tempDt.DefaultView;
                 workSheet.Cells.Font.Size = 11;
-                workSheet.Columns.AutoFit();
-                workSheet.Rows.AutoFit();
+                workSheet.Cells.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                workSheet.Cells.VerticalAlignment = Microsoft.Office.Interop.Excel.XlVAlign.xlVAlignCenter;
+                // workSheet.Columns.AutoFit();
+                // workSheet.Rows.AutoFit();
                 int rowcount = 1;
                 for (int i = 1; i <= tempDt.Columns.Count; i++) //taking care of Headers.  
                 {
@@ -742,7 +744,7 @@ namespace Cosmetify.RenderView
                                 {
                                     actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                     actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                    actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                    actives.BatchQty += model.BatchSize + Environment.NewLine;
                                     actives.TotalCreatedRequired += model.StocksRequired;
                                     actives.TotalCreated += 1;
                                     if (!string.IsNullOrEmpty(batchOrder.BrandName))
@@ -774,7 +776,7 @@ namespace Cosmetify.RenderView
                                 {
                                     actives.PkgTypes += batchOrder.PkgType + Environment.NewLine;
                                     actives.PkgQty += batchOrder.PkgOrderQuantity + Environment.NewLine;
-                                    actives.BatchQty += model.StocksRequired + Environment.NewLine;
+                                    actives.BatchQty += model.BatchSize + Environment.NewLine;
                                     actives.TotalHoldRequired += model.StocksRequired;
                                     actives.TotalHold += 1;
                                     if (!string.IsNullOrEmpty(batchOrder.BrandName))

@@ -2,10 +2,12 @@
 using Cosmetify.Model;
 using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using MigraDoc.Rendering;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +23,11 @@ namespace Cosmetify.RenderView
     /// </summary>
     public partial class BatchOrder : System.Windows.Controls.Page
     {
+        Microsoft.Office.Interop.Excel.Application excel;
+        Microsoft.Office.Interop.Excel.Workbook workBook;
+        Microsoft.Office.Interop.Excel.Worksheet workSheet;
+        Microsoft.Office.Interop.Excel.Range cellRange;
+
         private static readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text        
 
         // Using a DependencyProperty as the backing store for BatchModel.  This enables animation, styling, binding, etc...
@@ -698,6 +705,109 @@ namespace Cosmetify.RenderView
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsTextAllowed(e.Text);
+        }
+
+        private void GenerateExcel(System.Data.DataTable DtIN)
+        {
+            try
+            {
+                excel = new Microsoft.Office.Interop.Excel.Application();
+                excel.DisplayAlerts = false;
+                excel.Visible = false;
+                workBook = excel.Workbooks.Add(Type.Missing);
+                workSheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.ActiveSheet;
+                workSheet.Name = "Filtered Data Sheet";
+                System.Data.DataTable tempDt = DtIN;
+                //dgExcel.ItemsSource = tempDt.DefaultView;
+                workSheet.Cells.Font.Size = 11;
+                workSheet.Cells.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                workSheet.Cells.VerticalAlignment = Microsoft.Office.Interop.Excel.XlVAlign.xlVAlignCenter;
+                // workSheet.Columns.AutoFit();
+                // workSheet.Rows.AutoFit();
+                int rowcount = 1;
+                for (int i = 1; i <= tempDt.Columns.Count; i++) //taking care of Headers.  
+                {
+                    workSheet.Cells[1, i] = tempDt.Columns[i - 1].ColumnName;
+                }
+                foreach (System.Data.DataRow row in tempDt.Rows) //taking care of each Row  
+                {
+                    rowcount += 1;
+                    for (int i = 0; i < tempDt.Columns.Count; i++) //taking care of each column  
+                    {
+                        workSheet.Cells[rowcount, i + 1] = row[i].ToString();
+                    }
+                }
+                cellRange = workSheet.Range[workSheet.Cells[1, 1], workSheet.Cells[rowcount, tempDt.Columns.Count]];
+                cellRange.EntireColumn.AutoFit();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private void btnCompletion_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (this.BatchModelCollection != null)
+                {
+                    var tempCollection = new ObservableCollection<ActivesModel>();
+                    foreach (var item in this.BatchModelCollection)
+                    {
+                        foreach (var act in item.BatchOrderCollection)
+                        {
+                            tempCollection.Add(act.Actives);
+                        }
+                    }
+
+                    var activesCollection = tempCollection.DistinctBy(p => p.Id);
+
+                    foreach (var batchOrder in this.BatchModelCollection)
+                    {
+                        //if (batchOrder.Status == BatchStatus.Planned)
+                        //{
+                        foreach (var model in batchOrder.BatchOrderCollection)
+                        {
+                            var actives = activesCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
+                            if (actives != null)
+                            {
+                                if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                {
+                                    actives.BrandNames += batchOrder.BrandName + "," + Environment.NewLine;
+                                }
+
+                                if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                {
+                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + "," + Environment.NewLine;
+                                }
+
+                                actives.TotalRequired += model.StocksRequired;
+                            }
+                        }
+                        //}
+                    }
+
+                    GenerateExcel(Helper.Helper.ToBatchDataTable(activesCollection.ToList()));
+                    var dialog = new SaveFileDialog();
+                    dialog.FileName = "BatchFilterReport-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    dialog.AddExtension = true;
+                    dialog.DefaultExt = ".xlsx";
+                    if ((bool)dialog.ShowDialog())
+                    {
+                        workBook.SaveAs(dialog.FileName);
+                        // ...and start a viewer.
+                        //Process.Start(dialog.FileName);
+                    }
+
+                    workBook.Close();
+                    excel.Quit();
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.Helper.BugReport(ex);
+            }
         }
     }
 }
