@@ -372,13 +372,13 @@ namespace Cosmetify.RenderView
                 {
                     if (product.Id > 0)
                     {
-                        if (product.Status == BatchStatus.Processed)
+                        /*if (product.Status == BatchStatus.Processed)
                         {
                             foreach (var item in product.BatchOrderCollection)
                             {
                                 HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                             }
-                        }
+                        }*/
 
                         HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(product);
                     }

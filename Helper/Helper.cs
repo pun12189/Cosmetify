@@ -1,4 +1,6 @@
-﻿using Cosmetify.Repository;
+﻿using Cosmetify.Model;
+using Cosmetify.Repository;
+using Cosmetify.ViewModel;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using MySqlConnector;
@@ -363,6 +365,30 @@ namespace Cosmetify.Helper
             {
                 LogError(ex);
             }            
+        }
+
+        public static async Task UpdateBatchOrders()
+        {
+            try
+            {
+                var batchorders = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                if (batchorders != null)
+                {
+                    foreach (BatchModel product in batchorders)
+                    {
+                        foreach (var item in product.BatchOrderCollection)
+                        {
+                            item.Actives = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
+                        }
+
+                        HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(product);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.BugReport(e);
+            }
         }
     }
 }

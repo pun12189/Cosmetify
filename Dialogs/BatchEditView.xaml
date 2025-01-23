@@ -20,13 +20,13 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
-    <Grid HorizontalAlignment="Center">
+    <Grid HorizontalAlignment="Center" Margin="20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="30"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>

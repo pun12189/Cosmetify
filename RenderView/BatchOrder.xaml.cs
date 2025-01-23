@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using Button = System.Windows.Controls.Button;
 using ComboBox = System.Windows.Controls.ComboBox;
 using TabControl = System.Windows.Controls.TabControl;
@@ -154,9 +155,12 @@ namespace Cosmetify.RenderView
                             {
                                 foreach (var active in actives)
                                 {
-                                    active.Actives.Stocks = active.Actives.Stocks + active.StocksRequired;
-                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active.Actives);
+                                    var act = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(active.Id);
+                                    act.Stocks = act.Stocks + active.StocksRequired;
+                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(act);
                                 }
+
+                                await Helper.Helper.UpdateBatchOrders();
                             }
                         }
                     }
@@ -241,10 +245,13 @@ namespace Cosmetify.RenderView
                                 if (actives != null) 
                                 {
                                     foreach (var active in actives)
-                                    { 
-                                        active.Actives.Stocks = active.Actives.Stocks + active.StocksRequired;
-                                        HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active.Actives);
+                                    {
+                                        var act = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(active.Id);
+                                        act.Stocks = act.Stocks + active.StocksRequired;
+                                        HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(act);
                                     }
+
+                                    await Helper.Helper.UpdateBatchOrders();
                                 }
                             }
                         }                       
@@ -271,9 +278,12 @@ namespace Cosmetify.RenderView
                     {
                         foreach (var item in model.BatchOrderCollection)
                         {
-                            item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
-                            HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                            var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Id);
+                            active.Stocks = active.Stocks - item.StocksRequired;
+                            HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
                         }
+
+                        await Helper.Helper.UpdateBatchOrders();
                     }
 
                     this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
@@ -291,13 +301,13 @@ namespace Cosmetify.RenderView
                 {
                     model.Status = BatchStatus.Hold;
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                    if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                    /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                     {
                         foreach (var item in model.BatchOrderCollection)
                         {
                             HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                         }
-                    }
+                    }*/
 
                     this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
@@ -315,13 +325,13 @@ namespace Cosmetify.RenderView
                     model.Status = BatchStatus.Completed;
                     model.CompletionDate = DateTime.Now;
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                    if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                    /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                     {
                         foreach (var item in model.BatchOrderCollection)
                         {
                             HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                         }
-                    }
+                    }*/
 
                     this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
@@ -430,7 +440,7 @@ namespace Cosmetify.RenderView
             }            
         }
 
-        private void dataGrid2_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        private async void dataGrid2_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
             if (e.EditAction == DataGridEditAction.Commit)
             {
@@ -443,9 +453,12 @@ namespace Cosmetify.RenderView
                         {
                             foreach (var item in product.BatchOrderCollection)
                             {
-                                item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
-                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                                var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Id);
+                                active.Stocks = active.Stocks - item.StocksRequired;
+                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
                             }
+
+                            await Helper.Helper.UpdateBatchOrders();
                         }
 
                         HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(product);
@@ -525,13 +538,15 @@ namespace Cosmetify.RenderView
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
-                                                    item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
-                                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                                                    var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Id);
+                                                    active.Stocks = active.Stocks - item.StocksRequired;
+                                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
                                                 }
                                             }
                                         }
                                     }
 
+                                    await Helper.Helper.UpdateBatchOrders();
                                     MessageBox.Show("Selected Items successfully processed.", "Bulk Action", MessageBoxButton.OK, MessageBoxImage.Information);
                                 }                                
                             }
@@ -551,13 +566,13 @@ namespace Cosmetify.RenderView
                                             model.Status = BatchStatus.Planned;
                                             model.PlanningDate = DateTime.Now;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                                            if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                                            /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
                                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                                                 }
-                                            }
+                                            }*/
                                         }
                                     }
 
@@ -579,13 +594,13 @@ namespace Cosmetify.RenderView
                                         {
                                             model.Status = BatchStatus.Hold;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                                            if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                                            /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
                                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                                                 }
-                                            }
+                                            }*/
                                         }
                                     }
 
@@ -607,13 +622,13 @@ namespace Cosmetify.RenderView
                                             model.Status = BatchStatus.Completed;
                                             model.CompletionDate = DateTime.Now;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                                            if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                                            /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
                                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                                                 }
-                                            }
+                                            }*/
                                         }
                                     }
 
@@ -665,9 +680,12 @@ namespace Cosmetify.RenderView
                         {
                             foreach (var item in dialog.BatchModel.BatchOrderCollection)
                             {
-                                item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
-                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                                var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Id);
+                                active.Stocks = active.Stocks - item.StocksRequired;
+                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
                             }
+
+                            await Helper.Helper.UpdateBatchOrders();
                         }
 
                         HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(dialog.BatchModel);

@@ -552,7 +552,7 @@ namespace Cosmetify.Repository
             }
         }
 
-        public void UpdateProduct(BatchModel lead)
+        public async void UpdateProduct(BatchModel lead)
         {
             try
             {
@@ -587,7 +587,7 @@ namespace Cosmetify.Repository
                     command.Parameters.Add("@pkg_img", MySqlDbType.MediumBlob).Value = ImageToByte(lead.PackagingTypeImage);
                     command.Parameters.Add("@brand_name", MySqlDbType.Text).Value = lead.BrandName;
                     command.Parameters.Add("@product_id", MySqlDbType.VarChar).Value = lead.ProductID;
-                    command.ExecuteScalar();
+                    await command.ExecuteScalarAsync();
                     //MessageBox.Show("Batch Order Updated");
                 }
             }

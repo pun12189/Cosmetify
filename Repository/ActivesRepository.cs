@@ -23,7 +23,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from actives where id=@id";
                     command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
