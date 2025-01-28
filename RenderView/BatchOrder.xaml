@@ -172,7 +172,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
-                        <DataGridTemplateColumn Header="Batch ID">
+                        <DataGridTemplateColumn Header="Batch ID" SortMemberPath="BatchOrderNo">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Click="BatchView_Click" Content="{Binding BatchOrderNo, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="Blue"/>
@@ -184,7 +184,7 @@
                         <DataGridTextColumn Header="Customer" Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
                         
-                        <DataGridTemplateColumn Header="Status">
+                        <DataGridTemplateColumn Header="Status" SortMemberPath="Status">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}" />
@@ -260,7 +260,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Created On">
+                        <DataGridTemplateColumn Header="Created On" SortMemberPath="BatchDate">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding BatchDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
@@ -272,7 +272,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Planned For">
+                        <DataGridTemplateColumn Header="Planned For" SortMemberPath="PlanningDate">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding PlanningDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
@@ -288,7 +288,7 @@
                         <!--<DataGridTextColumn Header="Expiry Date" Binding="{Binding Expiry, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Planning Date" Binding="{Binding PlannedDate, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->                        
                         <DataGridTextColumn Header="Order Stage" Binding="{Binding OrderStage.StageName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Visibility="Collapsed"/>
-                        <DataGridTemplateColumn Header="Completed On">
+                        <DataGridTemplateColumn Header="Completed On" SortMemberPath="CompletionDate">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding CompletionDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, UpdateSourceTrigger=PropertyChanged}" />

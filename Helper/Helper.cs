@@ -378,7 +378,10 @@ namespace Cosmetify.Helper
                     {
                         foreach (var item in product.BatchOrderCollection)
                         {
-                            item.Actives = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
+                            if (item.Actives != null)
+                            {
+                                item.Actives = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
+                            }                            
                         }
 
                         HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(product);
