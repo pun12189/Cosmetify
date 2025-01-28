@@ -155,7 +155,7 @@ namespace Cosmetify.RenderView
                             {
                                 foreach (var active in actives)
                                 {
-                                    var act = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(active.Id);
+                                    var act = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(active.Actives.Id);
                                     act.Stocks = act.Stocks + active.StocksRequired;
                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(act);
                                 }
@@ -246,7 +246,7 @@ namespace Cosmetify.RenderView
                                 {
                                     foreach (var active in actives)
                                     {
-                                        var act = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(active.Id);
+                                        var act = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(active.Actives.Id);
                                         act.Stocks = act.Stocks + active.StocksRequired;
                                         HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(act);
                                     }
@@ -278,7 +278,7 @@ namespace Cosmetify.RenderView
                     {
                         foreach (var item in model.BatchOrderCollection)
                         {
-                            var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Id);
+                            var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
                             active.Stocks = active.Stocks - item.StocksRequired;
                             HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
                         }
@@ -453,7 +453,7 @@ namespace Cosmetify.RenderView
                         {
                             foreach (var item in product.BatchOrderCollection)
                             {
-                                var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Id);
+                                var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
                                 active.Stocks = active.Stocks - item.StocksRequired;
                                 HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
                             }
@@ -538,7 +538,7 @@ namespace Cosmetify.RenderView
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
-                                                    var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Id);
+                                                    var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
                                                     active.Stocks = active.Stocks - item.StocksRequired;
                                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
                                                 }
@@ -680,7 +680,7 @@ namespace Cosmetify.RenderView
                         {
                             foreach (var item in dialog.BatchModel.BatchOrderCollection)
                             {
-                                var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Id);
+                                var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
                                 active.Stocks = active.Stocks - item.StocksRequired;
                                 HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
                             }
