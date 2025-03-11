@@ -4,6 +4,8 @@ using System.Windows.Input;
 using System.ComponentModel;
 using Cosmetify.Helper;
 using Cosmetify.Command;
+using MySqlConnector;
+using System.Data;
 
 namespace Cosmetify.ViewModel
 {
@@ -52,6 +54,11 @@ namespace Cosmetify.ViewModel
         #region Private Methods
         private void LoginCommandExecute()
         {
+            if (checkDB_Conn() == false) 
+            {
+                return;
+            }
+
             UserModel.Instance.Email = Email;
             if (UserModel.Instance.Email == null || UserModel.Instance.Password == null)
             {
@@ -93,6 +100,61 @@ namespace Cosmetify.ViewModel
                 forgotPasswordViewModel.CloseAction = () => window.Close();
             }
             window.Show();
+        }
+
+        public static bool checkDB_Conn()
+        {
+            var conn_info = string.Empty;
+#if DEBUG
+
+            //_connectionString = "DataSource=bahikitab-aws.c3s6wewcwox1.us-east-1.rds.amazonaws.com;Port=3306;Uid=admin;Pwd=Il6oOvguA2SB5IEQxWCJ;database=bahikitab";
+            conn_info = "Server=localhost;Uid=root;Pwd='';database=cosmetify";
+#endif
+#if RELEASE
+
+            conn_info = "Server=192.168.1.90;Uid=cosdb;Pwd=Cosmetify@123;database=cosmetify";
+#endif
+            bool isConn = false;
+            MySqlConnection conn = null;
+            try
+            {
+                conn = new MySqlConnection(conn_info);
+                conn.Open();
+                isConn = true;
+            }
+            catch (ArgumentException a_ex)
+            {
+                MessageBox.Show(a_ex.Message);
+                isConn = false;
+            }
+            catch (MySqlException ex)
+            {
+                string sqlErrorMessage = "Message: " + ex.Message + "\n" +
+                "Source: " + ex.Source + "\n" +
+                "Number: " + ex.Number;
+                
+                isConn = false;
+                switch (ex.Number)
+                {
+                    //http://dev.mysql.com/doc/refman/5.0/en/error-messages-server.html
+                    case 1042: MessageBox.Show("Unable to connect to any of the specified MySQL hosts (Check Server,Port)");
+                        break;
+                    case 0: 
+                        MessageBox.Show("Check DB name,username,password");
+                        break;
+                    default:
+                        MessageBox.Show(sqlErrorMessage);
+                        break;
+                }
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return isConn;
         }
 
         #endregion

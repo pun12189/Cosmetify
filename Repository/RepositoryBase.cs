@@ -19,7 +19,7 @@ namespace Cosmetify.Repository
 #endif
 #if RELEASE
 
-            _connectionString = "Server=localhost;Uid=root;Pwd='';database=bahikitab";
+            _connectionString = "Server=192.168.1.90;Uid=cosdb;Pwd=Cosmetify@123;database=cosmetify";
 #endif
         }
 
