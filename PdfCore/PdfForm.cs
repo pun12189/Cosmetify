@@ -647,7 +647,7 @@ namespace Cosmetify.PdfCore
                     row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
                 }
 
-                row1.Cells[4].AddParagraph(batchOrderModel.StocksRequired.ToString() + batchOrderModel.Units);
+                row1.Cells[4].AddParagraph(Math.Round(batchOrderModel.StocksRequired, 3).ToString() + batchOrderModel.Units);
                 row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
                 row1.Cells[5].AddParagraph();
                 row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
