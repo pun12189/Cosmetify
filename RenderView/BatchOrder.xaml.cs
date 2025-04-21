@@ -355,16 +355,33 @@ namespace Cosmetify.RenderView
                 var model = button.DataContext as BatchModel;
                 if (model != null)
                 {
-                    model.BatchOrderNo = "COS-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
-                    model.OrderId = "OD-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
-                    model.Status = BatchStatus.Created;
-                    model.BatchDate = DateTime.Now;
-                    model.PlannedDate = DateTime.MinValue;
-                    model.PlanningDate = DateTime.MinValue;
-                    model.MfgDate = DateTime.MinValue;
-                    model.Expiry = DateTime.MinValue;
-                    model.CompletionDate = DateTime.MinValue;
-                    HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(model);
+                    var newmodel = new BatchModel();
+                    newmodel.BatchOrderNo = "COS-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    newmodel.OrderId = "OD-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    newmodel.Status = BatchStatus.Created;
+                    newmodel.BatchDate = DateTime.Now;
+                    newmodel.PlannedDate = DateTime.MinValue;
+                    newmodel.PlanningDate = DateTime.MinValue;
+                    newmodel.MfgDate = DateTime.MinValue;
+                    newmodel.Expiry = DateTime.MinValue;
+                    newmodel.CompletionDate = DateTime.MinValue;
+                    newmodel.AdditionalInfo = model.AdditionalInfo;
+                    newmodel.Description = model.Description;
+                    newmodel.ProductName = model.ProductName;
+                    newmodel.Customer = model.Customer;
+                    newmodel.Claims = model.Claims;
+                    newmodel.Colour = model.Colour;
+                    foreach (var bo in model.BatchOrderCollection)
+                    {
+                        newmodel.BatchOrderCollection.Add(bo);
+                    }
+                    
+                    newmodel.Perfume = model.Perfume;
+                    newmodel.RemainingWater = model.RemainingWater;
+                    newmodel.BrandName = model.BrandName;
+                    newmodel.PkgOrderQuantity = model.PkgOrderQuantity;
+                    newmodel.PackagingTypeImage = model.PackagingTypeImage;
+                    HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(newmodel);
                     this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
