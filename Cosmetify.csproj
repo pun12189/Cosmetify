@@ -51,6 +51,7 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="MySqlBackup.NET.MySqlConnector" Version="2.3.9" />
     <PackageReference Include="MySqlConnector" Version="2.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PDFsharp-MigraDoc-WPF" Version="6.1.1" />
