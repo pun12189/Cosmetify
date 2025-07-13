@@ -173,6 +173,11 @@ namespace Cosmetify.Helper
 
             _connectionString = "Server=localhost;Uid=root;Pwd='';database=bahikitab;AllowLoadLocalInfile=true";
 #endif
+#if TESTING
+
+            //_connectionString = "DataSource=bahikitab-aws.c3s6wewcwox1.us-east-1.rds.amazonaws.com;Port=3306;Uid=admin;Pwd=Il6oOvguA2SB5IEQxWCJ;database=bahikitab";
+            _connectionString = "Server=localhost;Uid=root;Pwd='';database=cosmetify";
+#endif
 
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {

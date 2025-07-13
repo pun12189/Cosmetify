@@ -114,6 +114,11 @@ namespace Cosmetify.ViewModel
 
             conn_info = "Server=192.168.1.90;Uid=cosdb;Pwd=Cosmetify@123;database=cosmetify";
 #endif
+#if TESTING
+
+            //_connectionString = "DataSource=bahikitab-aws.c3s6wewcwox1.us-east-1.rds.amazonaws.com;Port=3306;Uid=admin;Pwd=Il6oOvguA2SB5IEQxWCJ;database=bahikitab";
+            conn_info = "Server=localhost;Uid=root;Pwd='';database=cosmetify";
+#endif
             bool isConn = false;
             MySqlConnection conn = null;
             try

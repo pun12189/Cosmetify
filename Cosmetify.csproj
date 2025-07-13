@@ -17,6 +17,7 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
     <ApplicationIcon>SetupFiles\BahiKitab-Icon.ico</ApplicationIcon>
+    <Configurations>Debug;Release;Subodh;Testing</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
