@@ -134,6 +134,47 @@ namespace Cosmetify.Repository
             return batches;
         }
 
+        public async Task<ObservableCollection<CustomOrderModel>> SearchDistinctBatch(string data)
+        {
+            ObservableCollection<CustomOrderModel> batches = new ObservableCollection<CustomOrderModel>();
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "select DISTINCT order_id, cust_id, brand_name, COUNT(*) as Counter FROM `batchorder` GROUP BY order_id, cust_id, brand_name where order_no LIKE @data OR add_info LIKE @data OR order_id LIKE @data OR color LIKE @data OR perfume LIKE @data OR brand_name LIKE @data OR product_id LIKE @data OR remarks LIKE @data OR description LIKE @data OR prod_name LIKE @data OR status LIKE @data OR pkgtype LIKE @data";
+                    command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var batch = new CustomOrderModel()
+                            {
+                                
+                                OrderId = reader.IsDBNull(0) ? string.Empty : reader.GetString(0),
+                                CustomerName = reader.IsDBNull(1) ? null : HomepageViewModel.CommonViewModel.LeadsRepository.GetCustomer(reader.GetInt32(1)),
+                                BrandName = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                Counter = reader.IsDBNull(3) ? 0 : reader.GetInt32(3)
+                            };
+
+                            batches.Add(batch);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return batches;
+        }
+
         public async Task<ObservableCollection<BatchModel>> BatchFilters(string? fromDate = null, string? toDate = null)
         {
             ObservableCollection<BatchModel> batches = new ObservableCollection<BatchModel>();
@@ -483,6 +524,46 @@ namespace Cosmetify.Repository
                                 PackagingTypeImage = reader.IsDBNull(22) ? null : ByteToImage((byte[])reader["pkg_img"]),
                                 BrandName = reader.IsDBNull(23) ? string.Empty : reader.GetString(23),
                                 ProductID = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
+                            };
+
+                            leads.Add(lead);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return leads;
+        }
+
+        public async Task<ObservableCollection<CustomOrderModel>> GetAllDistinctOrders()
+        {
+            ObservableCollection<CustomOrderModel> leads = new ObservableCollection<CustomOrderModel>();
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "SELECT DISTINCT order_id, cust_id, brand_name, COUNT(*) as Counter FROM `batchorder` GROUP BY order_id, cust_id, brand_name;";
+                    var reader = await command.ExecuteReaderAsync();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var lead = new CustomOrderModel()
+                            {
+
+                                OrderId = reader.IsDBNull(0) ? string.Empty : reader.GetString(0),
+                                CustomerName = reader.IsDBNull(1) ? null : HomepageViewModel.CommonViewModel.LeadsRepository.GetCustomer(reader.GetInt32(1)),
+                                BrandName = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                Counter = reader.IsDBNull(3) ? int.MinValue : reader.GetInt32(3)
                             };
 
                             leads.Add(lead);

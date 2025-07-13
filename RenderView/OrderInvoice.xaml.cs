@@ -33,7 +33,7 @@ namespace Cosmetify.RenderView
             this.cbPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
             this.cbProd.ItemsSource = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             this.cbCust.IsEnabled = true;
-            this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllDistinctOrders();
         }
 
         public ObservableCollection<BatchOrderModel> BatchOrderCollection
@@ -57,15 +57,15 @@ namespace Cosmetify.RenderView
         public static readonly DependencyProperty BatchModelCollectionProperty =
             DependencyProperty.Register("BatchModelCollection", typeof(ObservableCollection<BatchModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<BatchModel>()));
 
-        public ObservableCollection<BatchModel> DBBatchModelCollection
+        public ObservableCollection<CustomOrderModel> DBBatchModelCollection
         {
-            get { return (ObservableCollection<BatchModel>)GetValue(DBBatchModelCollectionProperty); }
+            get { return (ObservableCollection<CustomOrderModel>)GetValue(DBBatchModelCollectionProperty); }
             set { SetValue(DBBatchModelCollectionProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for BatchModelCollection.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DBBatchModelCollectionProperty =
-            DependencyProperty.Register("DBBatchModelCollection", typeof(ObservableCollection<BatchModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<BatchModel>()));
+            DependencyProperty.Register("DBBatchModelCollection", typeof(ObservableCollection<CustomOrderModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<CustomOrderModel>()));
 
         private async void btnAddCust_Click(object sender, RoutedEventArgs e)
         {
@@ -321,7 +321,7 @@ namespace Cosmetify.RenderView
                 if (model != null)
                 {
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
-                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    //this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
@@ -346,49 +346,10 @@ namespace Cosmetify.RenderView
 
         private async void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllDistinctOrders();
         }
 
-        private async void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            var dg = sender as System.Windows.Controls.DataGrid;
-            if (dg != null)
-            {
-                BatchModel product = dg.SelectedItem as BatchModel;
-                if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
-                {
-                    HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(product.Id);
-                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
-                }
-            }
-        }
-
-        private void dataGrid2_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        {
-            if (e.EditAction == DataGridEditAction.Commit)
-            {
-                BatchModel product = e.Row.DataContext as BatchModel;
-                if (product != null)
-                {
-                    if (product.Id > 0)
-                    {
-                        /*if (product.Status == BatchStatus.Processed)
-                        {
-                            foreach (var item in product.BatchOrderCollection)
-                            {
-                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
-                            }
-                        }*/
-
-                        HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(product);
-                    }
-                    else
-                    {
-                        HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(product);
-                    }
-                }
-            }
-        }
+        
 
         private async void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
@@ -397,12 +358,12 @@ namespace Cosmetify.RenderView
                 var searchData = this.tbSearch.Text;
                 if (!string.IsNullOrEmpty(searchData))
                 {
-                    var data = await HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
+                    var data = await HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchDistinctBatch(searchData);
                     this.DBBatchModelCollection = data;
                 }
                 else
                 {
-                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllDistinctOrders();
                 }
             }
         }
@@ -449,7 +410,7 @@ namespace Cosmetify.RenderView
                     model.Expiry = DateTime.MinValue;
                     model.CompletionDate = DateTime.MinValue;
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(model);
-                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    //this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
@@ -517,6 +478,11 @@ namespace Cosmetify.RenderView
             {
                 this.cbProd.ItemsSource = dialog.ItemsCollection;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
