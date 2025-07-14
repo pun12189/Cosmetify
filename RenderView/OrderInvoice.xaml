@@ -213,20 +213,32 @@
                         <ComboBoxItem Content="Completed"/>
                         <ComboBoxItem Content="Delete"/>
                     </ComboBox>-->
+                    <Button x:Name="btnBulkDload" Content="Bulk Download" Width="150" Margin="10,0,10,0" Click="btnBulkDload_Click" HorizontalAlignment="Left"/>
+                    <Button x:Name="btnBulkDel" Visibility="Collapsed" Content="Bulk Delete" Width="150" Click="btnBulkDel_Click" HorizontalAlignment="Left"/>
                     <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Width="250" Margin="5,0,5,0" control:TextBoxHelper.AutoWatermark="True" control:TextBoxHelper.ClearTextButton="True" VerticalContentAlignment="Center" control:TextBoxHelper.Watermark="Search"/>
                     <!--<Button x:Name="btnFilters" Content="Filters" Width="150" Margin="0,0,5,0" Click="btnFilters_Click"/>-->
                     <Button x:Name="btnRefresh" Content="Refresh" Width="150" Click="btnRefresh_Click"/>
                 </StackPanel>
                 <TextBlock Grid.Row="1" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
                 <DataGrid Grid.Row="2" ColumnWidth="Auto" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=odInv, Path=DBBatchModelCollection}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid2" VerticalAlignment="Stretch">
-                    <DataGrid.Columns>                        
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <!--<DataGridTemplateColumn.Header>
+                                <CheckBox x:Name="cbAll" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="cbAll_Checked" Unchecked="cbAll_Unchecked"/>
+                            </DataGridTemplateColumn.Header>-->
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center" IsHitTestVisible="False" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=IsSelected, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="Order ID" Binding="{Binding OrderId}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Customer" Binding="{Binding CustomerName.FirstName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Brand Name" Binding="{Binding BrandName, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTemplateColumn Header="Products">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Click="Button_Click" Content="{Binding Counter, UpdateSourceTrigger=PropertyChanged}" FontSize="14" FontWeight="Bold" Background="Transparent" Foreground="Blue"/>
+                                    <Button Click="OpenOrder" Content="{Binding Counter, UpdateSourceTrigger=PropertyChanged}" FontSize="14" FontWeight="Bold" Background="Transparent" Foreground="Blue"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -234,12 +246,15 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Button Visibility="{Binding OrderId, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToVisibilityConverter}}" Background="Transparent" Margin="0,0,2,0" Click="EditOrder" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="EditSolid"/>
+                                        </Button>
                                         <Button Visibility="{Binding OrderId, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToVisibilityConverter}}" Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="FilePdfSolid"/>
                                         </Button>
-                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <!--<Button Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="RedoSolid"/>
-                                        </Button>
+                                        </Button>-->
                                         <Button Background="Transparent" Click="DeleteBatch1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="TrashSolid"/>
                                         </Button>

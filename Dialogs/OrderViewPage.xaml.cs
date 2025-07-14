@@ -2,6 +2,7 @@
 using Cosmetify.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,19 @@ namespace Cosmetify.Dialogs
         public OrderViewPage()
         {
             InitializeComponent();
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            this.WindowStyle = WindowStyle.SingleBorderWindow;
         }
+
+        public ObservableCollection<BatchModel> DbModelCollection
+        {
+            get { return (ObservableCollection<BatchModel>)GetValue(DbModelCollectionProperty); }
+            set { SetValue(DbModelCollectionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DbModelCollection.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DbModelCollectionProperty =
+            DependencyProperty.Register("DbModelCollection", typeof(ObservableCollection<BatchModel>), typeof(OrderViewPage), new PropertyMetadata(new ObservableCollection<BatchModel>()));
 
         private async void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {

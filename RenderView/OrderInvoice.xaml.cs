@@ -314,16 +314,17 @@ namespace Cosmetify.RenderView
 
         private async void DeleteBatch1(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null)
-            {
-                var model = button.DataContext as BatchModel;
-                if (model != null)
-                {
-                    HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
-                    //this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
-                }
-            }
+            //var button = sender as Button;
+            //if (button != null)
+            //{
+            //    var model = button.DataContext as BatchModel;
+            //    if (model != null)
+            //    {
+            //        HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
+            //        //this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            //    }
+            //
+            MessageBox.Show("This button is Disabled because in this order there are multiple products, after delete complete sale order will deleted including batch orders which is not recoverable. If you want to enable it then please contact your development team, it will be enabled in next build.", "Functionality Disabled", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void btnAddColor_Click(object sender, RoutedEventArgs e)
@@ -422,12 +423,12 @@ namespace Cosmetify.RenderView
                 var button = sender as Button;
                 if (button != null)
                 {
-                    var model = button.DataContext as BatchModel;
+                    var model = button.DataContext as CustomOrderModel;
                     if (model != null)
                     {
                         var batchCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
                         var batch = new PdfCore.PdfForm();
-                        var document = batch.CreateOrder(model, batchCollection);
+                        var document = batch.CreateOrder(batchCollection[0], batchCollection);
                         document.UseCmykColor = true;
                         var pdfRenderer = new PdfDocumentRenderer(true);
 
@@ -438,7 +439,7 @@ namespace Cosmetify.RenderView
                         pdfRenderer.RenderDocument();
 
                         // Save the PDF document...
-                        var filename = "SaleOrder-" + model.Customer.FirstName + "_" + model.BrandName + ".pdf";
+                        var filename = "SaleOrder-" + model.CustomerName.FirstName + "_" + model.BrandName + ".pdf";
 
                         var dialog = new SaveFileDialog();
                         dialog.FileName = filename;
@@ -480,7 +481,62 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void OpenOrder(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                var model = button.DataContext as CustomOrderModel;
+                if (model != null && model.OrderId != null)
+                {
+                    var orderView = new OrderViewPage();
+                    orderView.DbModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                    orderView.ShowDialog();
+                }
+            }
+        }
+
+        private void EditOrder(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void btnBulkDload_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.dataGrid2.SelectedItems.Count > 1)
+            {
+                var result = MessageBox.Show("Do you want to download Pdf of All Orders?", "Bulk Action", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    foreach (CustomOrderModel model in this.dataGrid2.SelectedItems)
+                    {
+                        if (model != null)
+                        {
+                            var batchCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                            var batch = new PdfCore.PdfForm();
+                            var document = batch.CreateOrder(batchCollection[0], batchCollection);
+                            document.UseCmykColor = true;
+                            var pdfRenderer = new PdfDocumentRenderer(true);
+
+                            // Set the MigraDoc document.
+                            pdfRenderer.Document = document;
+
+                            // Create the PDF document.
+                            pdfRenderer.RenderDocument();
+
+                            // Save the PDF document...
+                            var filename = "SaleOrder-" + model.CustomerName.FirstName + "_" + model.BrandName + ".pdf";
+                            var dektopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);                            
+                            pdfRenderer.Save(dektopPath + "//" + filename);                        }
+                    }
+
+                    
+                    MessageBox.Show("Selected Items successfully downloaded on your Desktop.", "Bulk Action", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        private void btnBulkDel_Click(object sender, RoutedEventArgs e)
         {
 
         }

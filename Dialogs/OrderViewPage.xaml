@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:conv="clr-namespace:Cosmetify.Helper"
-        Title="OrderViewPage" Height="450" Width="800">
+        Title="Order View" SizeToContent="WidthAndHeight" Margin="10" x:Name="odInv">
     <Window.Resources>
         <conv:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         <conv:InvertableBooleanToVisibilityConverter x:Key="InvertableBooleanToVisibilityConverter"/>
@@ -19,7 +19,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="Order Description" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="BlueViolet" FontWeight="Bold"/>
-        <DataGrid Grid.Row="2" ColumnWidth="Auto" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=odInv, Path=DBBatchModelCollection}" AutoGenerateColumns="False" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid2" VerticalAlignment="Stretch">
+        <DataGrid Grid.Row="2" ColumnWidth="Auto" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=odInv, Path=DbModelCollection}" AutoGenerateColumns="False" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid2" VerticalAlignment="Stretch">
             <DataGrid.Columns>
                 <!--<DataGridTemplateColumn>
             <DataGridTemplateColumn.Header>
@@ -60,7 +60,7 @@
                 <!--<DataGridTextColumn Header="Status" Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->
                 <!--<DataGridTextColumn Header="BatchDate" Binding="{Binding BatchDate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->
                 <!--<DataGridTextColumn Header="BatchSize" Binding="{Binding BatchOrderCollection[0].BatchSize, UpdateSourceTrigger=PropertyChanged}"/>-->
-                <DataGridTemplateColumn Header="Actives" IsReadOnly="True" Visibility="Collapsed">
+                <DataGridTemplateColumn Header="Actives" IsReadOnly="True" Visibility="Visible">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding BatchOrderCollection}">
