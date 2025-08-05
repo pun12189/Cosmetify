@@ -1,11 +1,15 @@
-﻿using Cosmetify.Model;
+﻿using Cosmetify.Command;
+using Cosmetify.Helper;
+using Cosmetify.Model;
+using MySqlConnector;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
+using System.Net.Http;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using System.ComponentModel;
-using Cosmetify.Helper;
-using Cosmetify.Command;
-using MySqlConnector;
-using System.Data;
 
 namespace Cosmetify.ViewModel
 {
@@ -14,6 +18,12 @@ namespace Cosmetify.ViewModel
         #region Properties
 
         private ForgotPasswordViewModel forgotPasswordViewModel;
+
+        private static readonly HttpClient _httpClient = new HttpClient();
+
+        private static readonly string SystemId = Environment.UserName;
+
+        private static readonly string SoftwareId = Assembly.GetExecutingAssembly().GetHashCode().ToString();
 
         private Window window;
 
@@ -48,6 +58,7 @@ namespace Cosmetify.ViewModel
             LoginCommand = new RelayCommand(LoginCommandExecute);
             RegisterCommand = new RelayCommand(RegisterCommandExecute);
             ForgotPasswordCommand = new RelayCommand(ForgotPasswordCommandExecute);
+            var x = SystemId + SoftwareId;
         }
         #endregion
 
@@ -161,6 +172,48 @@ namespace Cosmetify.ViewModel
             }
             return isConn;
         }
+
+        public async Task<ObservableCollection<ApiClassModel>> GetApiDataAsync(string apiUrl)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonString = await response.Content.ReadAsStringAsync();
+                    ObservableCollection<ApiClassModel> data = JsonConvert.DeserializeObject<ObservableCollection<ApiClassModel>>(jsonString);
+                    return data;
+                }                
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return null;
+        }
+
+        /*public async Task PostApiDataAsync(string systemid, string softwareid)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonString = await response.Content.ReadAsStringAsync();
+                    ObservableCollection<ApiClassModel> data = JsonConvert.DeserializeObject<ObservableCollection<ApiClassModel>>(jsonString);
+                    return data;
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return null;
+        }*/
 
         #endregion
 

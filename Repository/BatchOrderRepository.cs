@@ -1,13 +1,14 @@
-﻿using Cosmetify.Model.Enums;
-using Cosmetify.Model;
+﻿using Cosmetify.Model;
+using Cosmetify.Model.Enums;
+using Cosmetify.ViewModel;
 using MySqlConnector;
 using System.Collections.ObjectModel;
-using System.Windows;
-using Cosmetify.ViewModel;
-using System.Text.Json;
-using System.Windows.Media.Imaging;
-using System.IO;
 using System.Globalization;
+using System.IO;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Cosmetify.Repository
 {
@@ -144,7 +145,7 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    command.CommandText = "select DISTINCT order_id, cust_id, brand_name, COUNT(*) as Counter FROM `batchorder` GROUP BY order_id, cust_id, brand_name where order_no LIKE @data OR add_info LIKE @data OR order_id LIKE @data OR color LIKE @data OR perfume LIKE @data OR brand_name LIKE @data OR product_id LIKE @data OR remarks LIKE @data OR description LIKE @data OR prod_name LIKE @data OR status LIKE @data OR pkgtype LIKE @data";
+                    command.CommandText = "select DISTINCT order_id, cust_id, brand_name, COUNT(*) as Counter FROM `batchorder` where order_no LIKE @data OR add_info LIKE @data OR order_id LIKE @data OR color LIKE @data OR perfume LIKE @data OR brand_name LIKE @data OR product_id LIKE @data OR remarks LIKE @data OR description LIKE @data OR prod_name LIKE @data OR status LIKE @data OR pkgtype LIKE @data GROUP BY order_id, cust_id, brand_name";
                     command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
                     MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
