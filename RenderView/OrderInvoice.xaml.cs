@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using static MaterialDesignThemes.Wpf.Theme;
 
 namespace Cosmetify.RenderView
 {
@@ -301,7 +302,7 @@ namespace Cosmetify.RenderView
 
         private void DeleteBatch(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
+            var button = sender as System.Windows.Controls.Button;
             if (button != null)
             {
                 var model = button.DataContext as BatchModel;
@@ -395,7 +396,7 @@ namespace Cosmetify.RenderView
 
         private async void ReorderBatch(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
+            var button = sender as System.Windows.Controls.Button;
             if (button != null)
             {
                 var model = button.DataContext as BatchModel;
@@ -420,7 +421,7 @@ namespace Cosmetify.RenderView
         {
             try
             {
-                var button = sender as Button;
+                var button = sender as System.Windows.Controls.Button;
                 if (button != null)
                 {
                     var model = button.DataContext as CustomOrderModel;
@@ -483,7 +484,7 @@ namespace Cosmetify.RenderView
 
         private async void OpenOrder(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
+            var button = sender as System.Windows.Controls.Button;
             if (button != null)
             {
                 var model = button.DataContext as CustomOrderModel;
@@ -496,9 +497,21 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void EditOrder(object sender, RoutedEventArgs e)
+        private async void EditOrder(object sender, RoutedEventArgs e)
         {
-
+            var btn = sender as System.Windows.Controls.Button;
+            if (btn != null)
+            {
+                var model = btn.DataContext as CustomOrderModel;
+                if (model != null && model.OrderId != null)
+                {
+                    var dialog = new OrderEditViewPage();
+                    dialog.CustomerName = model.CustomerName;
+                    dialog.BrandName = model.BrandName;
+                    dialog.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                    dialog.ShowDialog();
+                }            
+            }            
         }
 
         private async void btnBulkDload_Click(object sender, RoutedEventArgs e)

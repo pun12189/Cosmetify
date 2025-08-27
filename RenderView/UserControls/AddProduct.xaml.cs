@@ -74,7 +74,7 @@ namespace Cosmetify.RenderView.UserControls
         {
             var product = new ProductModel();
             product.Name = this.tbName.Text;
-            product.Description = this.tbDesc.Text;
+            product.Description = this.tbInv.Text;
             product.Packing = this.tbPack.Text;
             product.BatchNo = this.tbBatch.Text;
             product.MfgDate = Convert.ToDateTime("01/" + this.MfgMonth + "/" + this.MfgYear);

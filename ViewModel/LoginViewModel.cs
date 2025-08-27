@@ -3,6 +3,7 @@ using Cosmetify.Helper;
 using Cosmetify.Model;
 using MySqlConnector;
 using Newtonsoft.Json;
+using Sentry.Reflection;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -63,7 +64,7 @@ namespace Cosmetify.ViewModel
         #endregion
 
         #region Private Methods
-        private void LoginCommandExecute()
+        private async void LoginCommandExecute()
         {
             if (checkDB_Conn() == false) 
             {
@@ -76,19 +77,31 @@ namespace Cosmetify.ViewModel
                 MessageBox.Show("Both email and password should be filled in.");
                 return;
             }
-            if (AccountManager.AccountExists(UserModel.Instance.Email, UserModel.Instance.Password))
-            {
-                var homepageViewModel = new HomepageViewModel(window);
-                WindowManager.ChangeWindowContent(window, homepageViewModel, Resources.HomepageWindowTitle, Resources.HomepageControlPath);
 
-                if (homepageViewModel.CloseAction == null)
+            var apimodel = await GetApiDataAsync("https://bahikitab.edvertisements.com/getstatus-api.php?systemid=" + SystemId);
+            if (apimodel != null && apimodel[0].Status.Contains("inactive"))
+            {
+                if (apimodel[0].Notice != string.Empty)
                 {
-                    homepageViewModel.CloseAction = () => window.Close();
-                }
+                    MessageBox.Show(apimodel[0].Notice, "Notice", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }                
             }
             else
             {
-                MessageBox.Show("Invalid credentials.");
+                if (AccountManager.AccountExists(UserModel.Instance.Email, UserModel.Instance.Password))
+                {
+                    var homepageViewModel = new HomepageViewModel(window);
+                    WindowManager.ChangeWindowContent(window, homepageViewModel, Resources.HomepageWindowTitle, Resources.HomepageControlPath);
+
+                    if (homepageViewModel.CloseAction == null)
+                    {
+                        homepageViewModel.CloseAction = () => window.Close();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Invalid credentials.");
+                }
             }
         }
 
@@ -173,16 +186,25 @@ namespace Cosmetify.ViewModel
             return isConn;
         }
 
-        public async Task<ObservableCollection<ApiClassModel>> GetApiDataAsync(string apiUrl)
+        public async Task<List<ApiClassModel>> GetApiDataAsync(string apiUrl)
         {
             try
             {
+                List<ApiClassModel>? data = null;
                 HttpResponseMessage response = await _httpClient.GetAsync(apiUrl);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonString = await response.Content.ReadAsStringAsync();
-                    ObservableCollection<ApiClassModel> data = JsonConvert.DeserializeObject<ObservableCollection<ApiClassModel>>(jsonString);
+                    if (jsonString.Contains("No data found"))
+                    {
+                        await _httpClient.GetAsync("https://bahikitab.edvertisements.com/insertdata.php?systemid="+ SystemId +"&softwareid="+SoftwareId);
+                    }
+                    else
+                    {
+                        data = JsonConvert.DeserializeObject<List<ApiClassModel>>(jsonString);
+                    }
+                    
                     return data;
                 }                
             }
