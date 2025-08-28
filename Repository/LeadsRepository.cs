@@ -1,6 +1,6 @@
 ﻿using Cosmetify.Model;
 using Microsoft.Extensions.Options;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -65,7 +65,7 @@ namespace Cosmetify.Repository
             return category;
         }
 
-        public ObservableCollection<CustomerModel> GetAllLeads()
+        public async Task<ObservableCollection<CustomerModel>> GetAllLeads()
         {
             ObservableCollection<CustomerModel> leads = null;
             try
@@ -76,7 +76,7 @@ namespace Cosmetify.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = "select * from customer_lead";
-                    var reader = command.ExecuteReader();
+                    var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         leads = new ObservableCollection<CustomerModel>();

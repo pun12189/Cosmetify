@@ -15,6 +15,16 @@ namespace Cosmetify.Model
         private double totalRequired = 0;
         private double totalBatchOrders = 0;
         private double diffStock;
+        private string productNames;
+        private int productNamesCount;
+        private string brandNames;
+        private int brandNamesCount;
+        private double stocks;
+        private string qtyReqd;
+        private double totalCreated;
+        private double totalCreatedRequired;
+        private double totalHold;
+        private double totalHoldRequired;
 
         public int Id { get; set; }
 
@@ -22,7 +32,14 @@ namespace Cosmetify.Model
 
         public string ShortCode { get; set; }
 
-        public double Stocks { get; set; }
+        public double Stocks
+        {
+            get => this.stocks; set
+            {
+                this.stocks = value;
+                this.NotifyPropertyChanged(nameof(Stocks));
+            }
+        }
 
         public ProductUnits Units { get; set; }
 
@@ -34,9 +51,23 @@ namespace Cosmetify.Model
 
         public double SKU { get; set; }
 
-        public string BrandNames { get; set; }
+        public string BrandNames
+        {
+            get => this.brandNames; set
+            {
+                this.brandNames = value;
+                this.NotifyPropertyChanged(nameof(BrandNames));
+            }
+        }
 
-        public int BrandNamesCount { get; set; }
+        public int BrandNamesCount
+        {
+            get => this.brandNamesCount; set
+            {
+                this.brandNamesCount = value;
+                this.NotifyPropertyChanged(nameof(BrandNamesCount));
+            }
+        }
 
         public string PkgTypes { get; set; }
 
@@ -44,11 +75,32 @@ namespace Cosmetify.Model
 
         public string BatchQty { get; set; }
 
-        public string ProductNames { get; set; }
+        public string ProductNames
+        {
+            get => this.productNames; set
+            {
+                this.productNames = value;
+                this.NotifyPropertyChanged(nameof(ProductNames));
+            }
+        }
 
-        public int ProductNamesCount { get; set; }
+        public int ProductNamesCount
+        {
+            get => this.productNamesCount; set
+            {
+                this.productNamesCount = value;
+                this.NotifyPropertyChanged(nameof(ProductNamesCount));
+            }
+        }
 
-        public string QtyReqd { get; set; }
+        public string QtyReqd
+        {
+            get => this.qtyReqd; set
+            {
+                this.qtyReqd = value;
+                this.NotifyPropertyChanged(nameof(QtyReqd));
+            }
+        }
 
         public double TotalBatchOrders
         {
@@ -89,13 +141,41 @@ namespace Cosmetify.Model
             }
         }
 
-        public double TotalCreated { get; set; }
+        public double TotalCreated
+        {
+            get => this.totalCreated; set
+            {
+                this.totalCreated = value;
+                this.NotifyPropertyChanged(nameof(TotalCreated));
+            }
+        }
 
-        public double TotalCreatedRequired { get; set; }
+        public double TotalCreatedRequired
+        {
+            get => this.totalCreatedRequired; set
+            {
+                this.totalCreatedRequired = value;
+                this.NotifyPropertyChanged(nameof(TotalCreatedRequired));
+            }
+        }
 
-        public double TotalHold { get; set; }
+        public double TotalHold
+        {
+            get => this.totalHold; set
+            {
+                this.totalHold = value;
+                this.NotifyPropertyChanged(nameof(TotalHold));
+            }
+        }
 
-        public double TotalHoldRequired { get; set; }
+        public double TotalHoldRequired
+        {
+            get => this.totalHoldRequired; set
+            {
+                this.totalHoldRequired = value;
+                this.NotifyPropertyChanged(nameof(TotalHoldRequired));
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

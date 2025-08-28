@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <SignAssembly>False</SignAssembly>
+    <SignAssembly>True</SignAssembly>
     <Description>With 13+ years of experience in this domain, we are one of the leading Software &amp; Applications development companies. Through the years, we have acquired the experience and track record in providing exceptional service and customer satisfaction.
 
 At Sofric (formerly known as LeadManch), we are specialized in LMS-CRM-ERP solution, customized Website, eCommerce website, customized online &amp; offline Software &amp; Mobile Application development. “With the recognition of being the most trustworthy software development company in the region, the responsibility on our shoulders is even bigger.”
@@ -16,6 +16,8 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <PackageIcon>bill.png</PackageIcon>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
+    <ApplicationIcon>SetupFiles\BahiKitab-Icon.ico</ApplicationIcon>
+    <Configurations>Debug;Release;Subodh;Testing</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,6 +39,10 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="SetupFiles\BahiKitab-Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.7" />
     <PackageReference Include="ControlzEx" Version="4.4.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
@@ -46,7 +52,8 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="MySql.Data" Version="8.0.33" />
+    <PackageReference Include="MySqlBackup.NET.MySqlConnector" Version="2.3.9" />
+    <PackageReference Include="MySqlConnector" Version="2.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PDFsharp-MigraDoc-WPF" Version="6.1.1" />
     <PackageReference Include="ScottPlot.WPF" Version="5.0.24" />
@@ -121,15 +128,6 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Extras\bahikitab.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Extras\cosmetify.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Extras\mysql-connector-net-8.0.33.1.msi">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
     <None Update="SetupFiles\BahiKitab-Icon.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -148,13 +146,12 @@ WE DON’T SELL A PRODUCT. WE SELL ALL NEW WAY OF THINKING.!!!</Description>
     <None Update="TxtFile\Sample_Test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TxtFile\Sample_Update.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TxtFile\text.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extras\" />
   </ItemGroup>
 
 </Project>

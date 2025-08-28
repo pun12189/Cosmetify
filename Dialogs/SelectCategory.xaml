@@ -1,0 +1,38 @@
+﻿<Window x:Class="Cosmetify.Dialogs.SelectCategory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cosmetify.Dialogs"
+        mc:Ignorable="d"
+        Title="Select Category" SizeToContent="WidthAndHeight">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Select Category" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="Select Sub-Category" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="5" Grid.Column="1" Text="Select Sub-Sub-Category" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <ComboBox Grid.Row="1" Grid.Column="3" Width="200" x:Name="cbCateg" DisplayMemberPath="CategoryName" SelectedValuePath="Id" VerticalAlignment="Center" IsEditable="True" IsTextSearchEnabled="True" SelectionChanged="cbCateg_SelectionChanged"/>
+        <ComboBox Grid.Row="3" Grid.Column="3" Width="200" x:Name="cbSCateg" DisplayMemberPath="CategoryName" SelectedValuePath="Id" VerticalAlignment="Center" IsEditable="True" IsTextSearchEnabled="True" SelectionChanged="cbSCateg_SelectionChanged"/>
+        <ComboBox Grid.Row="5" Grid.Column="3" Width="200" x:Name="cbSSCateg" DisplayMemberPath="CategoryName" SelectedValuePath="Id" VerticalAlignment="Center" IsEditable="True" IsTextSearchEnabled="True" SelectionChanged="cbSSCateg_SelectionChanged"/>
+
+        <Button x:Name="btnAply" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Content="Apply" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5,8,5,8" Click="btnAply_Click"/>
+    </Grid>
+</Window>

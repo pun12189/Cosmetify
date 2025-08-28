@@ -1,15 +1,9 @@
-﻿using Cosmetify.Model.Enums;
-using Cosmetify.Model;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿using Cosmetify.Model;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using MySqlConnector;
 
 namespace Cosmetify.Repository
 {
@@ -93,7 +87,7 @@ namespace Cosmetify.Repository
             return product;
         }
 
-        public ObservableCollection<MasterFormulaModel> GetAllFormulas()
+        public async Task<ObservableCollection<MasterFormulaModel>> GetAllFormulas()
         {
             ObservableCollection<MasterFormulaModel> leads = null;
             try
@@ -104,7 +98,7 @@ namespace Cosmetify.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = "select * from masterformula";
-                    var reader = command.ExecuteReader();
+                    var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         leads = new ObservableCollection<MasterFormulaModel>();
@@ -130,6 +124,48 @@ namespace Cosmetify.Repository
             {
                 Helper.Helper.BugReport(e);
             }            
+
+            return leads;
+        }
+
+        public ObservableCollection<MasterFormulaModel> GetSearchFormulas(string data)
+        {
+            ObservableCollection<MasterFormulaModel> leads = null;
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "select * from masterformula where name LIKE @data OR code LIKE @data";
+                    command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
+                    var reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        leads = new ObservableCollection<MasterFormulaModel>();
+                        while (reader.Read())
+                        {
+                            var lead = new MasterFormulaModel
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                                Code = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                Requirements = reader.IsDBNull(3) ? null : JsonSerializer.Deserialize<ObservableCollection<MasterProductModel>>(reader.GetString(3)),
+                                RemainingWater = reader.IsDBNull(4) ? double.MinValue : reader.GetDouble(4),
+                            };
+
+                            leads.Add(lead);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
 
             return leads;
         }

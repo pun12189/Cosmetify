@@ -42,15 +42,15 @@ namespace Cosmetify.Dialogs
         public AddMasterFormula()
         {
             this.Loaded += AddMasterFormula_Loaded;
-            InitializeComponent();
-            this.ddActives.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();            
+            InitializeComponent();            
         }
 
-        private void AddMasterFormula_Loaded(object sender, RoutedEventArgs e)
+        private async void AddMasterFormula_Loaded(object sender, RoutedEventArgs e)
         {
             this.tbName.Text = this.FormulaName;
             this.tbCode.Text = this.FormulaCode;
             this.tbWater.Text = this.RemainingWater.ToString();
+            this.ddActives.ItemsSource = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
         }
 
         public ObservableCollection<MasterProductModel> ActivesList
@@ -139,6 +139,28 @@ namespace Cosmetify.Dialogs
             this.tbWater.Clear();
             this.tbWater.Text = 100.ToString();
             this.Close();
+        }
+
+        private void btnGen_Click(object sender, RoutedEventArgs e)
+        {
+            this.tbCode.Text = "MF" + Math.Abs(DateTime.Now.GetHashCode());
+        }
+
+        private void tbCode_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var code = this.tbCode.Text;
+            if (string.IsNullOrEmpty(code))
+            {
+                MessageBox.Show("Code cannot be empty, You can auto generate by click button beside textbox", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else 
+            {
+                var prod = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetFormulaUsingCode(code);
+                if (prod != null) 
+                {
+                    MessageBox.Show("This code is already exists, Please try another or generate new one", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Cosmetify.Model;
+﻿using ControlzEx.Standard;
+using Cosmetify.Model;
+using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
@@ -73,7 +75,7 @@ namespace Cosmetify.PdfCore
             _document.Info.Subject = "Details of Customer's Order";
             _document.Info.Author = "COSMETIFY";
             pageSetup = _document.DefaultPageSetup.Clone();
-            pageSetup.Orientation = MigraDoc.DocumentObjectModel.Orientation.Landscape;
+            pageSetup.Orientation = MigraDoc.DocumentObjectModel.Orientation.Portrait;
             pageSetup.PageFormat = PageFormat.A4;
             pageSetup.LeftMargin = "1.5cm";
             pageSetup.RightMargin = "1.5cm";
@@ -297,14 +299,14 @@ namespace Cosmetify.PdfCore
             column = _table.AddColumn("3cm");
             column.Format.Alignment = ParagraphAlignment.Center;
 
-            column = _table.AddColumn("3cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
+            //column = _table.AddColumn("3cm");
+            //column.Format.Alignment = ParagraphAlignment.Center;
 
-            column = _table.AddColumn("3cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
+            //column = _table.AddColumn("3cm");
+            //column.Format.Alignment = ParagraphAlignment.Center;
 
-            column = _table.AddColumn("3cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
+            //column = _table.AddColumn("3cm");
+            //column.Format.Alignment = ParagraphAlignment.Center;
 
             // Create the header of the table.
             var row = _table.AddRow();
@@ -324,7 +326,7 @@ namespace Cosmetify.PdfCore
             row.Cells[2].Format.Font.Bold = true;
             row.Cells[2].Format.Alignment = ParagraphAlignment.Center;
             row.Cells[2].VerticalAlignment = VerticalAlignment.Center;
-            row.Cells[3].AddParagraph("Actives");
+            row.Cells[3].AddParagraph("Items");
             row.Cells[3].Format.Font.Bold = true;
             row.Cells[3].Format.Alignment = ParagraphAlignment.Center;
             row.Cells[3].VerticalAlignment = VerticalAlignment.Center;
@@ -332,24 +334,24 @@ namespace Cosmetify.PdfCore
             row.Cells[4].Format.Font.Bold = true;
             row.Cells[4].Format.Alignment = ParagraphAlignment.Center;
             row.Cells[4].VerticalAlignment = VerticalAlignment.Center;
-            row.Cells[5].AddParagraph("Perfumes");
+            //row.Cells[5].AddParagraph("Perfumes");
+            //row.Cells[5].Format.Font.Bold = true;
+            //row.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+            //row.Cells[5].VerticalAlignment = VerticalAlignment.Center;
+            row.Cells[5].AddParagraph("Claims");
             row.Cells[5].Format.Font.Bold = true;
             row.Cells[5].Format.Alignment = ParagraphAlignment.Center;
             row.Cells[5].VerticalAlignment = VerticalAlignment.Center;
-            row.Cells[6].AddParagraph("Claims");
-            row.Cells[6].Format.Font.Bold = true;
-            row.Cells[6].Format.Alignment = ParagraphAlignment.Center;
-            row.Cells[6].VerticalAlignment = VerticalAlignment.Center;
-            row.Cells[7].AddParagraph("Pkg Type");
-            row.Cells[7].Format.Font.Bold = true;
-            row.Cells[7].Format.Alignment = ParagraphAlignment.Center;
-            row.Cells[7].VerticalAlignment = VerticalAlignment.Center;
-            row.Cells[8].AddParagraph("Pkg Qty");
-            row.Cells[8].Format.Font.Bold = true;
-            row.Cells[8].Format.Alignment = ParagraphAlignment.Center;
-            row.Cells[8].VerticalAlignment = VerticalAlignment.Center;            
+            //row.Cells[7].AddParagraph("Pkg Type");
+            //row.Cells[7].Format.Font.Bold = true;
+            //row.Cells[7].Format.Alignment = ParagraphAlignment.Center;
+            //row.Cells[7].VerticalAlignment = VerticalAlignment.Center;
+            //row.Cells[8].AddParagraph("Pkg Qty");
+            //row.Cells[8].Format.Font.Bold = true;
+            //row.Cells[8].Format.Alignment = ParagraphAlignment.Center;
+            //row.Cells[8].VerticalAlignment = VerticalAlignment.Center;            
 
-            _table.SetEdge(0, 0, 9, 1, Edge.Interior, BorderStyle.Single, 1, Color.FromRgb(163, 164, 173));
+            _table.SetEdge(0, 0, 6, 1, Edge.Interior, BorderStyle.Single, 1, Color.FromRgb(163, 164, 173));
         }
 
         /// <summary>
@@ -625,22 +627,31 @@ namespace Cosmetify.PdfCore
             }
             else
             {*/
-                foreach (var batchOrderModel in batchModel.BatchOrderCollection)
+            foreach (var batchOrderModel in batchModel.BatchOrderCollection)
+            {
+                var row1 = this._table.AddRow();
+                row1.Cells[0].AddParagraph((++count).ToString());
+                row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[1].AddParagraph(batchOrderModel.Actives.ActivesName);
+                row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[2].AddParagraph(batchOrderModel.Actives.ShortCode);
+                row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                if (batchOrderModel.Units == ProductUnits.Kilograms || batchOrderModel.Units == ProductUnits.ltrs || batchOrderModel.Units == ProductUnits.gms || batchOrderModel.Units == ProductUnits.kg || batchOrderModel.Units == ProductUnits.Grams)
                 {
-                    var row1 = this._table.AddRow();
-                    row1.Cells[0].AddParagraph((++count).ToString());
-                    row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
-                    row1.Cells[1].AddParagraph(batchOrderModel.Actives.ActivesName);
-                    row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                    row1.Cells[2].AddParagraph(batchOrderModel.Actives.ShortCode);
-                    row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
                     row1.Cells[3].AddParagraph(batchOrderModel.PercentageRequired.ToString() + "%");
                     row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
-                    row1.Cells[4].AddParagraph(batchOrderModel.StocksRequired.ToString() + batchOrderModel.Units);
-                    row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
-                    row1.Cells[5].AddParagraph();
-                    row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
                 }
+                else
+                {
+                    row1.Cells[3].AddParagraph("**N/A**");
+                    row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                }
+
+                row1.Cells[4].AddParagraph(Math.Round(batchOrderModel.StocksRequired, 3).ToString() + batchOrderModel.Units);
+                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[5].AddParagraph();
+                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+            }
             //}            
 
             // Add an invisible row as a space line to the table.
@@ -662,7 +673,7 @@ namespace Cosmetify.PdfCore
             }
 
             var remaining = 100.0;
-            if (!string.IsNullOrEmpty(batchModel.Perfume))
+            /*if (!string.IsNullOrEmpty(batchModel.Perfume))
             {
                 var row1 = this._table.AddRow();
                 row1.Cells[0].AddParagraph((++count).ToString());
@@ -689,30 +700,36 @@ namespace Cosmetify.PdfCore
                 row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
                 row1.Cells[5].AddParagraph();
                 row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
-            }
+            }*/
 
             if (batchModel.BatchOrderCollection != null && batchModel.BatchOrderCollection.Count > 0)
             {                
                 var size = 0.0;
                 foreach (var item in batchModel.BatchOrderCollection)
                 {
-                    Math.Round(remaining -= item.PercentageRequired, 3);
-                    size = item.BatchSize;
+                    if (item.Units == ProductUnits.Kilograms || item.Units == ProductUnits.ltrs || item.Units == ProductUnits.gms || item.Units == ProductUnits.kg || item.Units == ProductUnits.Grams)
+                    {
+                        Math.Round(remaining -= item.PercentageRequired, 3);
+                        size = item.BatchSize;
+                    }                        
                 }
 
-                var row1 = this._table.AddRow();
-                row1.Cells[0].AddParagraph((++count).ToString());
-                row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[1].AddParagraph("Water");
-                row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[2].AddParagraph("H2O");
-                row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[3].AddParagraph(Math.Round(remaining, 3) + "%");
-                row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[4].AddParagraph(Math.Round(size * remaining/100, 3).ToString());
-                row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
-                row1.Cells[5].AddParagraph();
-                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+                if (remaining > 0.0)
+                {
+                    var row1 = this._table.AddRow();
+                    row1.Cells[0].AddParagraph((++count).ToString());
+                    row1.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[1].AddParagraph("Water");
+                    row1.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[2].AddParagraph("H2O");
+                    row1.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[3].AddParagraph(Math.Round(remaining, 3) + "%");
+                    row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[4].AddParagraph(Math.Round(size * remaining / 100, 3).ToString());
+                    row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
+                    row1.Cells[5].AddParagraph();
+                    row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+                }
             }
 
             
@@ -884,10 +901,21 @@ namespace Cosmetify.PdfCore
                             }
                         }
 
-                        remaining -= act.PercentageRequired;
+                        if (act.Units == ProductUnits.Kilograms || act.Units == ProductUnits.ltrs || act.Units == ProductUnits.gms || act.Units == ProductUnits.kg || act.Units == ProductUnits.Grams)
+                        {
+                            remaining -= act.PercentageRequired;
+                        }
+                        
                         if (!present)
-                        {                            
-                            actContent += act.Actives.ActivesName + " " + act.PercentageRequired + "%" + Environment.NewLine;
+                        {
+                            if (act.Units == ProductUnits.Kilograms || act.Units == ProductUnits.ltrs || act.Units == ProductUnits.gms || act.Units == ProductUnits.kg || act.Units == ProductUnits.Grams)
+                            {
+                                actContent += act.Actives.ActivesName + " " + act.PercentageRequired + "%" + Environment.NewLine;
+                            }
+                            else
+                            {
+                                actContent += act.Actives.ActivesName + " " + act.PercentageRequired + act.Units + Environment.NewLine;
+                            }
                         }
                     }
                 }
@@ -895,12 +923,22 @@ namespace Cosmetify.PdfCore
                 {
                     foreach (var act in bModel.BatchOrderCollection)
                     {
-                        remaining -= act.PercentageRequired;
-                        actContent += act.Actives.ActivesName + " " + act.PercentageRequired + "%" + Environment.NewLine;
+                        if (act.Units == ProductUnits.Kilograms || act.Units == ProductUnits.ltrs || act.Units == ProductUnits.gms || act.Units == ProductUnits.kg || act.Units == ProductUnits.Grams)
+                        {
+                            remaining -= act.PercentageRequired;
+                            actContent += act.Actives.ActivesName + " " + act.PercentageRequired + "%" + Environment.NewLine;
+                        }
+                        else
+                        {
+                            actContent += act.Actives.ActivesName + " " + act.PercentageRequired + act.Units + Environment.NewLine;
+                        }
                     }
-                }                
+                }
 
-                actContent += "Water: " + remaining + "%";
+                if (remaining > 0.0)
+                {
+                    actContent += "Water: " + remaining + "%";
+                }                
 
                 row1.Cells[3].AddParagraph(actContent);
                 row1.Cells[3].Format.Alignment = ParagraphAlignment.Center;
@@ -915,7 +953,7 @@ namespace Cosmetify.PdfCore
                 
                 row1.Cells[4].Format.Alignment = ParagraphAlignment.Center;
 
-                if (string.IsNullOrEmpty(bModel.Perfume))
+                /*if (string.IsNullOrEmpty(bModel.Perfume))
                 {
                     row1.Cells[5].AddParagraph("**No Perfume**");
                 }
@@ -924,7 +962,7 @@ namespace Cosmetify.PdfCore
                     row1.Cells[5].AddParagraph(bModel.Perfume);
                 }
                 
-                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;*/
 
                 if (bModel.Claims != null && bModel.Claims.Count > 0)
                 {
@@ -933,16 +971,16 @@ namespace Cosmetify.PdfCore
                     {
                         claims += act + Environment.NewLine;
                     }
-                    row1.Cells[6].AddParagraph(claims);
+                    row1.Cells[5].AddParagraph(claims);
                 }
                 else
                 {
-                    row1.Cells[6].AddParagraph("**No Claims**");
+                    row1.Cells[5].AddParagraph("**No Claims**");
                 }
                 
-                row1.Cells[6].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[5].Format.Alignment = ParagraphAlignment.Center;
 
-                if (string.IsNullOrEmpty(bModel.PkgType))
+                /*if (string.IsNullOrEmpty(bModel.PkgType))
                 {
                     row1.Cells[7].AddParagraph();
                 }
@@ -962,10 +1000,10 @@ namespace Cosmetify.PdfCore
                     row1.Cells[8].AddParagraph(bModel.PkgOrderQuantity);
                 }
 
-                row1.Cells[8].Format.Alignment = ParagraphAlignment.Center;
+                row1.Cells[8].Format.Alignment = ParagraphAlignment.Center;*/
             }
 
-            _table.SetEdge(0, _table.Rows.Count - 1, 9, 1, Edge.Box, BorderStyle.Single, 1);
+            _table.SetEdge(0, _table.Rows.Count - 1, 6, 1, Edge.Box, BorderStyle.Single, 1);
             /*while (iter.MoveNext())
             {
                 item = iter.Current;

@@ -4,8 +4,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Cosmetify.RenderView"
-      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:model="clr-namespace:Cosmetify.Model"
+      xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:dd="urn:gong-wpf-dragdrop"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -138,11 +139,11 @@
             <ScrollViewer>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="10"/>
                         <RowDefinition/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <!--<Grid Grid.Row="4" Grid.ColumnSpan="5" Visibility="Collapsed">
                 <Grid.Resources>
@@ -233,9 +234,14 @@
                             <Button Content="Add Colors" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="AddColors"/>
                             <Button Visibility="Collapsed" Content="Upload Colors" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="6,5,6,5" Click="UploadColors"/>
                         </StackPanel>
-                        <DataGrid Grid.Row="2" Grid.Column="2" x:Name="dgColor" ColumnWidth="*"/>
+                        <DataGrid Grid.Row="2" AutoGenerateColumns="False" Grid.Column="2" x:Name="dgColor" ColumnWidth="*" CanUserAddRows="False" CanUserDeleteRows="True" RowEditEnding="dgColor_RowEditEnding" CommandManager.PreviewExecuted="dgColor_PreviewExecuted">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Color Name" Binding="{Binding Name, Mode=TwoWay, NotifyOnTargetUpdated=True}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Grid>
-                    <Grid Grid.Row="4">
+                    <Grid Grid.Row="4" Visibility="Collapsed">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width=".2*"/>
                             <ColumnDefinition Width="10"/>
@@ -283,9 +289,39 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
                     <Button Visibility="Collapsed" Content="Push to DB" HorizontalAlignment="Right" Click="PushToDBClick" Margin="0,0,10,0"/>
+                    <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Margin="0,0,5,0" VerticalContentAlignment="Center" Width="250" controls:TextBoxHelper.Watermark="Search" controls:TextBoxHelper.ClearTextButton="True"/>
                     <Button Content="Create Master Formula" HorizontalAlignment="Right" Click="CreateMasterFormula"/>
-                </StackPanel>                
-                <ListView Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" ItemsSource="{Binding ElementName=settingsPage, Path=MasterFormulaCollection}" Style="{StaticResource ListStyle}">
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding ElementName=settingsPage, Path=MasterFormulaCollection}" AutoGenerateColumns="False" Grid.Row="2" CanUserSortColumns="True" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Code" Binding="{Binding Code, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTemplateColumn Header="Actives" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="btnCount" Click="btnCount_Click" Content="View" Background="Transparent" Foreground="Blue"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Water" Binding="{Binding RemainingWater, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Button Background="Transparent" Margin="0,0,2,0" Click="EditFormula" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="EditSolid"/>
+                                        </Button>
+                                        <Button Background="Transparent" Click="DeleteFormula" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="TrashSolid"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <!--<ListView Background="AliceBlue" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" FontSize="25" FontWeight="Bold" Foreground="DarkBlue" Grid.Row="2" ItemsSource="{Binding ElementName=settingsPage, Path=MasterFormulaCollection}" Style="{StaticResource ListStyle}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel/>
@@ -332,7 +368,7 @@
                                         </GridView>
                                     </ListView.View> 
                                 </ListView>
-                                <!--<ListView x:Name="lbActiveList2" Grid.ColumnSpan="3" Grid.Row="6"  Margin="5" VerticalAlignment="Top" Foreground="#ebeff4" ItemsSource="{Binding NewRequirements}">
+                                --><!--<ListView x:Name="lbActiveList2" Grid.ColumnSpan="3" Grid.Row="6"  Margin="5" VerticalAlignment="Top" Foreground="#ebeff4" ItemsSource="{Binding NewRequirements}">
                                     <ListView.View>
                                         <GridView>
                                             <GridView.ColumnHeaderContainerStyle>
@@ -344,13 +380,13 @@
                                             <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Value, Mode=OneWay}"></GridViewColumn>
                                         </GridView>
                                     </ListView.View>
-                                </ListView>-->
+                                </ListView>--><!--
                                 <TextBlock Grid.Row="8" Text="Remaining" FontSize="15"/>
                                 <TextBlock Grid.Row="8" Grid.Column="2" Text="{Binding RemainingWater}" FontSize="15"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                </ListView>
+                </ListView>-->
             </Grid>
         </TabItem>
         <TabItem Visibility="Collapsed" Header="Mail Settings" IsSelected="True" Padding="10,5,10,5">

@@ -1,5 +1,6 @@
 ﻿using Cosmetify.Dialogs;
 using Cosmetify.Model;
+using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -39,10 +40,15 @@ namespace Cosmetify.RenderView
 
         public SettingsPage()
         {
-            InitializeComponent();
-            this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+            this.Loaded += SettingsPage_Loaded;
+            InitializeComponent();            
             this.dgColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
-            this.dgPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
+            this.dgPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();            
+        }
+
+        private async void SettingsPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
         }
 
         public BitmapImage ProfilePicture
@@ -129,7 +135,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void CreateMasterFormula(object sender, RoutedEventArgs e)
+        private async void CreateMasterFormula(object sender, RoutedEventArgs e)
         {
             var addMasterFormula = new AddMasterFormula();
             addMasterFormula.ActivesList.Clear();
@@ -147,11 +153,11 @@ namespace Cosmetify.RenderView
 
                 model.RemainingWater = addMasterFormula.RemainingWater;
                 HomepageViewModel.CommonViewModel.MasterFormulaRepository.InsertFormula(model);
-                this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
             }
         }
 
-        private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount >= 2)
             {
@@ -181,13 +187,13 @@ namespace Cosmetify.RenderView
 
                         model.RemainingWater = addMasterFormula.RemainingWater;
                         HomepageViewModel.CommonViewModel.MasterFormulaRepository.UpdateFormula(model);
-                        this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                        this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                     }
                 }
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private async void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             var menu = sender as System.Windows.Controls.MenuItem;
             if (menu != null)
@@ -196,7 +202,7 @@ namespace Cosmetify.RenderView
                 if (model != null)
                 {                    
                     HomepageViewModel.CommonViewModel.MasterFormulaRepository.DeleteFormula(model.Id);
-                    this.MasterFormulaCollection = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                    this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                 }
             }
         }
@@ -232,6 +238,118 @@ namespace Cosmetify.RenderView
         private void UploadPerfumes(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void dgColor_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                var product = e.Row.DataContext as ColoursModel;
+                if (product != null)
+                {
+                    if (product.Id > 0)
+                    {
+                        HomepageViewModel.CommonViewModel.ColoursRepository.UpdateColor(product);
+                    }
+                    else
+                    {
+                        HomepageViewModel.CommonViewModel.ColoursRepository.InsertColor(product.Name);
+                    }
+                }
+            }
+        }
+
+        private void dgColor_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dg = sender as System.Windows.Controls.DataGrid;
+            if (dg != null)
+            {
+                var product = dg.SelectedItem as ColoursModel;
+                if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
+                {
+                    HomepageViewModel.CommonViewModel.ColoursRepository.DeleteColor(product.Id);
+                    this.dgColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
+                }
+            }
+        }
+
+        private void btnCount_Click(object sender, RoutedEventArgs e)
+        {
+            var grid = sender as Button;
+            if (grid != null)
+            {
+                var model = grid.DataContext as MasterFormulaModel;
+                if (model != null)
+                {
+                    var dialog = new MasterFormulaViewDialog();
+                    dialog.MFActivesModelsCollection = model.Requirements;
+                    dialog.ShowDialog();
+                }
+            }
+        }
+
+        private async void DeleteFormula(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn != null) 
+            {
+                var formula = btn.DataContext as MasterFormulaModel;
+                if (formula != null) 
+                {
+                    HomepageViewModel.CommonViewModel.MasterFormulaRepository.DeleteFormula(formula.Id);
+                    this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                }
+            }
+        }
+
+        private async void EditFormula(object sender, RoutedEventArgs e)
+        {
+            var grid = sender as Button;
+            if (grid != null && grid.DataContext is MasterFormulaModel)
+            {
+                var model = grid.DataContext as MasterFormulaModel;
+                var addMasterFormula = new AddMasterFormula();
+                addMasterFormula.FormulaName = model.Name;
+                addMasterFormula.FormulaCode = model.Code;
+                addMasterFormula.ActivesList.Clear();
+                foreach (var item in model.Requirements)
+                {
+                    addMasterFormula.ActivesList.Add(item);
+                }
+                addMasterFormula.RemainingWater = model.RemainingWater;
+                addMasterFormula.ShowDialog();
+                if (!string.IsNullOrEmpty(addMasterFormula.FormulaName) || !string.IsNullOrEmpty(addMasterFormula.FormulaCode) || addMasterFormula.ActivesList.Count > 0)
+                {
+                    model.Name = addMasterFormula.FormulaName;
+                    model.Code = addMasterFormula.FormulaCode;
+                    model.Requirements.Clear();
+                    foreach (var item in addMasterFormula.ActivesList)
+                    {
+                        model.Requirements.Add(item);
+                    }
+
+                    model.RemainingWater = addMasterFormula.RemainingWater;
+                    HomepageViewModel.CommonViewModel.MasterFormulaRepository.UpdateFormula(model);
+                    this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                }
+            }
+        }
+
+        private async void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var searchData = this.tbSearch.Text;
+                if (!string.IsNullOrEmpty(searchData))
+                {
+                    var data = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetSearchFormulas(searchData);
+                    this.MasterFormulaCollection = data;
+                }
+                else
+                {
+                    this.MasterFormulaCollection = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                }
+            }
         }
     }
 }

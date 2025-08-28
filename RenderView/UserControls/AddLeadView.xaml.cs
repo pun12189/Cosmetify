@@ -35,11 +35,16 @@ namespace Cosmetify.RenderView.UserControls
 
         public AddLeadView()
         {
-            InitializeComponent();
-            this.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.Loaded += AddLeadView_Loaded;
+            InitializeComponent();            
         }
 
-        private void SaveLead(object sender, RoutedEventArgs e)
+        private async void AddLeadView_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.CustomerLeads = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+        }
+
+        private async void SaveLead(object sender, RoutedEventArgs e)
         {
             var lead = new CustomerModel
             {
@@ -80,7 +85,7 @@ namespace Cosmetify.RenderView.UserControls
             }
 
             HomepageViewModel.CommonViewModel.LeadsRepository.InsertLead(lead);
-            this.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.CustomerLeads = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
         }
 
         public ObservableCollection<CustomerModel> CustomerLeads

@@ -1,5 +1,6 @@
 ﻿using Cosmetify.Model;
 using Cosmetify.ViewModel;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,15 +21,20 @@ namespace Cosmetify.Dialogs
     /// <summary>
     /// Interaction logic for BatchEditView.xaml
     /// </summary>
-    public partial class BatchEditView : Window
+    public partial class BatchEditView : System.Windows.Window
     {
         private static readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text        
 
         public BatchEditView(BatchModel model)
         {
             InitializeComponent();
-            this.Owner = Application.Current.MainWindow;
-            var custList = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.Owner = System.Windows.Application.Current.MainWindow;
+            this.LoadComponents(model);
+        }
+
+        private async void LoadComponents(BatchModel model)
+        {
+            var custList = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
             this.cbCust.ItemsSource = custList;
             this.BatchModel = model;
             for (int i = 0; i <= custList.Count; i++)
@@ -44,7 +50,7 @@ namespace Cosmetify.Dialogs
             this.dtPlan.SelectedDate = this.BatchModel.PlanningDate;
             this.dtMfg.SelectedDate = this.BatchModel.MfgDate;
             this.dtExp.SelectedDate = this.BatchModel.Expiry;
-            this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+            this.cbProd.ItemsSource = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
         }
 
         public BatchModel BatchModel
@@ -88,7 +94,7 @@ namespace Cosmetify.Dialogs
         {
             try
             {
-                var tb = sender as TextBox;
+                var tb = sender as System.Windows.Controls.TextBox;
                 if (tb != null && !string.IsNullOrEmpty(tb.Text) && !tb.Text.EndsWith('.'))
                 {
                     var bsize = double.Parse(tb.Text);
@@ -125,7 +131,18 @@ namespace Cosmetify.Dialogs
             {
                 var batchOrder = new BatchOrderModel();
                 batchOrder.Actives = this.cbProd.SelectedItem as ActivesModel;
+                batchOrder.Units = batchOrder.Actives.Units;
                 this.BatchModel.BatchOrderCollection.Add(batchOrder);
+            }
+        }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SelectCategory();
+
+            if ((bool)dialog.ShowDialog())
+            {
+                this.cbProd.ItemsSource = dialog.ItemsCollection;
             }
         }
     }

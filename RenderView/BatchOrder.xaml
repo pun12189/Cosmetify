@@ -156,6 +156,7 @@
                     <TextBox x:Name="tbSearch" KeyDown="tbSearch_KeyDown" Width="250" Margin="5,0,5,0" control:TextBoxHelper.AutoWatermark="True" control:TextBoxHelper.ClearTextButton="True" VerticalContentAlignment="Center" control:TextBoxHelper.Watermark="Search"/>
                     <Button x:Name="btnFilters" Content="Filters" Width="150" Margin="0,0,5,0" Click="btnFilters_Click"/>
                     <Button x:Name="btnRefresh" Content="Refresh" Width="150" Click="btnRefresh_Click"/>
+                    <Button x:Name="btnCompletion" Content="Export Excel" Width="150" Margin="5,0" Click="btnCompletion_Click"/>
                 </StackPanel>
                 <TextBlock Grid.Row="1" Text="**Note: Press CTRL Key for Multiple Selection, For edit, double click on any cell, For delete, select any row and press delete" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="10" FontStyle="Italic"/>
                 <DataGrid Grid.Row="2" ColumnWidth="Auto" SelectionMode="Extended" SelectionUnit="FullRow" ItemsSource="{Binding ElementName=batchView, Path=BatchModelCollection}" AutoGenerateColumns="False" RowEditEnding="dataGrid2_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="False" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid2" VerticalAlignment="Stretch">
@@ -171,7 +172,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
-                        <DataGridTemplateColumn Header="Batch ID">
+                        <DataGridTemplateColumn Header="Batch ID" SortMemberPath="BatchOrderNo">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Click="BatchView_Click" Content="{Binding BatchOrderNo, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="Blue"/>
@@ -181,9 +182,9 @@
                         <!--<DataGridTextColumn Header="Batch ID" Binding="{Binding BatchOrderNo, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->
                         <DataGridTextColumn Header="Description" Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
                         <DataGridTextColumn Header="Customer" Binding="{Binding Customer.FirstName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Brand Name" Binding="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
                         
-                        <DataGridTemplateColumn Header="Status">
+                        <DataGridTemplateColumn Header="Status" SortMemberPath="Status">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}" />
@@ -233,8 +234,8 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Pkg Type" Binding="{Binding PkgType, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Pkg Order Qty" Binding="{Binding PkgOrderQuantity, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!--<DataGridTextColumn Header="Pkg Type" Binding="{Binding PkgType, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Pkg Order Qty" Binding="{Binding PkgOrderQuantity, UpdateSourceTrigger=PropertyChanged}"/>-->
                         <DataGridTemplateColumn Header="Mfg Date" Visibility="Collapsed">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -259,7 +260,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Created On">
+                        <DataGridTemplateColumn Header="Created On" SortMemberPath="BatchDate">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding BatchDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
@@ -271,7 +272,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Planned For">
+                        <DataGridTemplateColumn Header="Planned For" SortMemberPath="PlanningDate">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding PlanningDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" />
@@ -287,7 +288,7 @@
                         <!--<DataGridTextColumn Header="Expiry Date" Binding="{Binding Expiry, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Planning Date" Binding="{Binding PlannedDate, StringFormat={}{0:dd/MM/yyyy}, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>-->                        
                         <DataGridTextColumn Header="Order Stage" Binding="{Binding OrderStage.StageName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Visibility="Collapsed"/>
-                        <DataGridTemplateColumn Header="Completed On">
+                        <DataGridTemplateColumn Header="Completed On" SortMemberPath="CompletionDate">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding CompletionDate, Mode=TwoWay, Converter={StaticResource IsBeforeTodayConverter}, UpdateSourceTrigger=PropertyChanged}" />
@@ -305,23 +306,32 @@
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Created'}" Background="Transparent" Margin="0,0,2,0" Click="ProceedBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                        <Button ToolTip="Processed" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Created'}" Background="Transparent" Margin="0,0,2,0" Click="ProceedBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="ArrowRightSolid"/>
                                         </Button>
-                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="HoldBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Hold" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="HoldBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="HandPaperSolid"/>
                                         </Button>
-                                        <Button Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="CompleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Complete" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Processed'}" Background="Transparent" Margin="0,0,2,0" Click="CompleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="CheckSolid"/>
                                         </Button>
-                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Processed" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Planned'}" Background="Transparent" Margin="0,0,2,0" Click="ProceedBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="ArrowRightSolid"/>
+                                        </Button>
+                                        <Button ToolTip="Hold" Visibility="{Binding Status, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BatchStatusToVisibilityConverter}, ConverterParameter='Planned'}" Background="Transparent" Margin="0,0,2,0" Click="HoldBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="HandPaperSolid"/>
+                                        </Button>
+                                        <Button ToolTip="Reorder" Background="Transparent" Margin="0,0,2,0" Click="ReorderBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="RedoSolid"/>
                                         </Button>
-                                        <Button Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Export Batch PDF" Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="FilePdfSolid"/>
                                         </Button>
-                                        <Button Background="Transparent" Click="DeleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                        <Button ToolTip="Export Batch Excel" Background="Transparent" Margin="0,0,2,0" Click="ExportExcel" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="FileExcelSolid"/>
+                                        </Button>
+                                        <Button ToolTip="Delete Batch" Background="Transparent" Click="DeleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="TrashSolid"/>
                                         </Button>
                                     </StackPanel>

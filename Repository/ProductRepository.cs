@@ -1,6 +1,6 @@
 ﻿using Cosmetify.Model;
 using Cosmetify.Model.Enums;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,7 +32,7 @@ namespace Cosmetify.Repository
 
         public SubSubCategoryRepository SubSubCategoryRepository { get; set; }
 
-        public ProductModel GetProduct(int id)
+        public async Task<ProductModel> GetProduct(int id)
         {
             ProductModel? product = null;
             using (var connection = GetConnection())
@@ -52,7 +52,7 @@ namespace Cosmetify.Repository
                             Id = reader.GetInt32(0),
                             Name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
                             Description = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
-                            Category = reader.IsDBNull(3) ? null : this.CategoryRepository.GetCategory(reader.GetInt32(3)),
+                            Category = reader.IsDBNull(3) ? null : await this.CategoryRepository.GetCategory(reader.GetInt32(3)),
                             Status = reader.IsDBNull(4) ? ProductStatus.Block : (ProductStatus)Enum.Parse(typeof(ProductStatus), reader.GetString(4)),
                             Packing = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
                             BatchNo = reader.IsDBNull(6) ? string.Empty : reader.GetString(6),
@@ -77,7 +77,7 @@ namespace Cosmetify.Repository
             return product;
         }
 
-        public ObservableCollection<ProductModel> GetAllProducts()
+        public async Task<ObservableCollection<ProductModel>> GetAllProducts()
         {
             ObservableCollection<ProductModel> leads = null;
             using (var connection = GetConnection())
@@ -86,7 +86,7 @@ namespace Cosmetify.Repository
                 connection.Open();
                 command.Connection = connection;
                 command.CommandText = "select * from purchase";
-                var reader = command.ExecuteReader();
+                var reader = await command.ExecuteReaderAsync();
                 if (reader.HasRows)
                 {
                     leads = new ObservableCollection<ProductModel>();
@@ -97,7 +97,7 @@ namespace Cosmetify.Repository
                             Id = reader.GetInt32(0),
                             Name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
                             Description = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
-                            Category = reader.IsDBNull(3) ? null : this.CategoryRepository.GetCategory(reader.GetInt32(3)),
+                            Category = reader.IsDBNull(3) ? null : await this.CategoryRepository.GetCategory(reader.GetInt32(3)),
                             Status = reader.IsDBNull(4) ? ProductStatus.Block : (ProductStatus)Enum.Parse(typeof(ProductStatus), reader.GetString(4)),
                             Packing = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
                             BatchNo = reader.IsDBNull(6) ? string.Empty : reader.GetString(6),

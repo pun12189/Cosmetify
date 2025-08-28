@@ -5,10 +5,12 @@ using Cosmetify.ViewModel;
 using Microsoft.Win32;
 using MigraDoc.Rendering;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using static MaterialDesignThemes.Wpf.Theme;
 
 namespace Cosmetify.RenderView
 {
@@ -19,15 +21,20 @@ namespace Cosmetify.RenderView
     {
         public OrderInvoice()
         {
-            InitializeComponent();
-            this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
-            this.cbBrand.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
-            this.cbProduct.ItemsSource = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+            this.Loaded += OrderInvoice_Loaded;
+            InitializeComponent();            
+        }
+
+        private async void OrderInvoice_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.cbBrand.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.cbProduct.ItemsSource = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
             this.cbColor.ItemsSource = HomepageViewModel.CommonViewModel.ColoursRepository.GetColors();
             this.cbPerfume.ItemsSource = HomepageViewModel.CommonViewModel.PerfumeRepository.GetAllPerfumes();
-            this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+            this.cbProd.ItemsSource = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
             this.cbCust.IsEnabled = true;
-            this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllDistinctOrders();
         }
 
         public ObservableCollection<BatchOrderModel> BatchOrderCollection
@@ -51,22 +58,22 @@ namespace Cosmetify.RenderView
         public static readonly DependencyProperty BatchModelCollectionProperty =
             DependencyProperty.Register("BatchModelCollection", typeof(ObservableCollection<BatchModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<BatchModel>()));
 
-        public ObservableCollection<BatchModel> DBBatchModelCollection
+        public ObservableCollection<CustomOrderModel> DBBatchModelCollection
         {
-            get { return (ObservableCollection<BatchModel>)GetValue(DBBatchModelCollectionProperty); }
+            get { return (ObservableCollection<CustomOrderModel>)GetValue(DBBatchModelCollectionProperty); }
             set { SetValue(DBBatchModelCollectionProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for BatchModelCollection.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DBBatchModelCollectionProperty =
-            DependencyProperty.Register("DBBatchModelCollection", typeof(ObservableCollection<BatchModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<BatchModel>()));
+            DependencyProperty.Register("DBBatchModelCollection", typeof(ObservableCollection<CustomOrderModel>), typeof(OrderInvoice), new PropertyMetadata(new ObservableCollection<CustomOrderModel>()));
 
-        private void btnAddCust_Click(object sender, RoutedEventArgs e)
+        private async void btnAddCust_Click(object sender, RoutedEventArgs e)
         {
             var addCust = new AddCustomer();
             if ((bool)addCust.ShowDialog())
             {
-                this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
                 MessageBox.Show("List Refreshed, Please select added customer", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
@@ -92,7 +99,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void btnAddProd_Click(object sender, RoutedEventArgs e)
+        private async void btnAddProd_Click(object sender, RoutedEventArgs e)
         {
             var addCust = new AddMasterFormula();
             addCust.ActivesList.Clear();
@@ -111,7 +118,7 @@ namespace Cosmetify.RenderView
 
                     model.RemainingWater = addCust.RemainingWater;
                     HomepageViewModel.CommonViewModel.MasterFormulaRepository.InsertFormula(model); 
-                    this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+                    this.cbProd.ItemsSource = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
                     MessageBox.Show("List Refreshed, Please select added formula", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 }                
             }
@@ -144,7 +151,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void cbProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cbProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var t = this.cbProduct.SelectedItem as MasterFormulaModel;
             if (t != null)
@@ -153,7 +160,7 @@ namespace Cosmetify.RenderView
                 foreach (var actives in t.Requirements)
                 {
                     var batchOrder = new BatchOrderModel();
-                    batchOrder.Actives = HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(actives.Id);
+                    batchOrder.Actives = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(actives.Id);
                     batchOrder.PercentageRequired = actives.Required;
                     this.BatchOrderCollection.Add(batchOrder);
                 }                
@@ -166,6 +173,7 @@ namespace Cosmetify.RenderView
             {
                 var batchOrder = new BatchOrderModel();
                 batchOrder.Actives = this.cbProd.SelectedItem as ActivesModel;
+                batchOrder.Units = batchOrder.Actives.Units;
                 this.BatchOrderCollection.Add(batchOrder);
             }
         }
@@ -173,18 +181,42 @@ namespace Cosmetify.RenderView
         private void btnAddProduct_Click(object sender, RoutedEventArgs e)
         {
             var batchModel = new BatchModel();
+            if (this.chCust != null && this.chCust.IsChecked == true)
+            {
+                if (this.tbPname != null && string.IsNullOrEmpty(this.tbPname.Text))
+                {
+                    MessageBox.Show("Enter Product Name", "Custom Product", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    return;
+                }
+                else
+                {
+                    batchModel.ProductName = this.tbPname.Text;
+                    batchModel.ProductID = "PRD" + Math.Abs(DateTime.Now.GetHashCode());
+                }
+            }
+            else
+            {
+                var mfmodel = this.cbProduct.SelectedItem as MasterFormulaModel;
+                if (mfmodel != null)
+                {
+                    batchModel.ProductID = mfmodel.Code;
+                    if (string.IsNullOrEmpty(mfmodel.Name))
+                    {
+                        batchModel.ProductName = mfmodel.Code;
+                    }
+                    else
+                    {
+                        batchModel.ProductName = mfmodel.Name;
+                    }
+
+                }
+            }
+
             batchModel.BatchOrderNo = "COS-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
             var cust = this.cbCust.SelectedItem as CustomerModel;
             if (cust != null) {
                 batchModel.Customer = cust;
-            }
-
-            var mfmodel = this.cbProduct.SelectedItem as MasterFormulaModel;
-            if (mfmodel != null) 
-            {
-                batchModel.ProductID = mfmodel.Code;
-                batchModel.ProductName = mfmodel.Name;
-            }
+            }                        
             
             var bname = this.cbBrand.SelectedItem as string;
             if (bname != null) 
@@ -270,7 +302,7 @@ namespace Cosmetify.RenderView
 
         private void DeleteBatch(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
+            var button = sender as System.Windows.Controls.Button;
             if (button != null)
             {
                 var model = button.DataContext as BatchModel;
@@ -281,18 +313,19 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void DeleteBatch1(object sender, RoutedEventArgs e)
+        private async void DeleteBatch1(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null)
-            {
-                var model = button.DataContext as BatchModel;
-                if (model != null)
-                {
-                    HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
-                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
-                }
-            }
+            //var button = sender as Button;
+            //if (button != null)
+            //{
+            //    var model = button.DataContext as BatchModel;
+            //    if (model != null)
+            //    {
+            //        HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
+            //        //this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            //    }
+            //
+            MessageBox.Show("This button is Disabled because in this order there are multiple products, after delete complete sale order will deleted including batch orders which is not recoverable. If you want to enable it then please contact your development team, it will be enabled in next build.", "Functionality Disabled", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void btnAddColor_Click(object sender, RoutedEventArgs e)
@@ -313,65 +346,26 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        private async void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllDistinctOrders();
         }
 
-        private void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            var dg = sender as System.Windows.Controls.DataGrid;
-            if (dg != null)
-            {
-                BatchModel product = dg.SelectedItem as BatchModel;
-                if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
-                {
-                    HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(product.Id);
-                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
-                }
-            }
-        }
+        
 
-        private void dataGrid2_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        {
-            if (e.EditAction == DataGridEditAction.Commit)
-            {
-                BatchModel product = e.Row.DataContext as BatchModel;
-                if (product != null)
-                {
-                    if (product.Id > 0)
-                    {
-                        if (product.Status == BatchStatus.Processed)
-                        {
-                            foreach (var item in product.BatchOrderCollection)
-                            {
-                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
-                            }
-                        }
-
-                        HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(product);
-                    }
-                    else
-                    {
-                        HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(product);
-                    }
-                }
-            }
-        }
-
-        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        private async void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 var searchData = this.tbSearch.Text;
                 if (!string.IsNullOrEmpty(searchData))
                 {
-                    var data = HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
+                    var data = await HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchDistinctBatch(searchData);
                     this.DBBatchModelCollection = data;
                 }
                 else
                 {
-                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllDistinctOrders();
                 }
             }
         }
@@ -400,9 +394,9 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void ReorderBatch(object sender, RoutedEventArgs e)
+        private async void ReorderBatch(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
+            var button = sender as System.Windows.Controls.Button;
             if (button != null)
             {
                 var model = button.DataContext as BatchModel;
@@ -418,46 +412,146 @@ namespace Cosmetify.RenderView
                     model.Expiry = DateTime.MinValue;
                     model.CompletionDate = DateTime.MinValue;
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(model);
-                    this.DBBatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    //this.DBBatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
 
-        private void ExportBatch(object sender, RoutedEventArgs e)
+        private async void ExportBatch(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null)
+            try
             {
-                var model = button.DataContext as BatchModel;
-                if (model != null)
+                var button = sender as System.Windows.Controls.Button;
+                if (button != null)
                 {
-                    var batchCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
-                    var batch = new PdfCore.PdfForm();
-                    var document = batch.CreateOrder(model, batchCollection);
-                    document.UseCmykColor = true;
-                    var pdfRenderer = new PdfDocumentRenderer(true);
-
-                    // Set the MigraDoc document.
-                    pdfRenderer.Document = document;
-
-                    // Create the PDF document.
-                    pdfRenderer.RenderDocument();
-
-                    // Save the PDF document...
-                    var filename = "SaleOrder-" + model.Customer.FirstName + "_" + model.BrandName + ".pdf";
-
-                    var dialog = new SaveFileDialog();
-                    dialog.FileName = filename;
-                    dialog.AddExtension = true;
-                    dialog.DefaultExt = ".pdf";
-                    if ((bool)dialog.ShowDialog())
+                    var model = button.DataContext as CustomOrderModel;
+                    if (model != null)
                     {
-                        pdfRenderer.Save(dialog.FileName);
-                        // ...and start a viewer.
-                        //Process.Start(dialog.FileName);
+                        var batchCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                        var batch = new PdfCore.PdfForm();
+                        var document = batch.CreateOrder(batchCollection[0], batchCollection);
+                        document.UseCmykColor = true;
+                        var pdfRenderer = new PdfDocumentRenderer(true);
+
+                        // Set the MigraDoc document.
+                        pdfRenderer.Document = document;
+
+                        // Create the PDF document.
+                        pdfRenderer.RenderDocument();
+
+                        // Save the PDF document...
+                        var filename = "SaleOrder-" + model.CustomerName.FirstName + "_" + model.BrandName + ".pdf";
+
+                        var dialog = new SaveFileDialog();
+                        dialog.FileName = filename;
+                        dialog.AddExtension = true;
+                        dialog.DefaultExt = ".pdf";
+                        if ((bool)dialog.ShowDialog())
+                        {
+                            pdfRenderer.Save(dialog.FileName);
+                            // ...and start a viewer.
+                            //Process.Start(dialog.FileName);
+                        }
                     }
                 }
             }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
+            }
+        }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SelectCategory();
+            
+            if ((bool)dialog.ShowDialog())
+            {
+                this.cbProd.ItemsSource = dialog.ItemsCollection;
+            }
+        }
+
+        private async void OpenOrder(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (button != null)
+            {
+                var model = button.DataContext as CustomOrderModel;
+                if (model != null && model.OrderId != null)
+                {
+                    var orderView = new OrderViewPage();
+                    orderView.DbModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                    orderView.ShowDialog();
+                }
+            }
+        }
+
+        private async void EditOrder(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as System.Windows.Controls.Button;
+            if (btn != null)
+            {
+                var model = btn.DataContext as CustomOrderModel;
+                if (model != null && model.OrderId != null)
+                {
+                    var dialog = new OrderEditViewPage();
+                    dialog.CustomerName = model.CustomerName;
+                    dialog.BrandName = model.BrandName;
+                    dialog.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                    dialog.ShowDialog();
+                }            
+            }            
+        }
+
+        private async void btnBulkDload_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.dataGrid2.SelectedItems.Count > 1)
+            {
+                var result = MessageBox.Show("Do you want to download Pdf of All Orders?", "Bulk Action", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    foreach (CustomOrderModel model in this.dataGrid2.SelectedItems)
+                    {
+                        if (model != null)
+                        {
+                            var batchCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProductsWithOrderId(model.OrderId);
+                            var batch = new PdfCore.PdfForm();
+                            var document = batch.CreateOrder(batchCollection[0], batchCollection);
+                            document.UseCmykColor = true;
+                            var pdfRenderer = new PdfDocumentRenderer(true);
+
+                            // Set the MigraDoc document.
+                            pdfRenderer.Document = document;
+
+                            // Create the PDF document.
+                            pdfRenderer.RenderDocument();
+
+                            // Save the PDF document...
+                            var filename = "SaleOrder-" + model.CustomerName.FirstName + "_" + model.BrandName + ".pdf";
+                            var dektopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);                            
+                            pdfRenderer.Save(dektopPath + "//" + filename);                        }
+                    }
+
+                    
+                    MessageBox.Show("Selected Items successfully downloaded on your Desktop.", "Bulk Action", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        private void btnBulkDel_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

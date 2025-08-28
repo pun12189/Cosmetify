@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cosmetify.Dialogs;
+using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +19,7 @@ namespace Cosmetify.Helper
             window.ResizeMode = ResizeMode.CanMinimize;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             window.Icon = BitmapFrame.Create(new Uri("pack://application:,,,/Cosmetify;component/Resources/Icon.ico", UriKind.RelativeOrAbsolute));
-
+            window.Closing += Window_Closing;
             var controlAssembly = Assembly.Load("Cosmetify");
             var controlType = controlAssembly.GetType(controlPath);
             var newControl = Activator.CreateInstance(controlType) as UserControl;
@@ -27,5 +28,11 @@ namespace Cosmetify.Helper
 
             return window;
         }
-  }
+
+        private static void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var dislog = new CloseDialog();
+            dislog.ShowDialog();
+        }
+    }
 }

@@ -40,8 +40,13 @@ namespace Cosmetify.RenderView.UserControls
         public CreateOrder()
         {
             InitializeComponent();
-            this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
-            this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.ProductRepository.GetAllProducts();
+            this.LoadCB();
+        }
+
+        private async void LoadCB()
+        {
+            this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.cbProd.ItemsSource = await HomepageViewModel.CommonViewModel.ProductRepository.GetAllProducts();
         }
 
         private void AddToCart(object sender, RoutedEventArgs e)

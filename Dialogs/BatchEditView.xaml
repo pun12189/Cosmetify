@@ -8,6 +8,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:conv="clr-namespace:Cosmetify.Helper"
         xmlns:control="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
         Title="Batch View" Height="600" Width="800" x:Name="batchView" WindowStartupLocation="CenterOwner" WindowStyle="SingleBorderWindow">
     <Window.Resources>
@@ -19,13 +20,13 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
-    <Grid HorizontalAlignment="Center">
+    <Grid HorizontalAlignment="Center" Margin="20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="30"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -54,10 +55,10 @@
         <TextBox Grid.Row="3" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.BatchOrderCollection[0].BatchSize, Mode=OneWay}" TextChanged="BatchSizeUpdate"/>
         
         <TextBlock Text="Pkg Type" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="4" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.PkgType}"/>
+        <TextBox IsEnabled="False" Grid.Row="4" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.PkgType}"/>
         
         <TextBlock Text="Pkg Order Qty" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="5" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.PkgOrderQuantity}"/>
+        <TextBox IsEnabled="False" Grid.Row="5" Grid.Column="2" Margin="0,5" Width="180" Height="30" Text="{Binding ElementName=batchView, Path=BatchModel.PkgOrderQuantity}"/>
 
         <TextBlock Text="Status" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <ComboBox Grid.Row="5" Grid.Column="6" Margin="0,5" Width="180" Height="30" ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding ElementName=batchView, Path=BatchModel.Status}"/>
@@ -90,7 +91,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Actives.ActivesName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Code" Binding="{Binding Actives.ShortCode, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="% Required" Binding="{Binding PercentageRequired, UpdateSourceTrigger=LostFocus}" />
+                <DataGridTextColumn Header="%/pcs Required" Binding="{Binding PercentageRequired, UpdateSourceTrigger=LostFocus}" />
                 <DataGridTextColumn Header="In Stock" Binding="{Binding Actives.Stocks, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Required" Binding="{Binding StocksRequired, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Remaining Stock" Binding="{Binding RemainingStock, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
@@ -100,6 +101,9 @@
         <StackPanel Grid.Row="9" Grid.ColumnSpan="7" Orientation="Horizontal" x:Name="stkAct">
             <TextBlock Text="Add Actives" Margin="0,0,5,0" VerticalAlignment="Center"/>
             <ComboBox x:Name="cbProd" VerticalAlignment="Center" Width="200" DisplayMemberPath="ActivesName" Margin="0,0,5,0" SelectionChanged="cbProd_SelectionChanged"/>
+            <Button x:Name="btnLoad" Background="Transparent" ToolTip="Select Categories to Load Items" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btnLoad_Click">
+                <icon:BootstrapIcons Kind="Download"/>
+            </Button>
         </StackPanel>
         <Button x:Name="btnUpdate" Margin="0,10" Click="btnUpdate_Click" Content="Apply" Width="150" Grid.Row="10" Grid.ColumnSpan="7" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>

@@ -1,18 +1,14 @@
-﻿using Cosmetify.Model.Enums;
-using Cosmetify.Model;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using Cosmetify.Model;
+using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
-using System.Text.Json;
-using System.Windows.Media.Imaging;
-using System.IO;
+using MySqlConnector;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Cosmetify.Repository
 {
@@ -78,7 +74,7 @@ namespace Cosmetify.Repository
             return product;
         }
 
-        public ObservableCollection<BatchModel> SearchBatch(string data)
+        public async Task<ObservableCollection<BatchModel>> SearchBatch(string data)
         {
             ObservableCollection<BatchModel> batches = new ObservableCollection<BatchModel>();
             try
@@ -90,7 +86,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from batchorder where order_no LIKE @data OR add_info LIKE @data OR order_id LIKE @data OR color LIKE @data OR perfume LIKE @data OR brand_name LIKE @data OR product_id LIKE @data OR remarks LIKE @data OR description LIKE @data OR prod_name LIKE @data OR status LIKE @data OR pkgtype LIKE @data";
                     command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
-                    MySqlDataReader reader = command.ExecuteReader(); 
+                    MySqlDataReader reader = await command.ExecuteReaderAsync(); 
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -139,7 +135,48 @@ namespace Cosmetify.Repository
             return batches;
         }
 
-        public ObservableCollection<BatchModel> BatchFilters(string? fromDate = null, string? toDate = null)
+        public async Task<ObservableCollection<CustomOrderModel>> SearchDistinctBatch(string data)
+        {
+            ObservableCollection<CustomOrderModel> batches = new ObservableCollection<CustomOrderModel>();
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "select DISTINCT order_id, cust_id, brand_name, COUNT(*) as Counter FROM `batchorder` where order_no LIKE @data OR add_info LIKE @data OR order_id LIKE @data OR color LIKE @data OR perfume LIKE @data OR brand_name LIKE @data OR product_id LIKE @data OR remarks LIKE @data OR description LIKE @data OR prod_name LIKE @data OR status LIKE @data OR pkgtype LIKE @data GROUP BY order_id, cust_id, brand_name";
+                    command.Parameters.Add("@data", MySqlDbType.String).Value = "%" + data + "%";
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var batch = new CustomOrderModel()
+                            {
+                                
+                                OrderId = reader.IsDBNull(0) ? string.Empty : reader.GetString(0),
+                                CustomerName = reader.IsDBNull(1) ? null : HomepageViewModel.CommonViewModel.LeadsRepository.GetCustomer(reader.GetInt32(1)),
+                                BrandName = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                Counter = reader.IsDBNull(3) ? 0 : reader.GetInt32(3)
+                            };
+
+                            batches.Add(batch);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return batches;
+        }
+
+        public async Task<ObservableCollection<BatchModel>> BatchFilters(string? fromDate = null, string? toDate = null)
         {
             ObservableCollection<BatchModel> batches = new ObservableCollection<BatchModel>();
             try
@@ -149,7 +186,7 @@ namespace Cosmetify.Repository
                 {
                     connection.Open();
                     command.Connection = connection;
-                    var cmdText = "select * from batchorder where";
+                    var cmdText = "select * from batchorder where status='Planned' and ";
                     var conditions = string.Empty;
                     if (fromDate != null)
                     {
@@ -174,7 +211,7 @@ namespace Cosmetify.Repository
                     }
 
                     command.CommandText = cmdText + conditions;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -223,7 +260,7 @@ namespace Cosmetify.Repository
             return batches;
         }
 
-        public ObservableCollection<BatchModel> BatchFilters(int? custid = null, string? orderid = null, string? pkgtype = null, string? bName = null, string? status = null, string? mfgDate = null, string? expDate = null, string? cdDate = null)
+        public async Task<ObservableCollection<BatchModel>> BatchFilters(int? custid = null, string? orderid = null, string? pkgtype = null, string? bName = null, string? status = null, string? mfgDate = null, string? expDate = null, string? cdDate = null)
         {
             ObservableCollection<BatchModel> batches = new ObservableCollection<BatchModel>();
             try
@@ -238,19 +275,19 @@ namespace Cosmetify.Repository
                     if (custid != null)
                     {
                         isappend = true;
-                        cmdText += cmdText + " cust_id=" + custid;
+                        cmdText = cmdText + " cust_id=" + "'" + custid + "'";
                     }
 
                     if (orderid != null)
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND order_no=" + orderid;
+                            cmdText = cmdText + " AND order_no=" + "'" + orderid + "'";
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " order_no=" + orderid;
+                            cmdText = cmdText + " order_no=" + "'" + orderid + "'";
                         }
 
                     }
@@ -259,12 +296,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND pkgtype=" + pkgtype;
+                            cmdText = cmdText + " AND pkgtype=" + "'" + pkgtype + "'";
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " pkgtype=" + pkgtype;
+                            cmdText = cmdText + " pkgtype=" + "'" + pkgtype + "'";
                         }
                     }
 
@@ -272,12 +309,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND prod_name=" + bName;
+                            cmdText = cmdText + " AND prod_name=" + "'" + bName + "'";
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " prod_name=" + bName;
+                            cmdText = cmdText + " prod_name=" + "'" + bName + "'";
                         }
                     }
 
@@ -285,12 +322,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND status=" + status;
+                            cmdText = cmdText + " AND status=" + "'" + status + "'";
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " status=" + status;
+                            cmdText = cmdText + " status=" + "'" + status + "'";
                         }
                     }
 
@@ -298,12 +335,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND mfg_date= " + mfgDate;
+                            cmdText = cmdText + " AND mfg_date " + mfgDate;
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " mfg_date= " + mfgDate;
+                            cmdText = cmdText + " mfg_date " + mfgDate;
                         }
                     }
 
@@ -311,12 +348,12 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND expiry= " + expDate;
+                            cmdText = cmdText + " AND expiry " + expDate;
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " expiry= " + expDate;
+                            cmdText = cmdText + " expiry " + expDate;
                         }
                     }
 
@@ -324,17 +361,17 @@ namespace Cosmetify.Repository
                     {
                         if (isappend)
                         {
-                            cmdText += cmdText + " AND completion_date= " + cdDate;
+                            cmdText = cmdText + " AND completion_date " + cdDate;
                         }
                         else
                         {
                             isappend = true;
-                            cmdText += cmdText + " completion_date= " + cdDate;
+                            cmdText = cmdText + " completion_date " + cdDate;
                         }
                     }
 
                     command.CommandText = cmdText;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -384,7 +421,7 @@ namespace Cosmetify.Repository
             return batches;
         }
 
-        public ObservableCollection<BatchModel> GetAllProductsWithOrderId(string orderId)
+        public async Task<ObservableCollection<BatchModel>> GetAllProductsWithOrderId(string orderId)
         {
             ObservableCollection<BatchModel> leads = new ObservableCollection<BatchModel>();
             try
@@ -396,7 +433,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from batchorder where order_id=@order_id";
                     command.Parameters.Add("@order_id", MySqlDbType.VarChar).Value = orderId;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -445,7 +482,7 @@ namespace Cosmetify.Repository
             return leads;
         }
 
-        public ObservableCollection<BatchModel> GetAllProducts()
+        public async Task<ObservableCollection<BatchModel>> GetAllProducts()
         {
             ObservableCollection<BatchModel> leads = new ObservableCollection<BatchModel>();
             try
@@ -456,7 +493,7 @@ namespace Cosmetify.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = "select * from batchorder";
-                    var reader = command.ExecuteReader();
+                    var reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -488,6 +525,46 @@ namespace Cosmetify.Repository
                                 PackagingTypeImage = reader.IsDBNull(22) ? null : ByteToImage((byte[])reader["pkg_img"]),
                                 BrandName = reader.IsDBNull(23) ? string.Empty : reader.GetString(23),
                                 ProductID = reader.IsDBNull(24) ? string.Empty : reader.GetString(24),
+                            };
+
+                            leads.Add(lead);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.Helper.BugReport(e);
+            }
+
+            return leads;
+        }
+
+        public async Task<ObservableCollection<CustomOrderModel>> GetAllDistinctOrders()
+        {
+            ObservableCollection<CustomOrderModel> leads = new ObservableCollection<CustomOrderModel>();
+            try
+            {
+                using (var connection = GetConnection())
+                using (var command = new MySqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = "SELECT DISTINCT order_id, cust_id, brand_name, COUNT(*) as Counter FROM `batchorder` GROUP BY order_id, cust_id, brand_name;";
+                    var reader = await command.ExecuteReaderAsync();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var lead = new CustomOrderModel()
+                            {
+
+                                OrderId = reader.IsDBNull(0) ? string.Empty : reader.GetString(0),
+                                CustomerName = reader.IsDBNull(1) ? null : HomepageViewModel.CommonViewModel.LeadsRepository.GetCustomer(reader.GetInt32(1)),
+                                BrandName = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                                Counter = reader.IsDBNull(3) ? int.MinValue : reader.GetInt32(3)
                             };
 
                             leads.Add(lead);
@@ -517,7 +594,15 @@ namespace Cosmetify.Repository
                     command.CommandText = "insert into batchorder(order_no, cust_id, prod_name, batch_date, expiry, batch_data, pkgtype, pkg_order_quantity, description, remarks, add_info, planning_date, planned_date, mfg_date, completion_date, status, order_stage, order_id, color, perfume, claims, pkg_img, brand_name, product_id) values(@order_no, @cust_id, @prod_name, @batch_date, @expiry, @batch_data, @pkgtype, @pkg_order_quantity, @description, @remarks, @add_info, @planning_date, @planned_date, @mfg_date, @completion_date, @status, @order_stage, @order_id, @color, @perfume, @claims, @pkg_img, @brand_name, @product_id)";
                     command.Parameters.Add("@order_no", MySqlDbType.VarChar).Value = lead.BatchOrderNo;
                     command.Parameters.Add("@cust_id", MySqlDbType.Int32).Value = lead.Customer.Id;
-                    command.Parameters.Add("@prod_name", MySqlDbType.VarChar).Value = lead.ProductName;
+                    if (string.IsNullOrEmpty(lead.ProductName))
+                    {
+                        command.Parameters.Add("@prod_name", MySqlDbType.VarChar).Value = lead.ProductID;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@prod_name", MySqlDbType.VarChar).Value = lead.ProductName;
+                    }
+                    
                     command.Parameters.Add("@batch_date", MySqlDbType.DateTime).Value = lead.BatchDate;
                     command.Parameters.Add("@expiry", MySqlDbType.DateTime).Value = lead.Expiry;
                     command.Parameters.Add("@batch_data", MySqlDbType.JSON).Value = JsonSerializer.Serialize(lead.BatchOrderCollection, options);
@@ -549,7 +634,7 @@ namespace Cosmetify.Repository
             }
         }
 
-        public void UpdateProduct(BatchModel lead)
+        public async void UpdateProduct(BatchModel lead)
         {
             try
             {
@@ -584,7 +669,7 @@ namespace Cosmetify.Repository
                     command.Parameters.Add("@pkg_img", MySqlDbType.MediumBlob).Value = ImageToByte(lead.PackagingTypeImage);
                     command.Parameters.Add("@brand_name", MySqlDbType.Text).Value = lead.BrandName;
                     command.Parameters.Add("@product_id", MySqlDbType.VarChar).Value = lead.ProductID;
-                    command.ExecuteScalar();
+                    await command.ExecuteScalarAsync();
                     //MessageBox.Show("Batch Order Updated");
                 }
             }

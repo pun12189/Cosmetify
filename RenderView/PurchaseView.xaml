@@ -58,27 +58,27 @@
                     <DataGrid AutoGenerateColumns="False" Grid.Row="2" RowEditEnding="dataGrid1_RowEditEnding" CommandManager.PreviewExecuted="dataGrid1_PreviewExecuted" CanUserAddRows="True" CanUserDeleteRows="True" HorizontalAlignment="Stretch" Margin="10" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding ElementName=addProd, Path=Products}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="S.no" Binding="{Binding Id}" IsReadOnly="True"/>
-                            <DataGridTemplateColumn Header="Product Image" IsReadOnly="True">
+                            <!--<DataGridTemplateColumn Header="Product Image" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Image Source="{Binding ProductImage, UpdateSourceTrigger=PropertyChanged}" Height="50" Width="50" Stretch="UniformToFill" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Description" Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Category" Binding="{Binding Category.CategoryName, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbCat, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <DataGridTextColumn Header="Quantity" Binding="{Binding Stock, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataGridTemplateColumn>-->
+                            <DataGridTextColumn Header="Item Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn Header="Invoice" Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />                            
+                            <DataGridTextColumn Header="Received Stock" Binding="{Binding Stock, UpdateSourceTrigger=PropertyChanged}" />
                             <DataGridTextColumn Header="Packing" Binding="{Binding Packing, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbPkg, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Batch No." Binding="{Binding BatchNo, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbBat, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Mfg Date" IsReadOnly="True" Binding="{Binding MfgDate, StringFormat=\{0:MM/yyyy\}, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbMfg, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Expiry" IsReadOnly="True" Binding="{Binding Expiry, StringFormat=\{0:MM/yyyy\}, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbExp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <DataGridTextColumn Header="Purchase Price" Binding="{Binding PurchasePrice, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbPp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <DataGridTextColumn Header="MRP" Binding="{Binding MRP, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbMrp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <DataGridTextColumn Header="Purchase Price" Binding="{Binding PurchasePrice, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbPp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>                            
                             <DataGridTextColumn Header="Max SP" Binding="{Binding MaxSellingPrice, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbMsp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Min SP" Binding="{Binding MinSellingPrice, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbXsp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Mfr Name" Binding="{Binding MfrName, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbMnm, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <DataGridTextColumn Header="Company" Binding="{Binding Company, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbCmp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <DataGridTextColumn Header="Make" Binding="{Binding Company, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbCmp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category.CategoryName, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbCat, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <DataGridTextColumn Header="Remarks" Binding="{Binding MRP, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbMrp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

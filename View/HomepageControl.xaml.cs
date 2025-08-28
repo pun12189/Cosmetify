@@ -21,9 +21,21 @@ namespace Cosmetify.View
             this.navigationServiceEx = new Navigation.NavigationServiceEx();
             this.navigationServiceEx.Navigated += this.NavigationServiceEx_OnNavigated;
             this.HamburgerMenuControl.Content = this.navigationServiceEx.Frame;
-
+            this.Loaded += HomepageControl_Loaded;
             // Navigate to the home page.
             //this.Loaded += (sender, args) => this.navigationServiceEx.Navigate(new Uri("View/HomepageControl.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private async void HomepageControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await Helper.Helper.UpdateBatchOrders();
+            }
+            catch (Exception ex)
+            {
+                Helper.Helper.LogError(ex);
+            }
         }
 
         private void HamburgerMenuControl_OnItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)

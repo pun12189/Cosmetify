@@ -2,13 +2,17 @@
 using Cosmetify.Model;
 using Cosmetify.Model.Enums;
 using Cosmetify.ViewModel;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 using MigraDoc.Rendering;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using Button = System.Windows.Controls.Button;
 using ComboBox = System.Windows.Controls.ComboBox;
 using TabControl = System.Windows.Controls.TabControl;
@@ -20,6 +24,11 @@ namespace Cosmetify.RenderView
     /// </summary>
     public partial class BatchOrder : System.Windows.Controls.Page
     {
+        Microsoft.Office.Interop.Excel.Application excel;
+        Microsoft.Office.Interop.Excel.Workbook workBook;
+        Microsoft.Office.Interop.Excel.Worksheet workSheet;
+        Microsoft.Office.Interop.Excel.Range cellRange;
+
         private static readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text        
 
         // Using a DependencyProperty as the backing store for BatchModel.  This enables animation, styling, binding, etc...
@@ -35,29 +44,31 @@ namespace Cosmetify.RenderView
             InitializeComponent();
             this.Loaded += BatchOrder_Loaded;
             this.cbUnits.ItemsSource = System.Enum.GetValues(typeof(ProductUnits));
-            this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
-            this.cbProd.ItemsSource = HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
-            this.cbMF.ItemsSource = HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
             this.dataGrid1.ItemsSource = this.BatchModel.BatchOrderCollection;
             this.stkAct.Visibility = Visibility.Collapsed;
         }
 
-        private void BatchOrder_Loaded(object sender, RoutedEventArgs e)
+        private async void BatchOrder_Loaded(object sender, RoutedEventArgs e)
         {
+
+            this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.cbProd.ItemsSource = await HomepageViewModel.CommonViewModel.ActivesRepository.GetAllProducts();
+            this.cbMF.ItemsSource = await HomepageViewModel.CommonViewModel.MasterFormulaRepository.GetAllFormulas();
+
             if (this.BatchModelCollection != null && this.BatchModelCollection.Count > 0)
             {
                 this.BatchModelCollection.Clear();
             }
 
-            this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
         }
 
-        private void btnAddCust_Click(object sender, RoutedEventArgs e)
+        private async void btnAddCust_Click(object sender, RoutedEventArgs e)
         {
             var addCust = new AddCustomer();
             if ((bool)addCust.ShowDialog())
             {
-                this.cbCust.ItemsSource = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                this.cbCust.ItemsSource = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
                 MessageBox.Show("List Refreshed, Please select added customer", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
@@ -121,12 +132,12 @@ namespace Cosmetify.RenderView
             set { SetValue(BatchModelCollectionProperty, value); }
         }
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        private async void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
         }
 
-        private void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        private async void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var dg = sender as System.Windows.Controls.DataGrid;
             if (dg != null)
@@ -144,56 +155,155 @@ namespace Cosmetify.RenderView
                             {
                                 foreach (var active in actives)
                                 {
-                                    active.Actives.Stocks = active.Actives.Stocks + active.StocksRequired;
-                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active.Actives);
+                                    if (active.Actives != null)
+                                    {
+                                        var act = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(active.Actives.Id);
+                                        act.Stocks = act.Stocks + active.StocksRequired;
+                                        HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(act);
+                                    }                                    
                                 }
+
+                                await Helper.Helper.UpdateBatchOrders();
                             }
                         }
                     }
 
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(product.Id);
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();                    
+                    this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();                    
                 }                
             }
         }
 
         private void ExportBatch(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null)
+            try
             {
-                var model = button.DataContext as BatchModel;
-                if (model != null)
+                var button = sender as Button;
+                if (button != null)
                 {
-                    var batch = new PdfCore.PdfForm();
-                    var document = batch.CreateDocument(model);
-                    document.UseCmykColor = true;
-                    var pdfRenderer = new PdfDocumentRenderer(true);
-
-                    // Set the MigraDoc document.
-                    pdfRenderer.Document = document;
-
-                    // Create the PDF document.
-                    pdfRenderer.RenderDocument();
-
-                    // Save the PDF document...
-                    var filename = "Batch-" + model.Customer.FirstName + "_" + model.BrandName + ".pdf";
-
-                    var dialog = new SaveFileDialog();
-                    dialog.FileName = filename;
-                    dialog.AddExtension = true;
-                    dialog.DefaultExt = ".pdf";
-                    if ((bool)dialog.ShowDialog())
+                    var model = button.DataContext as BatchModel;
+                    if (model != null)
                     {
-                        pdfRenderer.Save(dialog.FileName);
-                        // ...and start a viewer.
-                        //Process.Start(dialog.FileName);
+                        var batch = new PdfCore.PdfForm();
+                        var document = batch.CreateDocument(model);
+                        document.UseCmykColor = true;
+                        var pdfRenderer = new PdfDocumentRenderer(true);
+
+                        // Set the MigraDoc document.
+                        pdfRenderer.Document = document;
+
+                        // Create the PDF document.
+                        pdfRenderer.RenderDocument();
+
+                        // Save the PDF document...
+                        var filename = "Batch-" + model.Customer.FirstName + "_" + model.BrandName + ".pdf";
+
+                        var dialog = new SaveFileDialog();
+                        dialog.FileName = filename;
+                        dialog.AddExtension = true;
+                        dialog.DefaultExt = ".pdf";
+                        if ((bool)dialog.ShowDialog())
+                        {
+                            pdfRenderer.Save(dialog.FileName);
+                            // ...and start a viewer.
+                            //Process.Start(dialog.FileName);
+                        }
                     }
                 }
             }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show("Either the file is open or access by another process or app. " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Helper.Helper.LogError(ex);
+            }
         }
 
-        private void DeleteBatch(object sender, RoutedEventArgs e)
+        private void ExportExcel(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var batchCollection = new ObservableCollection<BatchModel>();
+                var button = sender as Button;
+                if (button != null)
+                {
+                    var bmodel = button.DataContext as BatchModel;
+                    if (bmodel != null)
+                    {
+                        batchCollection.Add(bmodel);
+                    }
+
+                    if (batchCollection != null)
+                    {
+                        var tempCollection = new ObservableCollection<ActivesModel>();
+                        foreach (var item in batchCollection)
+                        {
+                            foreach (var act in item.BatchOrderCollection)
+                            {
+                                tempCollection.Add(act.Actives);
+                            }
+                        }
+
+                        var activesCollection = tempCollection.DistinctBy(p => p.Id);
+
+                        foreach (var batchOrder in batchCollection)
+                        {
+                            //if (batchOrder.Status == BatchStatus.Planned)
+                            //{
+                            foreach (var model in batchOrder.BatchOrderCollection)
+                            {
+                                var actives = activesCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
+                                if (actives != null)
+                                {
+                                    if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                    {
+                                        actives.BrandNames += batchOrder.BrandName + "," + Environment.NewLine;
+                                    }
+
+                                    if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                    {
+                                        actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + "," + Environment.NewLine;
+                                    }
+
+                                    actives.TotalRequired += model.StocksRequired;
+                                }
+                            }
+                            //}
+                        }
+
+                        GenerateExcel(Helper.Helper.ToBatchDataTable(activesCollection.ToList()));
+                        var dialog = new SaveFileDialog();
+                        dialog.FileName = "BatchFilterReport-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                        dialog.AddExtension = true;
+                        dialog.DefaultExt = ".xlsx";
+                        if ((bool)dialog.ShowDialog())
+                        {
+                            workBook.SaveAs(dialog.FileName);
+                            // ...and start a viewer.
+                            //Process.Start(dialog.FileName);
+                        }
+
+                        workBook.Close();
+                        excel.Quit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.Helper.BugReport(ex);
+            }
+        }
+
+        private async void DeleteBatch(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null)
@@ -213,22 +323,28 @@ namespace Cosmetify.RenderView
                                 if (actives != null) 
                                 {
                                     foreach (var active in actives)
-                                    { 
-                                        active.Actives.Stocks = active.Actives.Stocks + active.StocksRequired;
-                                        HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active.Actives);
+                                    {
+                                        if (active.Actives != null)
+                                        {
+                                            var act = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(active.Actives.Id);
+                                            act.Stocks = act.Stocks + active.StocksRequired;
+                                            HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(act);
+                                        }                                        
                                     }
+
+                                    await Helper.Helper.UpdateBatchOrders();
                                 }
                             }
                         }                       
 
                         HomepageViewModel.CommonViewModel.BatchOrderRepository.DeleteProduct(model.Id);
-                        this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                        this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                     }
                 }                
             }
         }
 
-        private void ProceedBatch(object sender, RoutedEventArgs e)
+        private async void ProceedBatch(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null)
@@ -243,17 +359,23 @@ namespace Cosmetify.RenderView
                     {
                         foreach (var item in model.BatchOrderCollection)
                         {
-                            item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
-                            HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                            if (item.Actives != null)
+                            {
+                                var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
+                                active.Stocks = active.Stocks - item.StocksRequired;
+                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
+                            }                            
                         }
+
+                        await Helper.Helper.UpdateBatchOrders();
                     }
 
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
 
-        private void HoldBatch(object sender, RoutedEventArgs e)
+        private async void HoldBatch(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null)
@@ -263,20 +385,20 @@ namespace Cosmetify.RenderView
                 {
                     model.Status = BatchStatus.Hold;
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                    if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                    /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                     {
                         foreach (var item in model.BatchOrderCollection)
                         {
                             HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                         }
-                    }
+                    }*/
 
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
 
-        private void CompleteBatch(object sender, RoutedEventArgs e)
+        private async void CompleteBatch(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null)
@@ -287,20 +409,20 @@ namespace Cosmetify.RenderView
                     model.Status = BatchStatus.Completed;
                     model.CompletionDate = DateTime.Now;
                     HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                    if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                    /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                     {
                         foreach (var item in model.BatchOrderCollection)
                         {
                             HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                         }
-                    }
+                    }*/
 
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
 
-        private void ReorderBatch(object sender, RoutedEventArgs e)
+        private async void ReorderBatch(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null)
@@ -308,22 +430,39 @@ namespace Cosmetify.RenderView
                 var model = button.DataContext as BatchModel;
                 if (model != null)
                 {
-                    model.BatchOrderNo = "COS-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
-                    model.OrderId = "OD-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
-                    model.Status = BatchStatus.Created;
-                    model.BatchDate = DateTime.Now;
-                    model.PlannedDate = DateTime.MinValue;
-                    model.PlanningDate = DateTime.MinValue;
-                    model.MfgDate = DateTime.MinValue;
-                    model.Expiry = DateTime.MinValue;
-                    model.CompletionDate = DateTime.MinValue;
-                    HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(model);
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    var newmodel = new BatchModel();
+                    newmodel.BatchOrderNo = "COS-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    newmodel.OrderId = "OD-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    newmodel.Status = BatchStatus.Created;
+                    newmodel.BatchDate = DateTime.Now;
+                    newmodel.PlannedDate = DateTime.MinValue;
+                    newmodel.PlanningDate = DateTime.MinValue;
+                    newmodel.MfgDate = DateTime.MinValue;
+                    newmodel.Expiry = DateTime.MinValue;
+                    newmodel.CompletionDate = DateTime.MinValue;
+                    newmodel.AdditionalInfo = model.AdditionalInfo;
+                    newmodel.Description = model.Description;
+                    newmodel.ProductName = model.ProductName;
+                    newmodel.Customer = model.Customer;
+                    newmodel.Claims = model.Claims;
+                    newmodel.Colour = model.Colour;
+                    foreach (var bo in model.BatchOrderCollection)
+                    {
+                        newmodel.BatchOrderCollection.Add(bo);
+                    }
+                    
+                    newmodel.Perfume = model.Perfume;
+                    newmodel.RemainingWater = model.RemainingWater;
+                    newmodel.BrandName = model.BrandName;
+                    newmodel.PkgOrderQuantity = model.PkgOrderQuantity;
+                    newmodel.PackagingTypeImage = model.PackagingTypeImage;
+                    HomepageViewModel.CommonViewModel.BatchOrderRepository.InsertProduct(newmodel);
+                    this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
 
-        private void cbMF_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cbMF_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.cbMF.SelectedItem != null && this.cbMF.SelectedItem is MasterFormulaModel)
             {
@@ -346,7 +485,7 @@ namespace Cosmetify.RenderView
                         var batchOrder = new BatchOrderModel();
                         batchOrder.BatchSize = Convert.ToInt64(this.tbSize.Text);
                         batchOrder.Units = (ProductUnits)System.Enum.Parse(typeof(ProductUnits), this.cbUnits.SelectedItem.ToString());
-                        batchOrder.Actives = HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(actives.Id);
+                        batchOrder.Actives = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(actives.Id);
                         batchOrder.PercentageRequired = actives.Required;
                         this.BatchModel.BatchOrderCollection.Add(batchOrder);
                     }
@@ -381,14 +520,14 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void Tabs1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Tabs1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var tabControl = sender as TabControl;
             if (tabControl != null)
             {
                 if (tabControl.SelectedIndex == 1)
                 {
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
@@ -402,7 +541,7 @@ namespace Cosmetify.RenderView
             }            
         }
 
-        private void dataGrid2_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        private async void dataGrid2_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
             if (e.EditAction == DataGridEditAction.Commit)
             {
@@ -415,9 +554,15 @@ namespace Cosmetify.RenderView
                         {
                             foreach (var item in product.BatchOrderCollection)
                             {
-                                item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
-                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                                if (item.Actives != null)
+                                {
+                                    var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
+                                    active.Stocks = active.Stocks - item.StocksRequired;
+                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
+                                }                                
                             }
+
+                            await Helper.Helper.UpdateBatchOrders();
                         }
 
                         HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(product);
@@ -430,19 +575,19 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        private async void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 var searchData = this.tbSearch.Text;
                 if (!string.IsNullOrEmpty(searchData))
                 {
-                    var data = HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
+                    var data = await HomepageViewModel.CommonViewModel.BatchOrderRepository.SearchBatch(searchData);
                     this.BatchModelCollection = data;
                 }
                 else
                 {
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
@@ -471,7 +616,7 @@ namespace Cosmetify.RenderView
             }        
         }
 
-        private void cbBulk_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cbBulk_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = sender as ComboBox;
             if (cb != null)
@@ -491,18 +636,24 @@ namespace Cosmetify.RenderView
                                         if (model != null)
                                         {
                                             model.Status = BatchStatus.Processed;
-                                            model.PlanningDate = DateTime.Now;
+                                            // model.PlanningDate = DateTime.Now;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
                                             if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
-                                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                                                    if (item.Actives != null)
+                                                    {
+                                                        var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
+                                                        active.Stocks = active.Stocks - item.StocksRequired;
+                                                        HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
+                                                    }                                                    
                                                 }
                                             }
                                         }
                                     }
 
+                                    await Helper.Helper.UpdateBatchOrders();
                                     MessageBox.Show("Selected Items successfully processed.", "Bulk Action", MessageBoxButton.OK, MessageBoxImage.Information);
                                 }                                
                             }
@@ -522,13 +673,13 @@ namespace Cosmetify.RenderView
                                             model.Status = BatchStatus.Planned;
                                             model.PlanningDate = DateTime.Now;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                                            if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                                            /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
                                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                                                 }
-                                            }
+                                            }*/
                                         }
                                     }
 
@@ -550,13 +701,13 @@ namespace Cosmetify.RenderView
                                         {
                                             model.Status = BatchStatus.Hold;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                                            if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                                            /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
                                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                                                 }
-                                            }
+                                            }*/
                                         }
                                     }
 
@@ -578,13 +729,13 @@ namespace Cosmetify.RenderView
                                             model.Status = BatchStatus.Completed;
                                             model.CompletionDate = DateTime.Now;
                                             HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(model);
-                                            if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
+                                            /*if (model.BatchOrderCollection != null && model.BatchOrderCollection.Count > 0)
                                             {
                                                 foreach (var item in model.BatchOrderCollection)
                                                 {
                                                     HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
                                                 }
-                                            }
+                                            }*/
                                         }
                                     }
 
@@ -616,12 +767,12 @@ namespace Cosmetify.RenderView
                             break;
                     }
 
-                    this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+                    this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
                 }
             }
         }
 
-        private void BatchView_Click(object sender, RoutedEventArgs e)
+        private async void BatchView_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             if (btn != null)
@@ -636,9 +787,15 @@ namespace Cosmetify.RenderView
                         {
                             foreach (var item in dialog.BatchModel.BatchOrderCollection)
                             {
-                                item.Actives.Stocks = item.Actives.Stocks - item.StocksRequired;
-                                HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(item.Actives);
+                                if (item.Actives != null)
+                                {
+                                    var active = await HomepageViewModel.CommonViewModel.ActivesRepository.GetProduct(item.Actives.Id);
+                                    active.Stocks = active.Stocks - item.StocksRequired;
+                                    HomepageViewModel.CommonViewModel.ActivesRepository.UpdateProduct(active);
+                                }                                
                             }
+
+                            await Helper.Helper.UpdateBatchOrders();
                         }
 
                         HomepageViewModel.CommonViewModel.BatchOrderRepository.UpdateProduct(dialog.BatchModel);
@@ -646,7 +803,7 @@ namespace Cosmetify.RenderView
                 }
             }
 
-            this.BatchModelCollection = HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
+            this.BatchModelCollection = await HomepageViewModel.CommonViewModel.BatchOrderRepository.GetAllProducts();
         }
 
         private void BatchSizeUpdate(object sender, TextChangedEventArgs e)
@@ -676,6 +833,118 @@ namespace Cosmetify.RenderView
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsTextAllowed(e.Text);
+        }
+
+        private void GenerateExcel(System.Data.DataTable DtIN)
+        {
+            try
+            {
+                excel = new Microsoft.Office.Interop.Excel.Application();
+                excel.DisplayAlerts = false;
+                excel.Visible = false;
+                workBook = excel.Workbooks.Add(Type.Missing);
+                workSheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.ActiveSheet;
+                workSheet.Name = "Filtered Data Sheet";
+                System.Data.DataTable tempDt = DtIN;
+                //dgExcel.ItemsSource = tempDt.DefaultView;
+                workSheet.Cells.Font.Size = 11;
+                workSheet.Cells.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                workSheet.Cells.VerticalAlignment = Microsoft.Office.Interop.Excel.XlVAlign.xlVAlignCenter;
+                // workSheet.Columns.AutoFit();
+                // workSheet.Rows.AutoFit();
+                int rowcount = 1;
+                for (int i = 1; i <= tempDt.Columns.Count; i++) //taking care of Headers.  
+                {
+                    workSheet.Cells[1, i] = tempDt.Columns[i - 1].ColumnName;
+                }
+                foreach (System.Data.DataRow row in tempDt.Rows) //taking care of each Row  
+                {
+                    rowcount += 1;
+                    for (int i = 0; i < tempDt.Columns.Count; i++) //taking care of each column  
+                    {
+                        workSheet.Cells[rowcount, i + 1] = row[i].ToString();
+                    }
+                }
+                cellRange = workSheet.Range[workSheet.Cells[1, 1], workSheet.Cells[rowcount, tempDt.Columns.Count]];
+                cellRange.EntireColumn.AutoFit();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private void btnCompletion_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var batchCollection = this.BatchModelCollection;
+                if (this.dataGrid2.SelectedItems != null && this.dataGrid2.SelectedItems.Count > 0)
+                {
+                    batchCollection = new ObservableCollection<BatchModel>();
+                    foreach (BatchModel item in this.dataGrid2.SelectedItems)
+                    {
+                        batchCollection.Add(item);
+                    }
+                }
+                if (batchCollection != null)
+                {
+                    var tempCollection = new ObservableCollection<ActivesModel>();
+                    foreach (var item in batchCollection)
+                    {
+                        foreach (var act in item.BatchOrderCollection)
+                        {
+                            tempCollection.Add(act.Actives);
+                        }
+                    }
+
+                    var activesCollection = tempCollection.DistinctBy(p => p.Id);
+
+                    foreach (var batchOrder in batchCollection)
+                    {
+                        //if (batchOrder.Status == BatchStatus.Planned)
+                        //{
+                        foreach (var model in batchOrder.BatchOrderCollection)
+                        {
+                            var actives = activesCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
+                            if (actives != null)
+                            {
+                                if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                {
+                                    actives.BrandNames += batchOrder.BrandName + "," + Environment.NewLine;
+                                }
+
+                                if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                {
+                                    actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + "," + Environment.NewLine;
+                                }
+
+                                actives.TotalRequired += model.StocksRequired;
+                            }
+                        }
+                        //}
+                    }
+
+                    GenerateExcel(Helper.Helper.ToBatchDataTable(activesCollection.ToList()));
+                    var dialog = new SaveFileDialog();
+                    dialog.FileName = "BatchFilterReport-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                    dialog.AddExtension = true;
+                    dialog.DefaultExt = ".xlsx";
+                    if ((bool)dialog.ShowDialog())
+                    {
+                        workBook.SaveAs(dialog.FileName);
+                        // ...and start a viewer.
+                        //Process.Start(dialog.FileName);
+                    }
+
+                    workBook.Close();
+                    excel.Quit();
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.Helper.BugReport(ex);
+            }
         }
     }
 }

@@ -107,11 +107,11 @@
                     <RowDefinition Height="10"/>
                     <RowDefinition/>
                     <RowDefinition Height="10"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="10"/>
                     <RowDefinition/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="10"/>
                     <RowDefinition/>
                     <RowDefinition Height="10"/>
@@ -127,56 +127,59 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width=".6*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Name" Grid.Row="0" Grid.Column="0"/>
-                <TextBlock Text="Description" Grid.Row="2" Grid.Column="0"/>
-                <TextBlock Text="Packing" Grid.Row="4" Grid.Column="0"/>
-                <TextBlock Text="Batch" Grid.Row="6" Grid.Column="0"/>
-                <TextBlock Text="Mfg Date" Grid.Row="8" Grid.Column="0"/>
-                <TextBlock Text="Product Image" Grid.Row="10" Grid.Column="0"/>
-                <TextBlock Text="Expiry" Grid.Row="12" Grid.Column="0"/>
-                <TextBlock Text="Stock" Grid.Row="14" Grid.Column="0"/>
-                <TextBlock Text="Purchase Price" Grid.Row="16" Grid.Column="0"/>
-                <TextBlock Text="MRP" Grid.Row="18" Grid.Column="0"/>
-                <TextBlock Text="Max SP" Grid.Row="20" Grid.Column="0" Visibility="{Binding ElementName=cbMaxsp, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBlock Text="Min SP" Grid.Row="22" Grid.Column="0" Visibility="{Binding ElementName=cbMinSp, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBlock Text="Manufacturer" Grid.Row="24" Grid.Column="0"/>
-                <TextBlock Text="Company" Grid.Row="26" Grid.Column="0"/>
-                <TextBlock Text="Category" Grid.Row="28" Grid.Column="0"/>
-                <TextBlock Text="GST" Grid.Row="30" Grid.Column="0"/>
+                <TextBlock Text="Item Name" Grid.Row="0" Grid.Column="0"/>
+                <TextBlock Text="Received Stock" Grid.Row="2" Grid.Column="0"/>
+                <TextBlock Text="Receiving Date" Grid.Row="4" Grid.Column="0"/>
+                <TextBlock Text="Invoice No" Grid.Row="6" Grid.Column="0"/>
+                <TextBlock Text="Vendor Name" Grid.Row="8" Grid.Column="0"/>
+                <TextBlock Text="Make" Grid.Row="10" Grid.Column="0"/>
+                <TextBlock Text="Category" Grid.Row="12" Grid.Column="0"/>
+                <TextBlock Text="Purchase Price" Grid.Row="14" Grid.Column="0"/>
+                <TextBlock Text="Packaging Type" Grid.Row="16" Grid.Column="0"/>                
+                <TextBlock Text="Mfg Date" Grid.Row="18" Grid.Column="0"/>
+                <!--<TextBlock Text="Product Image" Grid.Row="10" Grid.Column="0"/>-->
+                <TextBlock Text="Expiry" Grid.Row="20" Grid.Column="0"/>                
+                <TextBlock Text="Max SP" Grid.Row="22" Grid.Column="0" Visibility="{Binding ElementName=cbMaxsp, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Text="Min SP" Grid.Row="24" Grid.Column="0" Visibility="{Binding ElementName=cbMinSp, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Text="Batch" Grid.Row="26" Grid.Column="0"/>
+                <TextBlock Text="Remarks" Grid.Row="28" Grid.Column="0"/>
 
-                <TextBox x:Name="tbName" controls:TextBoxHelper.Watermark="Enter Product Name" Grid.Row="0" Grid.Column="2"/>
-                <TextBox x:Name="tbDesc" controls:TextBoxHelper.Watermark="Enter Product Description" Grid.Row="2" Grid.Column="2"/>
-                <TextBox x:Name="tbPack" controls:TextBoxHelper.Watermark="Enter Packing Description" Grid.Row="4" Grid.Column="2"/>
-                <TextBox x:Name="tbBatch" controls:TextBoxHelper.Watermark="Enter Batch No." Grid.Row="6" Grid.Column="2"/>
-                <!--<DatePicker x:Name="dtMfg" IsTodayHighlighted="True" Grid.Row="8" Grid.Column="2"/>-->
-                <StackPanel Grid.Row="8" Grid.Column="2" Orientation="Horizontal">
+                <TextBox x:Name="tbName" controls:TextBoxHelper.Watermark="Enter Item Name" Grid.Row="0" Grid.Column="2"/>
+
+                <StackPanel  Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+                    <TextBox x:Name="tbStock" controls:TextBoxHelper.Watermark="Enter Current Stock" IsUndoEnabled="True" PreviewTextInput="tb_PreviewTextInput"/>
+                    <ComboBox x:Name="cbStk" VerticalAlignment="Center" SelectedIndex="0" Margin="10,0,0,0"/>
+                </StackPanel>
+                
+                <DatePicker x:Name="dtMfg" IsTodayHighlighted="True" Grid.Row="4" Grid.Column="2"/>
+                <TextBox x:Name="tbInv" controls:TextBoxHelper.Watermark="Enter Invoice No." Grid.Row="6" Grid.Column="2"/>
+                <TextBox x:Name="tbMfr" controls:TextBoxHelper.Watermark="Enter Mfr Name" Grid.Row="8" Grid.Column="2"/>
+                <TextBox x:Name="tbComp" controls:TextBoxHelper.Watermark="Enter Company Name" Grid.Row="10" Grid.Column="2"/>
+                <ComboBox x:Name="cbCateg" Grid.Row="12" Grid.Column="2" ItemsSource="{Binding ElementName=addProd, Path=CategoryList}" DisplayMemberPath="CategoryName" SelectedValue="GstRate"/>
+                <TextBox x:Name="tbPp" controls:TextBoxHelper.Watermark="Enter Purchase Price" Grid.Row="14" Grid.Column="2" PreviewTextInput="tb_PreviewTextInput"/>
+                <TextBox x:Name="tbPack" controls:TextBoxHelper.Watermark="Enter Packing Description" Grid.Row="16" Grid.Column="2"/>               
+                
+                <StackPanel Grid.Row="18" Grid.Column="2" Orientation="Horizontal">
                     <ComboBox x:Name="cbMnth" VerticalAlignment="Center" Margin="0,0,10,0" SelectedIndex="0" SelectionChanged="cbMnth_SelectionChanged"/>
                     <ComboBox x:Name="cbYear" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="cbYear_SelectionChanged"/>
                 </StackPanel>
                 <!--<controls:ToggleSwitch x:Name="tgStatus" controls:ToggleButtonHelper.ContentDirection="LeftToRight" Grid.Row="10" Grid.Column="2" OffContent="Block" OnContent="Published"/>-->
                 <!--<ToggleButton x:Name="tgStatus" Style="{StaticResource ToggleButtonStyle1}" controls:ToggleButtonHelper.ContentDirection="LeftToRight" Grid.Row="10" Grid.Column="2" />-->
-                <StackPanel Grid.Row="10" Grid.Column="2" Orientation="Horizontal">
+                <!--<StackPanel Grid.Row="10" Grid.Column="2" Orientation="Horizontal">
                     <Image Height="50" Width="50" Stretch="UniformToFill" SnapsToDevicePixels="True" Source="{Binding ElementName=addProd, Path=ProductImage}"/>
                     <Button Content="Upload Image" Click="UploadProductImage" Margin="10,0" VerticalAlignment="Center"/>
-                </StackPanel>
+                </StackPanel>-->
                 <!--<ComboBox x:Name="cbGst" IsEditable="True" Grid.Row="12" Grid.Column="2"/>-->
-                <StackPanel Grid.Row="12" Grid.Column="2" Orientation="Horizontal">
+                <StackPanel Grid.Row="20" Grid.Column="2" Orientation="Horizontal">
                     <ComboBox x:Name="cbMnth1" VerticalAlignment="Center" Margin="0,0,10,0" SelectedIndex="0" SelectionChanged="cbMnth1_SelectionChanged"/>
                     <ComboBox x:Name="cbYear1" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="cbYear1_SelectionChanged"/>
-                </StackPanel>
+                </StackPanel>               
                 
-                <StackPanel  Grid.Row="14" Grid.Column="2" Orientation="Horizontal">
-                    <TextBox x:Name="tbStock" controls:TextBoxHelper.Watermark="Enter Current Stock" IsUndoEnabled="True" PreviewTextInput="tb_PreviewTextInput"/>
-                    <ComboBox x:Name="cbStk" VerticalAlignment="Center" SelectedIndex="0" Margin="10,0,0,0"/>
-                </StackPanel>
-                <TextBox x:Name="tbPp" controls:TextBoxHelper.Watermark="Enter Purchase Price" Grid.Row="16" Grid.Column="2" PreviewTextInput="tb_PreviewTextInput"/>
-                <TextBox x:Name="tbMrp" controls:TextBoxHelper.Watermark="Enter MRP" LostFocus="tbMrp_LostFocus" Grid.Row="18" Grid.Column="2" PreviewTextInput="tb_PreviewTextInput"/>
-                <TextBox x:Name="tbMaxsp" controls:TextBoxHelper.Watermark="Enter Max SP" PreviewTextInput="tb_PreviewTextInput" Grid.Row="20" Grid.Column="2" Visibility="{Binding ElementName=cbMaxsp, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBox x:Name="tbMinsp" controls:TextBoxHelper.Watermark="Enter Min SP" PreviewTextInput="tb_PreviewTextInput" Grid.Row="22" Grid.Column="2" Visibility="{Binding ElementName=cbMinSp, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBox x:Name="tbMfr" controls:TextBoxHelper.Watermark="Enter Mfr Name" Grid.Row="24" Grid.Column="2"/>
-                <TextBox x:Name="tbComp" controls:TextBoxHelper.Watermark="Enter Company Name" Grid.Row="26" Grid.Column="2"/>
-                <ComboBox x:Name="cbCateg" Grid.Row="28" Grid.Column="2" ItemsSource="{Binding ElementName=addProd, Path=CategoryList}" DisplayMemberPath="CategoryName" SelectedValue="GstRate"/>
-                <TextBox controls:TextBoxHelper.Watermark="Prefilled GST" Text="{Binding ElementName=cbCateg, Path=SelectedValue.GstRate}" Grid.Row="30" Grid.Column="2" IsEnabled="False"/>
+                <TextBox x:Name="tbMaxsp" controls:TextBoxHelper.Watermark="Enter Max SP" PreviewTextInput="tb_PreviewTextInput" Grid.Row="22" Grid.Column="2" Visibility="{Binding ElementName=cbMaxsp, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBox x:Name="tbMinsp" controls:TextBoxHelper.Watermark="Enter Min SP" PreviewTextInput="tb_PreviewTextInput" Grid.Row="24" Grid.Column="2" Visibility="{Binding ElementName=cbMinSp, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBox x:Name="tbBatch" controls:TextBoxHelper.Watermark="Enter Batch No." Grid.Row="26" Grid.Column="2"/>
+                <TextBox x:Name="tbMrp" controls:TextBoxHelper.Watermark="Enter Remarks" Grid.Row="28" Grid.Column="2"/>
+                <!--<TextBox controls:TextBoxHelper.Watermark="Prefilled GST" Text="{Binding ElementName=cbCateg, Path=SelectedValue.GstRate}" Grid.Row="30" Grid.Column="2" IsEnabled="False"/>-->
 
                 <Button Content="Add Product" Grid.ColumnSpan="4" Grid.Row="32" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Click="SaveProduct"/>
             </Grid>

@@ -311,24 +311,24 @@ namespace Cosmetify.ViewModel
             this.GetPPaidOrders();
         }
 
-        private void GetAllCategories()
+        private async void GetAllCategories()
         {
-            this.CategoriesList = this.categoryRepository.GetCategories();
+            this.CategoriesList = await this.categoryRepository.GetCategories();
         }
 
-        private void GetAllSubCategories()
+        private async void GetAllSubCategories()
         {
-            this.SubCategoryList = this.subCategoryRepository.GetSubCategories();
+            this.SubCategoryList = await this.subCategoryRepository.GetSubCategories();
         }
 
-        private void GetAllProducts()
+        private async void GetAllProducts()
         {
-            this.ProductList = this.productRepository.GetAllProducts();
+            this.ProductList = await this.productRepository.GetAllProducts();
         }
 
-        private void GetAllLeads()
+        private async void GetAllLeads()
         {
-            this.CustomerList = this.leadsRepository.GetAllLeads();
+            this.CustomerList = await this.leadsRepository.GetAllLeads();
         }
 
         private void GetTotalOrders()

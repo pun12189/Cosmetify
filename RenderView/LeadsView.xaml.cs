@@ -54,7 +54,7 @@ namespace Cosmetify.RenderView
             }*/
         }
 
-        private void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        private async void dataGrid1_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var dg = sender as System.Windows.Controls.DataGrid;
             if (dg != null)
@@ -63,7 +63,7 @@ namespace Cosmetify.RenderView
                 if (e.Command == System.Windows.Controls.DataGrid.DeleteCommand && product != null)
                 {
                     HomepageViewModel.CommonViewModel.LeadsRepository.DeleteLead(product.Id);
-                    this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                    this.addLead.CustomerLeads = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
                 }
             }
         }
@@ -87,12 +87,12 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+            this.addLead.CustomerLeads = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
         }
 
-        private void DeleteBatch(object sender, RoutedEventArgs e)
+        private async void DeleteBatch(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null)
@@ -101,7 +101,7 @@ namespace Cosmetify.RenderView
                 if (model != null)
                 {
                     HomepageViewModel.CommonViewModel.LeadsRepository.DeleteLead(model.Id);
-                    this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                    this.addLead.CustomerLeads = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace Cosmetify.RenderView
             }
         }
 
-        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        private async void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -142,12 +142,12 @@ namespace Cosmetify.RenderView
                 }
                 else
                 {
-                    this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                    this.addLead.CustomerLeads = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
                 }
             }
         }
 
-        private void btnBulk_Click(object sender, RoutedEventArgs e)
+        private async void btnBulk_Click(object sender, RoutedEventArgs e)
         {
             if (this.dataGrid1.SelectedItems != null && this.dataGrid1.SelectedItems.Count > 0)
             {
@@ -163,7 +163,7 @@ namespace Cosmetify.RenderView
                     }
                 }
 
-                this.addLead.CustomerLeads = HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
+                this.addLead.CustomerLeads = await HomepageViewModel.CommonViewModel.LeadsRepository.GetAllLeads();
             }
             else
             {

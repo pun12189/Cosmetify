@@ -1,4 +1,5 @@
 ﻿using Cosmetify.Model.Enums;
+using Cosmetify.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,10 +29,21 @@ namespace Cosmetify.Model
             {
                 batchSize = value;
                 this.NotifyPropertyChanged(nameof(BatchSize));
-                if (percentageRequired >= 0 && this.actives != null)
+                if (this.Units == ProductUnits.Kilograms || this.Units == ProductUnits.ltrs || this.Units == ProductUnits.gms || this.Units == ProductUnits.kg || this.Units == ProductUnits.Grams)
                 {
-                    this.StocksRequired = this.BatchSize * percentageRequired / 100;
+                    if (percentageRequired >= 0 && this.actives != null)
+                    {
+                        this.StocksRequired = this.BatchSize * percentageRequired / 100;
+                    }
                 }
+                else 
+                {
+                    if (percentageRequired >= 0 && this.actives != null)
+                    {
+                        this.StocksRequired = percentageRequired;
+                    }
+                }
+                
             }
         }
 
@@ -59,9 +71,19 @@ namespace Cosmetify.Model
             {
                 percentageRequired = value;
                 this.NotifyPropertyChanged(nameof(PercentageRequired));
-                if (percentageRequired > 0 && this.actives != null)
+                if (this.Units == ProductUnits.Kilograms || this.Units == ProductUnits.ltrs || this.Units == ProductUnits.gms || this.Units == ProductUnits.kg || this.Units == ProductUnits.Grams)
                 {
-                    this.StocksRequired = this.BatchSize * percentageRequired / 100;
+                    if (percentageRequired >= 0 && this.actives != null)
+                    {
+                        this.StocksRequired = this.BatchSize * percentageRequired / 100;
+                    }
+                }
+                else
+                {
+                    if (percentageRequired >= 0 && this.actives != null)
+                    {
+                        this.StocksRequired = percentageRequired;
+                    }
                 }
             }
         }

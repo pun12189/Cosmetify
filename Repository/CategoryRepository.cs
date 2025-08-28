@@ -1,12 +1,6 @@
 ﻿using Cosmetify.Model;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+using MySqlConnector;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Cosmetify.Repository
@@ -19,7 +13,7 @@ namespace Cosmetify.Repository
 
         public SubCategoryRepository SubCategoryRepository { get; set; }
 
-        public CategoryModel GetCategory(int id)
+        public async Task<CategoryModel> GetCategory(int id)
         {
             CategoryModel? category = null;
             try
@@ -31,7 +25,7 @@ namespace Cosmetify.Repository
                     command.Connection = connection;
                     command.CommandText = "select * from category where id=@id";
                     command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -42,7 +36,7 @@ namespace Cosmetify.Repository
                             category.GstRate = reader.GetDouble(2);
                             if (this.SubCategoryRepository != null)
                             {
-                                category.SubCategories = this.SubCategoryRepository.GetSubCategoriesByParentId(reader.GetInt32(0));
+                                category.SubCategories = await this.SubCategoryRepository.GetSubCategoriesByParentId(reader.GetInt32(0));
                             }
                         }
 
@@ -58,7 +52,7 @@ namespace Cosmetify.Repository
             return category;
         }
 
-        public ObservableCollection<CategoryModel> GetCategories()
+        public async Task<ObservableCollection<CategoryModel>> GetCategories()
         {
             ObservableCollection<CategoryModel> categories = null;
             try
@@ -69,7 +63,7 @@ namespace Cosmetify.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandText = "select * from category";
-                    MySqlDataReader reader = command.ExecuteReader();
+                    MySqlDataReader reader = await command.ExecuteReaderAsync();
                     if (reader.HasRows)
                     {
                         categories = new ObservableCollection<CategoryModel>();
@@ -81,7 +75,7 @@ namespace Cosmetify.Repository
                             category.GstRate = reader.GetDouble(2);
                             if (this.SubCategoryRepository != null)
                             {
-                                category.SubCategories = this.SubCategoryRepository.GetSubCategoriesByParentId(reader.GetInt32(0));
+                                category.SubCategories = await this.SubCategoryRepository.GetSubCategoriesByParentId(reader.GetInt32(0));
                             }
 
                             categories.Add(category);
