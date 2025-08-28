@@ -89,7 +89,7 @@ namespace Cosmetify.ViewModel
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FirstOrderBrands },
                 Label = "Sales Order",
                 NavigationType = typeof(OrderInvoice),
-                // NavigationDestination = new Uri("RenderView/OrderInvoice.xaml", UriKind.RelativeOrAbsolute),
+                NavigationDestination = new Uri("RenderView/OrderInvoice.xaml", UriKind.RelativeOrAbsolute),
                 IsEnabled = true
             });
             this.Menu.Add(new MenuItem()
@@ -97,7 +97,7 @@ namespace Cosmetify.ViewModel
                 Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.FirstOrderBrands },
                 Label = "Batch Order",
                 NavigationType = typeof(BatchOrder),
-                // NavigationDestination = new Uri("RenderView/BatchOrder.xaml", UriKind.RelativeOrAbsolute),
+                NavigationDestination = new Uri("RenderView/BatchOrder.xaml", UriKind.RelativeOrAbsolute),
                 IsEnabled = true
             });
             this.Menu.Add(new MenuItem()
