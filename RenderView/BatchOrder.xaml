@@ -328,6 +328,9 @@
                                         <Button ToolTip="Export Batch PDF" Background="Transparent" Margin="0,0,2,0" Click="ExportBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="FilePdfSolid"/>
                                         </Button>
+                                        <Button ToolTip="Export Batch Excel" Background="Transparent" Margin="0,0,2,0" Click="ExportExcel" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <icon:FontAwesome Kind="FileExcelSolid"/>
+                                        </Button>
                                         <Button ToolTip="Delete Batch" Background="Transparent" Click="DeleteBatch" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <icon:FontAwesome Kind="TrashSolid"/>
                                         </Button>

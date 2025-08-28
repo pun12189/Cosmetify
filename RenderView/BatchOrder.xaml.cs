@@ -228,6 +228,81 @@ namespace Cosmetify.RenderView
             }
         }
 
+        private void ExportExcel(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var batchCollection = new ObservableCollection<BatchModel>();
+                var button = sender as Button;
+                if (button != null)
+                {
+                    var bmodel = button.DataContext as BatchModel;
+                    if (bmodel != null)
+                    {
+                        batchCollection.Add(bmodel);
+                    }
+
+                    if (batchCollection != null)
+                    {
+                        var tempCollection = new ObservableCollection<ActivesModel>();
+                        foreach (var item in batchCollection)
+                        {
+                            foreach (var act in item.BatchOrderCollection)
+                            {
+                                tempCollection.Add(act.Actives);
+                            }
+                        }
+
+                        var activesCollection = tempCollection.DistinctBy(p => p.Id);
+
+                        foreach (var batchOrder in batchCollection)
+                        {
+                            //if (batchOrder.Status == BatchStatus.Planned)
+                            //{
+                            foreach (var model in batchOrder.BatchOrderCollection)
+                            {
+                                var actives = activesCollection.SingleOrDefault<ActivesModel>(r => r.Id == model.Actives.Id);
+                                if (actives != null)
+                                {
+                                    if (!string.IsNullOrEmpty(batchOrder.BrandName))
+                                    {
+                                        actives.BrandNames += batchOrder.BrandName + "," + Environment.NewLine;
+                                    }
+
+                                    if (!string.IsNullOrEmpty(batchOrder.ProductName))
+                                    {
+                                        actives.ProductNames += batchOrder.ProductName + "(" + batchOrder.AdditionalInfo + ")" + "," + Environment.NewLine;
+                                    }
+
+                                    actives.TotalRequired += model.StocksRequired;
+                                }
+                            }
+                            //}
+                        }
+
+                        GenerateExcel(Helper.Helper.ToBatchDataTable(activesCollection.ToList()));
+                        var dialog = new SaveFileDialog();
+                        dialog.FileName = "BatchFilterReport-" + Math.Abs(DateTime.Now.GetHashCode()).ToString();
+                        dialog.AddExtension = true;
+                        dialog.DefaultExt = ".xlsx";
+                        if ((bool)dialog.ShowDialog())
+                        {
+                            workBook.SaveAs(dialog.FileName);
+                            // ...and start a viewer.
+                            //Process.Start(dialog.FileName);
+                        }
+
+                        workBook.Close();
+                        excel.Quit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.Helper.BugReport(ex);
+            }
+        }
+
         private async void DeleteBatch(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -803,10 +878,19 @@ namespace Cosmetify.RenderView
         {
             try
             {
-                if (this.BatchModelCollection != null)
+                var batchCollection = this.BatchModelCollection;
+                if (this.dataGrid2.SelectedItems != null && this.dataGrid2.SelectedItems.Count > 0)
+                {
+                    batchCollection = new ObservableCollection<BatchModel>();
+                    foreach (BatchModel item in this.dataGrid2.SelectedItems)
+                    {
+                        batchCollection.Add(item);
+                    }
+                }
+                if (batchCollection != null)
                 {
                     var tempCollection = new ObservableCollection<ActivesModel>();
-                    foreach (var item in this.BatchModelCollection)
+                    foreach (var item in batchCollection)
                     {
                         foreach (var act in item.BatchOrderCollection)
                         {
@@ -816,7 +900,7 @@ namespace Cosmetify.RenderView
 
                     var activesCollection = tempCollection.DistinctBy(p => p.Id);
 
-                    foreach (var batchOrder in this.BatchModelCollection)
+                    foreach (var batchOrder in batchCollection)
                     {
                         //if (batchOrder.Status == BatchStatus.Planned)
                         //{
