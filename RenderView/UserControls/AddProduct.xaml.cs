@@ -44,7 +44,7 @@ namespace Cosmetify.RenderView.UserControls
             this.cbYear.ItemsSource = Enumerable.Range(2015, DateTime.Now.Year - 2015 + 1).ToList();
             this.cbMnth1.ItemsSource = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Take(12).ToList();
             this.cbYear1.ItemsSource = Enumerable.Range(2022, 20).ToList();
-            this.cbStk.ItemsSource = new ObservableCollection<string> { "grams", "pieces", "ltrs"};
+            this.cbStk.ItemsSource = new ObservableCollection<string> { "kilo", "grams", "pieces", "ltrs"};
         }
 
         private async void AddProduct_Loaded(object sender, RoutedEventArgs e)
@@ -90,7 +90,7 @@ namespace Cosmetify.RenderView.UserControls
             product.Expiry = Convert.ToDateTime("01/" + this.ExpMonth + "/" + this.ExpYear);
             product.Stock = Convert.ToInt32(this.tbStock.Text);
             product.PurchasePrice = Convert.ToDouble(this.tbPp.Text);
-            product.MRP = Convert.ToDouble(this.tbMrp.Text);
+            product.Remarks = this.tbMrp.Text;
             if (!string.IsNullOrEmpty(this.tbMaxsp.Text))
             {
                 product.MaxSellingPrice = Convert.ToDouble(this.tbMaxsp.Text);
@@ -190,30 +190,30 @@ namespace Cosmetify.RenderView.UserControls
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void tbMrp_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(this.tbMrp.Text) && !string.IsNullOrEmpty(this.tbPp.Text))
-            {
-                var pp = Convert.ToDouble(this.tbPp.Text);
-                var mrp = Convert.ToDouble(this.tbMrp.Text);
-                if (pp > mrp || mrp < pp)
-                {
-                    MessageBox.Show("MRP should not be less than Purchase Price.", "Alert", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                }
-            }
-        }
+        //private void tbMrp_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (!string.IsNullOrEmpty(this.tbMrp.Text) && !string.IsNullOrEmpty(this.tbPp.Text))
+        //    {
+        //        var pp = Convert.ToDouble(this.tbPp.Text);
+        //        var mrp = Convert.ToDouble(this.tbMrp.Text);
+        //        if (pp > mrp || mrp < pp)
+        //        {
+        //            MessageBox.Show("MRP should not be less than Purchase Price.", "Alert", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        //        }
+        //    }
+        //}
 
-        private void tbMrp_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(this.tbMrp.Text) && !string.IsNullOrEmpty(this.tbPp.Text))
-            {
-                var pp = Convert.ToDouble(this.tbPp.Text);
-                var mrp = Convert.ToDouble(this.tbMrp.Text);
-                if (pp > mrp || mrp < pp)
-                {
-                    MessageBox.Show("MRP should not be less than Purchase Price.", "Alert", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                }
-            }
-        }
+        //private void tbMrp_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (!string.IsNullOrEmpty(this.tbMrp.Text) && !string.IsNullOrEmpty(this.tbPp.Text))
+        //    {
+        //        var pp = Convert.ToDouble(this.tbPp.Text);
+        //        var mrp = Convert.ToDouble(this.tbMrp.Text);
+        //        if (pp > mrp || mrp < pp)
+        //        {
+        //            MessageBox.Show("MRP should not be less than Purchase Price.", "Alert", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        //        }
+        //    }
+        //}
     }
 }

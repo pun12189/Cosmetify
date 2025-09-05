@@ -39,6 +39,8 @@ namespace Cosmetify.Model
 
         public string MfrName { get; set; }
 
+        public string Remarks { get; set; }
+
         public string Company { get; set; }
 
         public BitmapImage ProductImage { get; set; }

@@ -1,6 +1,8 @@
 ﻿using Cosmetify.Model;
 using Cosmetify.Model.Enums;
+using Microsoft.Extensions.Options;
 using MySqlConnector;
+using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,6 +68,7 @@ namespace Cosmetify.Repository
                             MfrName = reader.IsDBNull(14) ? string.Empty : reader.GetString(14),
                             Company = reader.IsDBNull(15) ? string.Empty : reader.GetString(15),
                             Rate = reader.IsDBNull(16) ? 0 : reader.GetDouble(16),
+                            Remarks = reader.IsDBNull(17) ? null : JsonSerializer.Deserialize<string>(reader.GetString(17)),
                             ProductImage = reader.IsDBNull(18) ? null : ByteToImage((byte[])reader["prod_img"])
                         };
                     }
@@ -111,6 +114,7 @@ namespace Cosmetify.Repository
                             MfrName = reader.IsDBNull(14) ? string.Empty : reader.GetString(14),
                             Company = reader.IsDBNull(15) ? string.Empty : reader.GetString(15),
                             Rate = reader.IsDBNull(16) ? 0 : reader.GetDouble(16),
+                            Remarks = reader.IsDBNull(17) ? null : JsonSerializer.Deserialize<string>(reader.GetString(17)),
                             ProductImage = reader.IsDBNull(18) ? null : ByteToImage((byte[])reader["prod_img"])
                         };
 
@@ -148,7 +152,7 @@ namespace Cosmetify.Repository
                 command.Parameters.Add("@MfrName", MySqlDbType.VarChar).Value = lead.MfrName;
                 command.Parameters.Add("@Company", MySqlDbType.VarChar).Value = lead.Company;
                 command.Parameters.Add("@rate", MySqlDbType.Double).Value = lead.Rate;
-                command.Parameters.Add("@data", MySqlDbType.VarChar).Value = null;
+                command.Parameters.Add("@data", MySqlDbType.JSON).Value = JsonSerializer.Serialize(lead.Remarks);
                 command.Parameters.Add("@prod_img", MySqlDbType.MediumBlob).Value = ImageToByte(lead.ProductImage);
                 command.ExecuteScalar();
                 MessageBox.Show("Product Added");
@@ -156,7 +160,7 @@ namespace Cosmetify.Repository
         }
 
         public void UpdateProduct(ProductModel lead)
-        {
+        {JsonSerializer.Serialize(lead.Remarks);
             using (var connection = GetConnection())
             using (var command = new MySqlCommand())
             {
@@ -180,7 +184,7 @@ namespace Cosmetify.Repository
                 command.Parameters.Add("@MfrName", MySqlDbType.VarChar).Value = lead.MfrName;
                 command.Parameters.Add("@Company", MySqlDbType.VarChar).Value = lead.Company;
                 command.Parameters.Add("@rate", MySqlDbType.Double).Value = lead.Rate;
-                command.Parameters.Add("@data", MySqlDbType.JSON).Value = null;
+                command.Parameters.Add("@data", MySqlDbType.JSON).Value = JsonSerializer.Serialize(lead.Remarks);
                 command.Parameters.Add("@prod_img", MySqlDbType.MediumBlob).Value = ImageToByte(lead.ProductImage);
                 command.ExecuteScalar();
                 MessageBox.Show("Product Updated");

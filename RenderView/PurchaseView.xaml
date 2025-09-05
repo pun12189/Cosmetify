@@ -78,7 +78,7 @@
                             <DataGridTextColumn Header="Mfr Name" Binding="{Binding MfrName, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbMnm, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Make" Binding="{Binding Company, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbCmp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Category" Binding="{Binding Category.CategoryName, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbCat, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <DataGridTextColumn Header="Remarks" Binding="{Binding MRP, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbMrp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=lbMrp, Path=IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
